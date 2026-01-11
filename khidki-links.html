@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>khidki | Links</title>
+    <link rel="icon" href="https://cdn.beacons.ai/user_content/IVTnb25BwdSZ4vSK1vf1vnuBUeJ3/profile_khidki.png" type="image/png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Palette */
+            --bg-dark: #050505;
+            --text-main: #ffffff;
+            --text-dim: #a1a1aa;
+            
+            /* Glassmorphism Vars */
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-shine: rgba(255, 255, 255, 0.18);
+            --blur-amount: 20px;
+            
+            /* Animation */
+            --card-hover-y: -4px;
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Nature Video Background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .video-background video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%) scale(1.1);
+            object-fit: cover;
+            opacity: 1;
+        }
+
+        /* Dark overlay for readability */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.5) 0%,
+                rgba(0, 0, 0, 0.6) 50%,
+                rgba(0, 0, 0, 0.7) 100%
+            );
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Profile Section */
+        .profile-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+
+        .profile-img {
+            width: 108px;
+            height: 108px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.2);
+            padding: 4px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: transform 0.5s var(--ease-out-back);
+        }
+
+        .profile-wrapper:hover .profile-img {
+            transform: scale(1.05) rotate(2deg);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            background: linear-gradient(to right, #fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 20px rgba(255,255,255,0.2);
+        }
+
+        .bio {
+            color: var(--text-dim);
+            font-size: 15px;
+            font-weight: 300;
+            margin: 0 auto 36px;
+            line-height: 1.6;
+            max-width: 90%;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* Links Section */
+        .links-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .link-card {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            overflow: hidden;
+            letter-spacing: 0.01em;
+        }
+
+        /* Shine effect */
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+            transition: 0.5s;
+        }
+
+        .link-card:hover {
+            transform: translateY(var(--card-hover-y));
+            background: rgba(255, 255, 255, 1);
+            border-color: rgba(255,255,255,0.6);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+        }
+
+        .link-card:hover::before {
+            left: 100%;
+        }
+
+        .link-card:active {
+            transform: scale(0.98);
+        }
+
+        /* Book Your Seat Expandable Card */
+        .booking-card {
+            cursor: pointer;
+            flex-direction: column;
+            gap: 0;
+            padding: 20px;
+        }
+
+        .booking-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .chevron {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.4s var(--ease-out-back);
+        }
+
+        .booking-card.expanded .chevron {
+            transform: rotate(180deg);
+        }
+
+        .booking-form {
+            max-height: 0;
+            overflow: hidden;
+            width: 100%;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                        padding 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .booking-card.expanded .booking-form {
+            max-height: 350px;
+            padding-top: 20px;
+            opacity: 1;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--text-dim);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            color: #1a1a1a;
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(26, 26, 26, 0.5);
+        }
+
+        .form-group input:focus {
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px 20px;
+            background: #3b82f6;
+            border: 1px solid #2563eb;
+            border-radius: 12px;
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 6px;
+        }
+
+        .submit-btn:hover {
+            background: #2563eb;
+            border-color: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            display: none;
+            padding: 14px;
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 12px;
+            color: #4ade80;
+            font-size: 14px;
+            margin-top: 10px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Staggered Animation for Links */
+        .link-card {
+            opacity: 0;
+            animation: slideUp 0.5s ease-out forwards;
+        }
+        
+        .link-card:nth-child(1) { animation-delay: 0.2s; }
+        .link-card:nth-child(2) { animation-delay: 0.3s; }
+        .link-card:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 60px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.3);
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            animation: fadeIn 1s ease-out 0.8s forwards;
+            opacity: 0;
+        }
+
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            body {
+                padding: 40px 16px;
+            }
+            .profile-img {
+                width: 96px;
+                height: 96px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            .link-card {
+                padding: 18px;
+            }
+            .form-group input {
+                padding: 12px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Nature Video Background -->
+    <div class="video-background">
+        <video src="https://cdn.pixabay.com/video/2024/08/30/228847_large.mp4" autoplay muted loop class="active"></video>
+        <video src="https://cdn.coverr.co/videos/coverr-mountains-in-the-fog-2696/1080p.mp4" autoplay muted loop class="active"></video>    </div>
+
+    <div class="container">
+        <div class="profile-wrapper">
+            <img src="https://cdn.beacons.ai/user_content/IVTnb25BwdSZ4vSK1vf1vnuBUeJ3/profile_khidki.png" alt="khidki" class="profile-img">
+        </div>
+        
+        <h1>@khidki</h1>
+        <p class="bio">Welcome to my space. Explore my latest projects, shop my collection, and stay connected.</p>
+        
+        <div class="links-group">
+            <a href="https://rightrun.xyz" target="_blank" class="link-card">My Portfolio</a>
+            <a href="https://instagram.com/saudamini_1612" target="_blank" class="link-card">Instagram</a>
+            
+            <!-- Expandable Booking Card -->
+            <div class="link-card booking-card" id="bookingCard">
+                <div class="booking-header">
+                    <span>Book Your Seat</span>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                
+                <div class="booking-form">
+                    <form id="bookingForm" onsubmit="submitBooking(event)">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                        </div>
+                        <button type="submit" class="submit-btn" id="submitBtn">Submit</button>
+                    </form>
+                    <div class="success-message" id="successMessage">
+                        ✓ Thank you! Your booking has been received.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            &copy; 2026 khidki
+        </div>
+    </div>
+
+    <script>
+
+        // Booking Card Toggle
+        const bookingCard = document.getElementById('bookingCard');
+        const bookingHeader = bookingCard.querySelector('.booking-header');
+
+        bookingHeader.addEventListener('click', (e) => {
+            e.stopPropagation();
+            bookingCard.classList.toggle('expanded');
+        });
+
+        // Prevent form clicks from closing the card
+        document.querySelector('.booking-form').addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // Form Submission to Google Sheets
+        async function submitBooking(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const form = document.getElementById('bookingForm');
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            // Google Forms URL - Replace with your actual Google Form URL
+            // To get this URL:
+            // 1. Create a Google Form with fields: Name, Email, Phone
+            // 2. Get the form's pre-filled link
+            // 3. Replace the URL below with your form's action URL
+            
+            const googleFormURL = 'https://docs.google.com/forms/d/e/1FAIpQLSdxkMHlxwZQEPVdUTH6uBkIXfESN-a84yC_I5Ov2xIEn5OZ7g/formResponse';
+            
+            // These are the entry IDs for each field - you'll need to replace these
+            // with your actual Google Form entry IDs
+            const formData = new FormData();
+            formData.append('entry.1640030217', name);   // Replace with your Name field entry ID
+            formData.append('entry.990239207', email);  // Replace with your Email field entry ID  
+            formData.append('entry.901129599', phone);  // Replace with your Phone field entry ID
+            try {
+                // Using no-cors mode since Google Forms doesn't allow CORS
+                await fetch(googleFormURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: formData
+                });
+                // https://docs.google.com/forms/d/e/1FAIpQLSdxkMHlxwZQEPVdUTH6uBkIXfESN-a84yC_I5Ov2xIEn5OZ7g/viewform?usp=pp_url&entry.1640030217=Test&entry.990239207=Email&entry.901129599=9888
+                // Show success (we can't check response with no-cors, but form was submitted)
+                form.style.display = 'none';
+                successMessage.classList.add('show');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit';
+                alert('Something went wrong. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>
