@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | Khidki</title>
+    <link rel="icon" href="https://cdn.beacons.ai/user_content/IVTnb25BwdSZ4vSK1vf1vnuBUeJ3/profile_khidki.png" type="image/png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --text-main: #ffffff;
+            --text-dim: #a1a1aa;
+            --accent-gold: #d4af37;
+            --accent-violet: #a78bfa;
+            --accent-rose: #e8b4bc;
+            --firefly-glow: #f0e68c;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { box-sizing: border-box; cursor: none; }
+        a, button { cursor: none; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        /* Firefly Cursor - Realistic Bug Shape */
+        .firefly-cursor {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out;
+        }
+
+        .firefly-body {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .firefly-head {
+            width: 6px;
+            height: 5px;
+            background: #2a2520;
+            border-radius: 50% 50% 40% 40%;
+            position: relative;
+            z-index: 3;
+        }
+
+        .firefly-head::before,
+        .firefly-head::after {
+            content: '';
+            position: absolute;
+            width: 1px;
+            height: 6px;
+            background: #3a3530;
+            top: -5px;
+        }
+        .firefly-head::before { left: 1px; transform: rotate(-20deg); }
+        .firefly-head::after { right: 1px; transform: rotate(20deg); }
+
+        .firefly-thorax {
+            width: 8px;
+            height: 7px;
+            background: linear-gradient(to bottom, #3a3530, #2a2520);
+            border-radius: 40%;
+            margin-left: -2px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .firefly-wings {
+            position: absolute;
+            top: -3px;
+            left: 4px;
+            z-index: 1;
+        }
+
+        .firefly-wing {
+            position: absolute;
+            width: 12px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50% 50% 30% 30%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: wingFlutter 0.08s ease-in-out infinite alternate;
+        }
+
+        .firefly-wing.left { transform: rotate(-25deg) translateY(-2px); transform-origin: bottom right; }
+        .firefly-wing.right { transform: rotate(25deg) translateY(8px); transform-origin: bottom left; animation-name: wingFlutterRight; }
+
+        @keyframes wingFlutter { 0% { transform: rotate(-25deg) translateY(-2px) scaleY(1); } 100% { transform: rotate(-30deg) translateY(-3px) scaleY(0.9); } }
+        @keyframes wingFlutterRight { 0% { transform: rotate(25deg) translateY(8px) scaleY(1); } 100% { transform: rotate(30deg) translateY(9px) scaleY(0.9); } }
+
+        .firefly-abdomen {
+            width: 10px;
+            height: 9px;
+            background: radial-gradient(ellipse at 60% 50%, #fff87f 0%, #f0e050 30%, #d4b830 50%, #8a7520 70%, #4a3a10 100%);
+            border-radius: 30% 60% 60% 30%;
+            margin-left: -2px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 0 8px 3px rgba(255, 248, 127, 0.6), 0 0 16px 6px rgba(255, 230, 100, 0.4), 0 0 24px 10px rgba(255, 220, 80, 0.2);
+            animation: glowPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 8px 3px rgba(255, 248, 127, 0.6), 0 0 16px 6px rgba(255, 230, 100, 0.4), 0 0 24px 10px rgba(255, 220, 80, 0.2); }
+            50% { box-shadow: 0 0 12px 5px rgba(255, 255, 180, 0.8), 0 0 24px 10px rgba(255, 248, 127, 0.5), 0 0 36px 16px rgba(255, 230, 100, 0.3); }
+        }
+
+        .firefly-cursor.hovering .firefly-abdomen {
+            box-shadow: 0 0 15px 6px rgba(255, 255, 180, 0.9), 0 0 30px 12px rgba(255, 248, 127, 0.6), 0 0 45px 20px rgba(255, 230, 100, 0.4);
+        }
+
+        .firefly-trail {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            background: radial-gradient(circle, rgba(255, 248, 127, 0.8) 0%, rgba(255, 220, 80, 0.4) 40%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 6px 2px rgba(255, 240, 100, 0.5);
+        }
+
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(ellipse at 10% 20%, rgba(167, 139, 250, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 80%, rgba(212, 175, 55, 0.06) 0%, transparent 50%);
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(10, 10, 15, 0.9), transparent);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--text-main);
+            transform: translateX(-4px);
+        }
+
+        .back-link svg { width: 18px; height: 18px; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 40px 80px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .page-header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(40px, 6vw, 64px);
+            font-weight: 300;
+            margin: 0 0 16px 0;
+            background: linear-gradient(135deg, var(--text-main), var(--accent-violet));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: slideUp 0.8s ease forwards;
+            letter-spacing: 0.05em;
+        }
+
+        .page-header p {
+            color: var(--text-dim);
+            font-size: 16px;
+            font-weight: 300;
+            opacity: 0;
+            animation: slideUp 0.8s ease 0.15s forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 4/5;
+            border-radius: 16px;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .gallery-item:nth-child(1) { animation-delay: 0.1s; }
+        .gallery-item:nth-child(2) { animation-delay: 0.2s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.3s; }
+        .gallery-item:nth-child(4) { animation-delay: 0.4s; }
+        .gallery-item:nth-child(5) { animation-delay: 0.5s; }
+        .gallery-item:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.3) 40%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 28px;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 400;
+            margin: 0 0 6px 0;
+            transform: translateY(10px);
+            transition: transform 0.4s ease;
+            letter-spacing: 0.02em;
+        }
+
+        .gallery-item:hover .gallery-overlay h3 {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay .medium {
+            font-size: 13px;
+            color: var(--accent-rose);
+            font-style: italic;
+            margin: 0 0 4px 0;
+            transform: translateY(10px);
+            transition: transform 0.4s ease 0.05s;
+        }
+
+        .gallery-item:hover .gallery-overlay .medium {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay p {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin: 0;
+            transform: translateY(10px);
+            transition: transform 0.4s ease 0.1s;
+        }
+
+        .gallery-item:hover .gallery-overlay p {
+            transform: translateY(0);
+        }
+
+        /* Featured item spans 2 columns */
+        .gallery-item.featured {
+            grid-column: span 2;
+            aspect-ratio: 16/9;
+        }
+
+        @media (max-width: 768px) {
+            .nav { padding: 16px 20px; }
+            .container { padding: 100px 20px 60px; }
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .gallery-item.featured {
+                grid-column: span 2;
+            }
+            .firefly-cursor, .firefly-trail { display: none; }
+            * { cursor: auto; }
+            a, button { cursor: pointer; }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-item.featured {
+                grid-column: span 1;
+                aspect-ratio: 4/5;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="firefly-cursor" id="cursor">
+        <div class="firefly-body">
+            <div class="firefly-head"></div>
+            <div class="firefly-thorax">
+                <div class="firefly-wings">
+                    <div class="firefly-wing left"></div>
+                    <div class="firefly-wing right"></div>
+                </div>
+            </div>
+            <div class="firefly-abdomen"></div>
+        </div>
+    </div>
+    <div class="firefly-trail" id="trail1"></div>
+    <div class="firefly-trail" id="trail2"></div>
+    <div class="firefly-trail" id="trail3"></div>
+    <div class="firefly-trail" id="trail4"></div>
+    <div class="firefly-trail" id="trail5"></div>
+
+    <div class="bg-gradient"></div>
+
+    <nav class="nav">
+        <a href="portfolio.html" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Portfolio
+        </a>
+    </nav>
+
+    <main class="container">
+        <header class="page-header">
+            <h1>Gallery</h1>
+            <p>A visual journey through completed works and exhibitions</p>
+        </header>
+
+        <div class="gallery-grid">
+            <div class="gallery-item featured">
+                <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=1200&q=80" alt="Featured artwork">
+                <div class="gallery-overlay">
+                    <h3>Spectrum of Silence</h3>
+                    <p class="medium">Oil on Canvas, 48×72"</p>
+                    <p>Featured at "Windows of Wonder" Solo Exhibition, 2025</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1549887534-1541e9326642?w=600&q=80" alt="Portrait study">
+                <div class="gallery-overlay">
+                    <h3>Contemplation</h3>
+                    <p class="medium">Charcoal & Pastel</p>
+                    <p>Portrait study series</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=600&q=80" alt="Botanical">
+                <div class="gallery-overlay">
+                    <h3>Monsoon Blooms</h3>
+                    <p class="medium">Watercolor</p>
+                    <p>Botanical collection</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=600&q=80" alt="Abstract">
+                <div class="gallery-overlay">
+                    <h3>Urban Rhythms</h3>
+                    <p class="medium">Mixed Media</p>
+                    <p>City life series</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1582201942988-13e60e4556ee?w=600&q=80" alt="Landscape">
+                <div class="gallery-overlay">
+                    <h3>Where Earth Meets Sky</h3>
+                    <p class="medium">Oil on Canvas</p>
+                    <p>Landscape series</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=600&q=80" alt="Expression">
+                <div class="gallery-overlay">
+                    <h3>Joy Unbound</h3>
+                    <p class="medium">Acrylic</p>
+                    <p>Expressionist collection</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const trails = [document.getElementById('trail1'), document.getElementById('trail2'), document.getElementById('trail3'), document.getElementById('trail4'), document.getElementById('trail5')];
+        let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0, prevCursorX = 0, prevCursorY = 0, currentAngle = 0;
+        const trailPositions = trails.map(() => ({ x: 0, y: 0 }));
+        
+        document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+
+        function animate() {
+            prevCursorX = cursorX; prevCursorY = cursorY;
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            
+            const deltaX = cursorX - prevCursorX, deltaY = cursorY - prevCursorY;
+            const speed = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            
+            if (speed > 0.5) {
+                const targetAngle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+                let angleDiff = targetAngle - currentAngle;
+                if (angleDiff > 180) angleDiff -= 360;
+                if (angleDiff < -180) angleDiff += 360;
+                currentAngle += angleDiff * 0.15;
+            }
+            
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            cursor.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
+
+            const tailOffsetX = Math.cos(currentAngle * Math.PI / 180) * 18;
+            const tailOffsetY = Math.sin(currentAngle * Math.PI / 180) * 18;
+            const tailX = cursorX + tailOffsetX, tailY = cursorY + tailOffsetY;
+            
+            trails.forEach((trail, i) => {
+                const lag = 0.12 - (i * 0.018);
+                const prevPos = i === 0 ? { x: tailX, y: tailY } : trailPositions[i - 1];
+                trailPositions[i].x += (prevPos.x - trailPositions[i].x) * lag;
+                trailPositions[i].y += (prevPos.y - trailPositions[i].y) * lag;
+                trail.style.left = trailPositions[i].x + 'px';
+                trail.style.top = trailPositions[i].y + 'px';
+                trail.style.opacity = (0.6 - (i * 0.1)) * (speed > 0.5 ? 1 : 0.3);
+                const size = 6 - i;
+                trail.style.width = size + 'px';
+                trail.style.height = size + 'px';
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        document.querySelectorAll('a, button, .gallery-item').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+        });
+    </script>
+</body>
+</html>

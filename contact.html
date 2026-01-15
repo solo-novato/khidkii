@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commissions | Khidki</title>
+    <link rel="icon" href="https://cdn.beacons.ai/user_content/IVTnb25BwdSZ4vSK1vf1vnuBUeJ3/profile_khidki.png" type="image/png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --text-main: #ffffff;
+            --text-dim: #a1a1aa;
+            --accent-gold: #d4af37;
+            --accent-rose: #e8b4bc;
+            --accent-coral: #f97316;
+            --firefly-glow: #f0e68c;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { box-sizing: border-box; cursor: none; }
+        a, button, input, textarea { cursor: none; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        /* Firefly Cursor - Realistic Bug Shape */
+        .firefly-cursor {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out;
+        }
+
+        .firefly-body {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .firefly-head {
+            width: 6px;
+            height: 5px;
+            background: #2a2520;
+            border-radius: 50% 50% 40% 40%;
+            position: relative;
+            z-index: 3;
+        }
+
+        .firefly-head::before,
+        .firefly-head::after {
+            content: '';
+            position: absolute;
+            width: 1px;
+            height: 6px;
+            background: #3a3530;
+            top: -5px;
+        }
+        .firefly-head::before { left: 1px; transform: rotate(-20deg); }
+        .firefly-head::after { right: 1px; transform: rotate(20deg); }
+
+        .firefly-thorax {
+            width: 8px;
+            height: 7px;
+            background: linear-gradient(to bottom, #3a3530, #2a2520);
+            border-radius: 40%;
+            margin-left: -2px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .firefly-wings {
+            position: absolute;
+            top: -3px;
+            left: 4px;
+            z-index: 1;
+        }
+
+        .firefly-wing {
+            position: absolute;
+            width: 12px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50% 50% 30% 30%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: wingFlutter 0.08s ease-in-out infinite alternate;
+        }
+
+        .firefly-wing.left { transform: rotate(-25deg) translateY(-2px); transform-origin: bottom right; }
+        .firefly-wing.right { transform: rotate(25deg) translateY(8px); transform-origin: bottom left; animation-name: wingFlutterRight; }
+
+        @keyframes wingFlutter { 0% { transform: rotate(-25deg) translateY(-2px) scaleY(1); } 100% { transform: rotate(-30deg) translateY(-3px) scaleY(0.9); } }
+        @keyframes wingFlutterRight { 0% { transform: rotate(25deg) translateY(8px) scaleY(1); } 100% { transform: rotate(30deg) translateY(9px) scaleY(0.9); } }
+
+        .firefly-abdomen {
+            width: 10px;
+            height: 9px;
+            background: radial-gradient(ellipse at 60% 50%, #fff87f 0%, #f0e050 30%, #d4b830 50%, #8a7520 70%, #4a3a10 100%);
+            border-radius: 30% 60% 60% 30%;
+            margin-left: -2px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 0 8px 3px rgba(255, 248, 127, 0.6), 0 0 16px 6px rgba(255, 230, 100, 0.4), 0 0 24px 10px rgba(255, 220, 80, 0.2);
+            animation: glowPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 8px 3px rgba(255, 248, 127, 0.6), 0 0 16px 6px rgba(255, 230, 100, 0.4), 0 0 24px 10px rgba(255, 220, 80, 0.2); }
+            50% { box-shadow: 0 0 12px 5px rgba(255, 255, 180, 0.8), 0 0 24px 10px rgba(255, 248, 127, 0.5), 0 0 36px 16px rgba(255, 230, 100, 0.3); }
+        }
+
+        .firefly-cursor.hovering .firefly-abdomen {
+            box-shadow: 0 0 15px 6px rgba(255, 255, 180, 0.9), 0 0 30px 12px rgba(255, 248, 127, 0.6), 0 0 45px 20px rgba(255, 230, 100, 0.4);
+        }
+
+        .firefly-trail {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            background: radial-gradient(circle, rgba(255, 248, 127, 0.8) 0%, rgba(255, 220, 80, 0.4) 40%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 6px 2px rgba(255, 240, 100, 0.5);
+        }
+
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(ellipse at 30% 70%, rgba(249, 115, 22, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 20%, rgba(232, 180, 188, 0.08) 0%, transparent 50%);
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(10, 10, 15, 0.9), transparent);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover { color: var(--text-main); transform: translateX(-4px); }
+        .back-link svg { width: 18px; height: 18px; }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 120px 40px 80px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(40px, 6vw, 56px);
+            font-weight: 300;
+            margin: 0 0 16px 0;
+            background: linear-gradient(135deg, var(--text-main), var(--accent-coral));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.05em;
+            opacity: 0;
+            animation: slideUp 0.8s ease forwards;
+        }
+
+        .page-header p {
+            color: var(--text-dim);
+            font-size: 16px;
+            font-weight: 300;
+            opacity: 0;
+            animation: slideUp 0.8s ease 0.15s forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .contact-form {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            opacity: 0;
+            animation: slideUp 0.8s ease 0.3s forwards;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 16px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--accent-gold);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .form-group select option {
+            background: var(--bg-dark);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-rose));
+            border: none;
+            border-radius: 12px;
+            color: var(--bg-dark);
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.5);
+        }
+
+        .submit-btn:active { transform: scale(0.98); }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 40px;
+            opacity: 0;
+            animation: slideUp 0.8s ease 0.5s forwards;
+        }
+
+        .social-link {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            transform: translateY(-4px);
+        }
+
+        .social-link svg { width: 20px; height: 20px; }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 40px 0;
+            color: var(--text-dim);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0;
+            animation: slideUp 0.8s ease 0.4s forwards;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--glass-border);
+        }
+
+        @media (max-width: 768px) {
+            .nav { padding: 16px 20px; }
+            .container { padding: 100px 20px 60px; }
+            .contact-form { padding: 28px 24px; }
+            .firefly-cursor, .firefly-trail { display: none; }
+            * { cursor: auto; }
+            a, button, input, textarea { cursor: pointer; }
+        }
+    </style>
+</head>
+<body>
+    <div class="firefly-cursor" id="cursor">
+        <div class="firefly-body">
+            <div class="firefly-head"></div>
+            <div class="firefly-thorax">
+                <div class="firefly-wings">
+                    <div class="firefly-wing left"></div>
+                    <div class="firefly-wing right"></div>
+                </div>
+            </div>
+            <div class="firefly-abdomen"></div>
+        </div>
+    </div>
+    <div class="firefly-trail" id="trail1"></div>
+    <div class="firefly-trail" id="trail2"></div>
+    <div class="firefly-trail" id="trail3"></div>
+    <div class="firefly-trail" id="trail4"></div>
+    <div class="firefly-trail" id="trail5"></div>
+
+    <div class="bg-gradient"></div>
+
+    <nav class="nav">
+        <a href="portfolio.html" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Portfolio
+        </a>
+    </nav>
+
+    <main class="container">
+        <header class="page-header">
+            <h1>Commissions</h1>
+            <p>Let's create something meaningful together</p>
+        </header>
+
+        <form class="contact-form" onsubmit="handleSubmit(event)">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+                <label>Commission Type</label>
+                <select required>
+                    <option value="">Select artwork type...</option>
+                    <option>Portrait (Oil/Acrylic)</option>
+                    <option>Landscape Painting</option>
+                    <option>Abstract Art</option>
+                    <option>Watercolor Illustration</option>
+                    <option>Custom/Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Tell me about your vision</label>
+                <textarea placeholder="Describe what you'd like created, size preferences, colors, mood, or any inspiration..." required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send Inquiry</button>
+        </form>
+
+        <div class="divider">Or connect on</div>
+
+        <div class="social-links">
+            <a href="https://instagram.com/saudamini_1612" target="_blank" class="social-link" title="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+            </a>
+            <a href="mailto:hello@khidki.art" class="social-link" title="Email">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const trails = [document.getElementById('trail1'), document.getElementById('trail2'), document.getElementById('trail3'), document.getElementById('trail4'), document.getElementById('trail5')];
+        let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0, prevCursorX = 0, prevCursorY = 0, currentAngle = 0;
+        const trailPositions = trails.map(() => ({ x: 0, y: 0 }));
+        
+        document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+
+        function animate() {
+            prevCursorX = cursorX; prevCursorY = cursorY;
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            
+            const deltaX = cursorX - prevCursorX, deltaY = cursorY - prevCursorY;
+            const speed = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            
+            if (speed > 0.5) {
+                const targetAngle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+                let angleDiff = targetAngle - currentAngle;
+                if (angleDiff > 180) angleDiff -= 360;
+                if (angleDiff < -180) angleDiff += 360;
+                currentAngle += angleDiff * 0.15;
+            }
+            
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            cursor.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
+
+            const tailOffsetX = Math.cos(currentAngle * Math.PI / 180) * 18;
+            const tailOffsetY = Math.sin(currentAngle * Math.PI / 180) * 18;
+            const tailX = cursorX + tailOffsetX, tailY = cursorY + tailOffsetY;
+            
+            trails.forEach((trail, i) => {
+                const lag = 0.12 - (i * 0.018);
+                const prevPos = i === 0 ? { x: tailX, y: tailY } : trailPositions[i - 1];
+                trailPositions[i].x += (prevPos.x - trailPositions[i].x) * lag;
+                trailPositions[i].y += (prevPos.y - trailPositions[i].y) * lag;
+                trail.style.left = trailPositions[i].x + 'px';
+                trail.style.top = trailPositions[i].y + 'px';
+                trail.style.opacity = (0.6 - (i * 0.1)) * (speed > 0.5 ? 1 : 0.3);
+                const size = 6 - i;
+                trail.style.width = size + 'px';
+                trail.style.height = size + 'px';
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        document.querySelectorAll('a, button, input, textarea, select, .social-link').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+        });
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            const btn = document.querySelector('.submit-btn');
+            btn.textContent = 'Sending...';
+            btn.style.opacity = '0.7';
+            setTimeout(() => {
+                btn.textContent = 'Inquiry Sent! ✓';
+                btn.style.background = 'linear-gradient(135deg, #34d399, #10b981)';
+                setTimeout(() => {
+                    btn.textContent = 'Send Inquiry';
+                    btn.style.background = '';
+                    btn.style.opacity = '';
+                    document.querySelector('.contact-form').reset();
+                }, 2000);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
