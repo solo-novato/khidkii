@@ -14,11 +14,55 @@
         :root {
             --bg-dark: #0a0a0f;
             --text-main: #ffffff;
-            --text-dim: #a1a1aa;
+            --text-dim: #c8c8d0;
             --accent-gold: #d4af37;
             --accent-rose: #e8b4bc;
-            --glass-bg: rgba(255, 255, 255, 0.06);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(0, 0, 0, 0.35);
+            --glass-border: rgba(255, 255, 255, 0.12);
+        }
+
+        /* ========== SCREENSAVER ========== */
+        .screensaver {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            background: #000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            cursor: none;
+        }
+
+        .screensaver.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .screensaver video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+
+        .screensaver-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: hintFadeIn 1s ease 2s forwards;
+        }
+
+        @keyframes hintFadeIn {
+            to { opacity: 1; }
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; cursor: none; }
@@ -27,9 +71,80 @@
 
         body {
             font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-dark);
+            background-color: #0d1a2d;
             color: var(--text-main);
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ========== PARALLAX BACKGROUND IMAGE ========== */
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .parallax-bg img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            will-change: transform;
+        }
+
+        /* Decorative vine overlay (like in the image) */
+        .vine-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: 
+                linear-gradient(90deg, rgba(0,0,0,0.15) 0%, transparent 5%, transparent 95%, rgba(0,0,0,0.15) 100%);
+        }
+
+        /* Fireflies scattered */
+        .fireflies {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .firefly-dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, rgba(255, 248, 127, 0.9) 0%, rgba(255, 220, 80, 0.5) 50%, transparent 70%);
+            border-radius: 50%;
+            box-shadow: 0 0 8px 3px rgba(255, 240, 100, 0.4);
+            animation: fireflyFloat 8s ease-in-out infinite;
+        }
+
+        .firefly-dot:nth-child(1) { top: 20%; left: 5%; animation-delay: 0s; animation-duration: 7s; }
+        .firefly-dot:nth-child(2) { top: 35%; left: 8%; animation-delay: 1s; animation-duration: 9s; }
+        .firefly-dot:nth-child(3) { top: 50%; left: 3%; animation-delay: 2s; animation-duration: 6s; }
+        .firefly-dot:nth-child(4) { top: 65%; left: 6%; animation-delay: 3s; animation-duration: 8s; }
+        .firefly-dot:nth-child(5) { top: 25%; right: 5%; animation-delay: 0.5s; animation-duration: 7.5s; }
+        .firefly-dot:nth-child(6) { top: 40%; right: 7%; animation-delay: 1.5s; animation-duration: 8.5s; }
+        .firefly-dot:nth-child(7) { top: 55%; right: 4%; animation-delay: 2.5s; animation-duration: 6.5s; }
+        .firefly-dot:nth-child(8) { top: 70%; right: 6%; animation-delay: 3.5s; animation-duration: 9.5s; }
+
+        @keyframes fireflyFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+            25% { transform: translate(10px, -15px) scale(1.2); opacity: 1; }
+            50% { transform: translate(-5px, -25px) scale(0.8); opacity: 0.6; }
+            75% { transform: translate(15px, -10px) scale(1.1); opacity: 1; }
         }
 
         /* Firefly Cursor */
@@ -108,12 +223,12 @@
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            background: linear-gradient(to bottom, rgba(10, 10, 15, 0.95), transparent);
+            background: linear-gradient(to bottom, rgba(10, 20, 40, 0.8), transparent);
             transition: all 0.3s ease;
         }
 
         .nav.scrolled {
-            background: rgba(10, 10, 15, 0.98);
+            background: rgba(10, 20, 40, 0.95);
             backdrop-filter: blur(20px);
             padding: 15px 50px;
         }
@@ -125,6 +240,7 @@
             color: var(--text-main);
             text-decoration: none;
             letter-spacing: 0.1em;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
         .nav-links {
@@ -141,6 +257,7 @@
             letter-spacing: 0.05em;
             transition: all 0.3s ease;
             position: relative;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.5);
         }
 
         .nav-links a::after {
@@ -152,42 +269,21 @@
             transition: width 0.3s ease;
         }
 
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--text-main);
-        }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-main); }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
 
-        .nav-links a:hover::after, .nav-links a.active::after {
-            width: 100%;
-        }
-
-        /* Parallax Sections */
+        /* Content Sections */
         .parallax-section {
             min-height: 100vh;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-        }
-
-        .parallax-bg {
-            position: absolute;
-            top: -20%; left: 0;
-            width: 100%; height: 140%;
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            z-index: -1;
-            opacity: 0.15;
-            filter: blur(2px);
+            z-index: 10;
         }
 
         /* Hero Section */
-        #hero {
-            height: 100vh;
-            background: radial-gradient(ellipse at 30% 30%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
-                        radial-gradient(ellipse at 70% 70%, rgba(232, 180, 188, 0.1) 0%, transparent 50%);
-        }
+        #hero { height: 100vh; }
 
         .hero-content {
             text-align: center;
@@ -206,6 +302,7 @@
             opacity: 0;
             transform: translateY(50px);
             animation: heroReveal 1.2s ease 0.3s forwards;
+            filter: drop-shadow(0 4px 30px rgba(212, 175, 55, 0.3));
         }
 
         .hero-content .subtitle {
@@ -216,6 +313,7 @@
             letter-spacing: 0.2em;
             opacity: 0;
             animation: heroReveal 1s ease 0.6s forwards;
+            text-shadow: 0 2px 15px rgba(0,0,0,0.5);
         }
 
         .hero-content p {
@@ -226,6 +324,7 @@
             line-height: 1.8;
             opacity: 0;
             animation: heroReveal 1s ease 0.9s forwards;
+            text-shadow: 0 1px 10px rgba(0,0,0,0.5);
         }
 
         .scroll-indicator {
@@ -245,6 +344,7 @@
             font-size: 12px;
             letter-spacing: 0.2em;
             color: var(--text-dim);
+            text-shadow: 0 1px 5px rgba(0,0,0,0.5);
         }
 
         .scroll-indicator .line {
@@ -288,22 +388,29 @@
             font-weight: 300;
             margin-bottom: 16px;
             letter-spacing: 0.05em;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.6);
         }
 
         .section-header p {
             color: var(--text-dim);
             font-size: 17px;
             max-width: 500px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Glass Card Styling */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
         }
 
         /* Artworks Section */
-        #artworks {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
-        }
-
         .artworks-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
 
@@ -312,10 +419,13 @@
             border-radius: 20px;
             overflow: hidden;
             background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
             opacity: 0;
             transform: translateY(60px);
             transition: all 0.6s ease, transform 0.4s ease;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.4);
         }
 
         .artwork-card.visible {
@@ -326,7 +436,7 @@
         .artwork-card:hover {
             transform: translateY(-10px);
             border-color: var(--accent-gold);
-            box-shadow: 0 30px 60px -20px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
         }
 
         .artwork-card img {
@@ -342,6 +452,8 @@
 
         .artwork-card .info {
             padding: 24px;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
         }
 
         .artwork-card h3 {
@@ -358,13 +470,9 @@
         }
 
         /* Artist Section */
-        #artist {
-            background: linear-gradient(135deg, transparent 50%, rgba(232, 180, 188, 0.05) 100%);
-        }
-
         .artist-content {
             display: grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 280px 1fr;
             gap: 60px;
             align-items: start;
         }
@@ -376,6 +484,8 @@
             opacity: 0;
             transform: translateX(-40px);
             transition: all 0.8s ease;
+            box-shadow: 0 20px 50px -20px rgba(0,0,0,0.6);
+            border: 1px solid var(--glass-border);
         }
 
         .artist-image.visible {
@@ -393,6 +503,12 @@
             opacity: 0;
             transform: translateX(40px);
             transition: all 0.8s ease 0.2s;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
         }
 
         .artist-info.visible {
@@ -416,18 +532,19 @@
         .artist-info p {
             color: var(--text-dim);
             line-height: 1.9;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .skills-list {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
+            margin-top: 20px;
         }
 
         .skill-tag {
             padding: 10px 20px;
-            background: var(--glass-bg);
+            background: rgba(255,255,255,0.08);
             border: 1px solid var(--glass-border);
             border-radius: 30px;
             font-size: 13px;
@@ -435,15 +552,11 @@
         }
 
         .skill-tag:hover {
-            background: rgba(212, 175, 55, 0.15);
+            background: rgba(212, 175, 55, 0.2);
             border-color: var(--accent-gold);
         }
 
         /* Gallery Section */
-        #gallery {
-            background: linear-gradient(135deg, rgba(167, 139, 250, 0.03) 0%, transparent 50%);
-        }
-
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -457,6 +570,7 @@
             opacity: 0;
             transform: scale(0.9);
             transition: all 0.5s ease;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.4);
         }
 
         .gallery-item.visible {
@@ -480,7 +594,7 @@
         .gallery-item .overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
             opacity: 0;
             transition: opacity 0.3s ease;
             display: flex;
@@ -489,9 +603,7 @@
             padding: 20px;
         }
 
-        .gallery-item:hover .overlay {
-            opacity: 1;
-        }
+        .gallery-item:hover .overlay { opacity: 1; }
 
         .gallery-item .overlay h4 {
             font-family: 'Cormorant Garamond', serif;
@@ -504,10 +616,6 @@
         }
 
         /* Contact Section */
-        #contact {
-            background: linear-gradient(135deg, transparent 50%, rgba(249, 115, 22, 0.03) 100%);
-        }
-
         .contact-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -535,6 +643,7 @@
             color: var(--text-dim);
             line-height: 1.8;
             margin-bottom: 30px;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.3);
         }
 
         .social-links {
@@ -549,6 +658,7 @@
             align-items: center;
             justify-content: center;
             background: var(--glass-bg);
+            backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
             border-radius: 50%;
             color: var(--text-dim);
@@ -557,19 +667,18 @@
         }
 
         .social-link:hover {
-            background: rgba(212, 175, 55, 0.2);
+            background: rgba(212, 175, 55, 0.25);
             border-color: var(--accent-gold);
             color: var(--accent-gold);
             transform: translateY(-5px);
         }
 
-        .social-link svg {
-            width: 20px;
-            height: 20px;
-        }
+        .social-link svg { width: 20px; height: 20px; }
 
         .contact-form {
             background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
             padding: 40px;
@@ -583,9 +692,7 @@
             transform: translateY(0);
         }
 
-        .form-group {
-            margin-bottom: 24px;
-        }
+        .form-group { margin-bottom: 24px; }
 
         .form-group label {
             display: block;
@@ -601,7 +708,7 @@
         .form-group select {
             width: 100%;
             padding: 16px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--glass-border);
             border-radius: 12px;
             color: var(--text-main);
@@ -615,17 +722,11 @@
         .form-group textarea:focus,
         .form-group select:focus {
             border-color: var(--accent-gold);
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.5);
         }
 
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .form-group select option {
-            background: var(--bg-dark);
-        }
+        .form-group textarea { min-height: 120px; resize: vertical; }
+        .form-group select option { background: #1a2a3a; }
 
         .submit-btn {
             width: 100%;
@@ -633,7 +734,7 @@
             background: linear-gradient(135deg, var(--accent-gold), var(--accent-rose));
             border: none;
             border-radius: 12px;
-            color: var(--bg-dark);
+            color: #1a1a2e;
             font-family: 'Outfit', sans-serif;
             font-size: 16px;
             font-weight: 600;
@@ -651,13 +752,16 @@
             padding: 40px;
             color: var(--text-dim);
             font-size: 13px;
-            border-top: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 10;
         }
 
         /* Responsive */
         @media (max-width: 1024px) {
             .artist-content { grid-template-columns: 1fr; }
-            .artist-image { max-width: 300px; }
+            .artist-image { max-width: 280px; }
             .gallery-grid { grid-template-columns: repeat(2, 1fr); }
             .contact-content { grid-template-columns: 1fr; gap: 40px; }
         }
@@ -668,13 +772,74 @@
             .section-content { padding: 80px 20px; }
             .gallery-grid { grid-template-columns: 1fr 1fr; }
             .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+            .artist-info { padding: 24px; }
             .firefly-cursor, .firefly-trail { display: none; }
             * { cursor: auto; }
             a, button, input, textarea { cursor: pointer; }
+
+            /* Mobile - background scrolls with page */
+            .parallax-bg {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: auto;
+                min-height: 100%;
+                z-index: -1;
+            }
+
+            .parallax-bg img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+            
+            /* Ensure content is above the absolute background */
+            .parallax-section {
+                position: relative;
+                z-index: 1;
+            }
+
+            /* Screensaver on mobile - ensure it covers everything */
+            .screensaver {
+                display: block;
+            }
+            
+            .screensaver video {
+                object-fit: contain;
+            }
+
+            /* Hide fireflies on mobile */
+            .fireflies { display: none; }
         }
     </style>
 </head>
 <body>
+    <!-- Screensaver -->
+    <div class="screensaver" id="screensaver">
+        <video id="screensaverVideo" muted loop playsinline>
+            <source src="screen_saver.mp4" type="video/mp4">
+        </video>
+        <div class="screensaver-hint">Move cursor or scroll to continue</div>
+    </div>
+
+    <!-- Parallax Background Image -->
+    <div class="parallax-bg">
+        <img src="bg-parallax.png" alt="" id="parallaxImg">
+    </div>
+
+    <!-- Decorative Fireflies -->
+    <div class="fireflies">
+        <div class="firefly-dot"></div>
+        <div class="firefly-dot"></div>
+        <div class="firefly-dot"></div>
+        <div class="firefly-dot"></div>
+        <div class="firefly-dot"></div>
+        <div class="firefly-dot"></div>
+        <div class="firefly-dot"></div>
+        <div class="firefly-dot"></div>
+    </div>
+
     <!-- Firefly Cursor -->
     <div class="firefly-cursor" id="cursor">
         <div class="firefly-body">
@@ -727,31 +892,24 @@
             </div>
             <div class="artworks-grid">
                 <div class="artwork-card">
-                    <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=600&q=80" alt="Dreams in Color">
+                    <img src="11.jpg" alt="Dreams in Color">
                     <div class="info">
                         <h3>Dreams in Color</h3>
                         <p class="medium">Acrylic on Canvas, 24×36"</p>
                     </div>
                 </div>
                 <div class="artwork-card">
-                    <img src="https://images.unsplash.com/photo-1549887534-1541e9326642?w=600&q=80" alt="Silent Whispers">
+                    <img src="12.jpg" alt="Silent Whispers">
                     <div class="info">
                         <h3>Silent Whispers</h3>
                         <p class="medium">Oil on Canvas, 18×24"</p>
                     </div>
                 </div>
                 <div class="artwork-card">
-                    <img src="https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=600&q=80" alt="Garden of Solitude">
+                    <img src="8.jpg" alt="Garden of Solitude">
                     <div class="info">
                         <h3>Garden of Solitude</h3>
                         <p class="medium">Watercolor on Paper, 12×16"</p>
-                    </div>
-                </div>
-                <div class="artwork-card">
-                    <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=600&q=80" alt="Urban Poetry">
-                    <div class="info">
-                        <h3>Urban Poetry</h3>
-                        <p class="medium">Mixed Media, 30×40"</p>
                     </div>
                 </div>
             </div>
@@ -768,8 +926,8 @@
                 <div class="artist-info">
                     <h3>The Artist</h3>
                     <p class="tagline">Painting emotions, one canvas at a time</p>
-                    <p>I'm a visual artist drawn to the intersection of emotion and color. Through my work, I explore the landscapes of human experience—joy, solitude, wonder, and everything in between. Each piece is a window (khidki) into a world that exists somewhere between reality and imagination.</p>
-                    <p>The name "Khidki" (meaning "window" in Hindi) reflects my belief that art opens windows to new perspectives and hidden worlds within ourselves.</p>
+                    <p>I'm a visual artist drawn to the intersection of emotion and color. Through my work, I explore the landscapes of human experience—joy, solitude, wonder, and everything in between.</p>
+                    <p>Each piece is a window (khidki) into a world that exists somewhere between reality and imagination. The name "Khidki" reflects my belief that art opens windows to new perspectives.</p>
                     <div class="skills-list">
                         <span class="skill-tag">🎨 Oil Painting</span>
                         <span class="skill-tag">💧 Watercolor</span>
@@ -791,35 +949,35 @@
             </div>
             <div class="gallery-grid">
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&q=80" alt="Featured">
+                    <img src="1.jpg" alt="Featured">
                     <div class="overlay">
                         <h4>Spectrum of Silence</h4>
                         <span>Featured at Solo Exhibition 2025</span>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1582201942988-13e60e4556ee?w=400&q=80" alt="Landscape">
+                    <img src="4.jpg" alt="Landscape">
                     <div class="overlay">
                         <h4>Twilight Mountains</h4>
                         <span>Oil on Canvas</span>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&q=80" alt="Abstract">
+                    <img src="16.jpg" alt="Abstract">
                     <div class="overlay">
                         <h4>Echoes of Joy</h4>
                         <span>Acrylic</span>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=400&q=80" alt="Color study">
+                    <img src="28.jpg" alt="Color study">
                     <div class="overlay">
                         <h4>Color Theory</h4>
                         <span>Digital Art</span>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=400&q=80" alt="Night">
+                    <img src="52.jpg" alt="Night">
                     <div class="overlay">
                         <h4>Starlit Peaks</h4>
                         <span>Astrophotography</span>
@@ -838,7 +996,7 @@
                         <h2>Let's Create Together</h2>
                     </div>
                     <h3>Commissions Open</h3>
-                    <p>Interested in a custom piece? I'd love to bring your vision to life. Whether it's a portrait, landscape, or abstract piece, every commission is crafted with care and attention to your story.</p>
+                    <p>Interested in a custom piece? I'd love to bring your vision to life. Whether it's a portrait, landscape, or abstract piece, every commission is crafted with care.</p>
                     <div class="social-links">
                         <a href="https://instagram.com/saudamini_1612" target="_blank" class="social-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -891,6 +1049,122 @@
     </footer>
 
     <script>
+        // Parallax Background Effect
+        const parallaxImg = document.getElementById('parallaxImg');
+        const parallaxBg = document.querySelector('.parallax-bg');
+        
+        function isMobile() {
+            return window.innerWidth <= 768;
+        }
+        
+        function updateParallax() {
+            if (isMobile()) {
+                // On mobile: stretch background to match document height
+                parallaxImg.style.transform = 'none';
+                const docHeight = document.documentElement.scrollHeight;
+                parallaxBg.style.height = docHeight + 'px';
+                parallaxImg.style.height = docHeight + 'px';
+                parallaxImg.style.objectFit = 'cover';
+                parallaxImg.style.objectPosition = 'top center';
+                return;
+            }
+            
+            // Desktop: reset mobile styles
+            parallaxBg.style.height = '';
+            parallaxImg.style.height = '';
+            parallaxImg.style.objectFit = '';
+            parallaxImg.style.objectPosition = '';
+            
+            // Wait for image to load to get actual dimensions
+            if (!parallaxImg.complete || parallaxImg.naturalHeight === 0) return;
+            
+            const imgHeight = parallaxImg.offsetHeight;
+            const viewportHeight = window.innerHeight;
+            const pageHeight = document.body.scrollHeight - viewportHeight;
+            const scrollY = window.scrollY;
+            
+            // Only scroll if image is taller than viewport
+            if (imgHeight > viewportHeight) {
+                const maxScroll = imgHeight - viewportHeight;
+                const scrollPercent = Math.min(scrollY / pageHeight, 1);
+                const translateY = -scrollPercent * maxScroll;
+                parallaxImg.style.transform = `translateY(${translateY}px)`;
+            }
+        }
+
+        // Update on scroll
+        window.addEventListener('scroll', () => {
+            requestAnimationFrame(updateParallax);
+        });
+
+        // Update on resize
+        window.addEventListener('resize', updateParallax);
+        
+        // Update when image loads
+        parallaxImg.addEventListener('load', updateParallax);
+        
+        // Initial call after a small delay to ensure DOM is ready
+        setTimeout(updateParallax, 100);
+
+        // ========== SCREENSAVER ==========
+        const screensaver = document.getElementById('screensaver');
+        const screensaverVideo = document.getElementById('screensaverVideo');
+        let idleTimer = null;
+        let screensaverActive = false;
+        const IDLE_TIME = 5000; // 5 seconds
+
+        function showScreensaver() {
+            if (window.scrollY > 50) return; // Only show when at top of page
+            screensaverActive = true;
+            screensaver.classList.add('active');
+            screensaverVideo.currentTime = 0;
+            screensaverVideo.play();
+        }
+
+        function hideScreensaver() {
+            if (!screensaverActive) return;
+            screensaverActive = false;
+            screensaver.classList.remove('active');
+            screensaverVideo.pause();
+        }
+
+        function resetIdleTimer() {
+            clearTimeout(idleTimer);
+            hideScreensaver();
+            
+            // Only start idle timer if at top of page
+            if (window.scrollY <= 50) {
+                idleTimer = setTimeout(showScreensaver, IDLE_TIME);
+            }
+        }
+
+        // Events that reset the idle timer
+        document.addEventListener('mousemove', resetIdleTimer);
+        document.addEventListener('scroll', resetIdleTimer);
+        document.addEventListener('keydown', resetIdleTimer);
+        document.addEventListener('click', resetIdleTimer);
+        document.addEventListener('touchstart', resetIdleTimer);
+        document.addEventListener('touchmove', resetIdleTimer);
+
+        // Click/touch on screensaver also dismisses it
+        screensaver.addEventListener('click', hideScreensaver);
+        screensaver.addEventListener('touchstart', hideScreensaver);
+        screensaver.addEventListener('touchend', hideScreensaver);
+
+        // Start the idle timer on page load
+        resetIdleTimer();
+        
+        // For mobile: also start timer after first touch (to handle autoplay restrictions)
+        let firstInteraction = false;
+        function enableScreensaverAfterInteraction() {
+            if (!firstInteraction) {
+                firstInteraction = true;
+                resetIdleTimer();
+            }
+        }
+        document.addEventListener('touchstart', enableScreensaverAfterInteraction, { once: true });
+        document.addEventListener('click', enableScreensaverAfterInteraction, { once: true });
+
         // Firefly Cursor
         const cursor = document.getElementById('cursor');
         const trails = [document.getElementById('trail1'), document.getElementById('trail2'), document.getElementById('trail3'), document.getElementById('trail4'), document.getElementById('trail5')];
@@ -953,7 +1227,6 @@
                 nav.classList.remove('scrolled');
             }
 
-            // Update active nav link
             const sections = ['hero', 'artworks', 'artist', 'gallery', 'contact'];
             let current = '';
             sections.forEach(id => {
@@ -971,11 +1244,8 @@
             });
         });
 
-        // Scroll animations with Intersection Observer
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+        // Scroll animations
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -985,12 +1255,10 @@
             });
         }, observerOptions);
 
-        // Observe elements
         document.querySelectorAll('.section-header, .artwork-card, .artist-image, .artist-info, .gallery-item, .contact-info, .contact-form').forEach(el => {
             observer.observe(el);
         });
 
-        // Stagger animation for cards
         document.querySelectorAll('.artwork-card').forEach((card, i) => {
             card.style.transitionDelay = `${i * 0.1}s`;
         });
@@ -1017,7 +1285,7 @@
             }, 1000);
         }
 
-        // Smooth scroll for nav links
+        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
