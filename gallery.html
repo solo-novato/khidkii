@@ -23,126 +23,88 @@
             --glass-border: rgba(255, 255, 255, 0.1);
         }
 
-        * { box-sizing: border-box; cursor: none; }
+        * { box-sizing: border-box; cursor: none; margin: 0; padding: 0; }
         a, button { cursor: none; }
 
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
-            margin: 0;
             min-height: 100vh;
         }
 
-        /* Firefly Cursor - Realistic Bug Shape */
+        /* Firefly Cursor */
         .firefly-cursor {
             position: fixed;
             pointer-events: none;
             z-index: 9999;
             transform: translate(-50%, -50%);
-            transition: transform 0.1s ease-out;
         }
 
-        .firefly-body {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
+        .firefly-body { display: flex; align-items: center; }
 
         .firefly-head {
-            width: 6px;
-            height: 5px;
+            width: 6px; height: 5px;
             background: #2a2520;
             border-radius: 50% 50% 40% 40%;
-            position: relative;
-            z-index: 3;
+            position: relative; z-index: 3;
         }
-
-        .firefly-head::before,
-        .firefly-head::after {
-            content: '';
-            position: absolute;
-            width: 1px;
-            height: 6px;
-            background: #3a3530;
-            top: -5px;
+        .firefly-head::before, .firefly-head::after {
+            content: ''; position: absolute;
+            width: 1px; height: 6px;
+            background: #3a3530; top: -5px;
         }
         .firefly-head::before { left: 1px; transform: rotate(-20deg); }
         .firefly-head::after { right: 1px; transform: rotate(20deg); }
 
         .firefly-thorax {
-            width: 8px;
-            height: 7px;
+            width: 8px; height: 7px;
             background: linear-gradient(to bottom, #3a3530, #2a2520);
-            border-radius: 40%;
-            margin-left: -2px;
-            position: relative;
-            z-index: 2;
+            border-radius: 40%; margin-left: -2px;
+            position: relative; z-index: 2;
         }
 
-        .firefly-wings {
-            position: absolute;
-            top: -3px;
-            left: 4px;
-            z-index: 1;
-        }
-
+        .firefly-wings { position: absolute; top: -3px; left: 4px; z-index: 1; }
         .firefly-wing {
-            position: absolute;
-            width: 12px;
-            height: 6px;
+            position: absolute; width: 12px; height: 6px;
             background: rgba(255, 255, 255, 0.15);
             border-radius: 50% 50% 30% 30%;
             border: 1px solid rgba(255, 255, 255, 0.1);
             animation: wingFlutter 0.08s ease-in-out infinite alternate;
         }
-
         .firefly-wing.left { transform: rotate(-25deg) translateY(-2px); transform-origin: bottom right; }
         .firefly-wing.right { transform: rotate(25deg) translateY(8px); transform-origin: bottom left; animation-name: wingFlutterRight; }
-
         @keyframes wingFlutter { 0% { transform: rotate(-25deg) translateY(-2px) scaleY(1); } 100% { transform: rotate(-30deg) translateY(-3px) scaleY(0.9); } }
         @keyframes wingFlutterRight { 0% { transform: rotate(25deg) translateY(8px) scaleY(1); } 100% { transform: rotate(30deg) translateY(9px) scaleY(0.9); } }
 
         .firefly-abdomen {
-            width: 10px;
-            height: 9px;
+            width: 10px; height: 9px;
             background: radial-gradient(ellipse at 60% 50%, #fff87f 0%, #f0e050 30%, #d4b830 50%, #8a7520 70%, #4a3a10 100%);
             border-radius: 30% 60% 60% 30%;
-            margin-left: -2px;
-            position: relative;
-            z-index: 2;
+            margin-left: -2px; position: relative; z-index: 2;
             box-shadow: 0 0 8px 3px rgba(255, 248, 127, 0.6), 0 0 16px 6px rgba(255, 230, 100, 0.4), 0 0 24px 10px rgba(255, 220, 80, 0.2);
             animation: glowPulse 1.5s ease-in-out infinite;
         }
-
         @keyframes glowPulse {
             0%, 100% { box-shadow: 0 0 8px 3px rgba(255, 248, 127, 0.6), 0 0 16px 6px rgba(255, 230, 100, 0.4), 0 0 24px 10px rgba(255, 220, 80, 0.2); }
             50% { box-shadow: 0 0 12px 5px rgba(255, 255, 180, 0.8), 0 0 24px 10px rgba(255, 248, 127, 0.5), 0 0 36px 16px rgba(255, 230, 100, 0.3); }
         }
-
         .firefly-cursor.hovering .firefly-abdomen {
             box-shadow: 0 0 15px 6px rgba(255, 255, 180, 0.9), 0 0 30px 12px rgba(255, 248, 127, 0.6), 0 0 45px 20px rgba(255, 230, 100, 0.4);
         }
 
         .firefly-trail {
-            position: fixed;
-            width: 5px;
-            height: 5px;
+            position: fixed; width: 5px; height: 5px;
             background: radial-gradient(circle, rgba(255, 248, 127, 0.8) 0%, rgba(255, 220, 80, 0.4) 40%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            opacity: 0;
-            transform: translate(-50%, -50%);
+            border-radius: 50%; pointer-events: none; z-index: 9998;
+            opacity: 0; transform: translate(-50%, -50%);
             box-shadow: 0 0 6px 2px rgba(255, 240, 100, 0.5);
         }
 
         .bg-gradient {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: -1;
             background: 
                 radial-gradient(ellipse at 10% 20%, rgba(167, 139, 250, 0.08) 0%, transparent 50%),
@@ -151,8 +113,7 @@
 
         .nav {
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             width: 100%;
             padding: 20px 40px;
             z-index: 100;
@@ -168,16 +129,14 @@
             font-size: 14px;
             transition: all 0.3s ease;
         }
-
         .back-link:hover {
             color: var(--text-main);
             transform: translateX(-4px);
         }
-
         .back-link svg { width: 18px; height: 18px; }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 120px 40px 80px;
         }
@@ -192,7 +151,7 @@
             font-size: clamp(40px, 6vw, 64px);
             font-weight: 300;
             margin: 0 0 16px 0;
-            background: linear-gradient(135deg, var(--text-main), var(--accent-violet));
+            background: linear-gradient(135deg, var(--text-main), var(--accent-gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             opacity: 0;
@@ -215,25 +174,38 @@
 
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
         }
 
         .gallery-item {
             position: relative;
             aspect-ratio: 4/5;
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: hidden;
             opacity: 0;
             animation: fadeIn 0.6s ease forwards;
+            text-decoration: none;
+            display: block;
+            border: 1px solid transparent;
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item:hover {
+            border-color: var(--accent-gold);
+            box-shadow: 0 20px 60px -20px rgba(212, 175, 55, 0.3);
+            transform: translateY(-8px);
         }
 
         .gallery-item:nth-child(1) { animation-delay: 0.1s; }
-        .gallery-item:nth-child(2) { animation-delay: 0.2s; }
-        .gallery-item:nth-child(3) { animation-delay: 0.3s; }
-        .gallery-item:nth-child(4) { animation-delay: 0.4s; }
-        .gallery-item:nth-child(5) { animation-delay: 0.5s; }
-        .gallery-item:nth-child(6) { animation-delay: 0.6s; }
+        .gallery-item:nth-child(2) { animation-delay: 0.15s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.2s; }
+        .gallery-item:nth-child(4) { animation-delay: 0.25s; }
+        .gallery-item:nth-child(5) { animation-delay: 0.3s; }
+        .gallery-item:nth-child(6) { animation-delay: 0.35s; }
+        .gallery-item:nth-child(7) { animation-delay: 0.4s; }
+        .gallery-item:nth-child(8) { animation-delay: 0.45s; }
+        .gallery-item:nth-child(9) { animation-delay: 0.5s; }
 
         @keyframes fadeIn { to { opacity: 1; } }
 
@@ -251,7 +223,7 @@
         .gallery-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.3) 40%, transparent 70%);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 40%, transparent 70%);
             opacity: 0;
             transition: opacity 0.4s ease;
             display: flex;
@@ -266,12 +238,12 @@
 
         .gallery-overlay h3 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 400;
-            margin: 0 0 6px 0;
+            margin: 0 0 8px 0;
+            color: var(--text-main);
             transform: translateY(10px);
             transition: transform 0.4s ease;
-            letter-spacing: 0.02em;
         }
 
         .gallery-item:hover .gallery-overlay h3 {
@@ -282,7 +254,7 @@
             font-size: 13px;
             color: var(--accent-rose);
             font-style: italic;
-            margin: 0 0 4px 0;
+            margin: 0 0 8px 0;
             transform: translateY(10px);
             transition: transform 0.4s ease 0.05s;
         }
@@ -291,23 +263,24 @@
             transform: translateY(0);
         }
 
-        .gallery-overlay p {
-            font-size: 13px;
-            color: var(--text-dim);
-            margin: 0;
+        .view-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
             transform: translateY(10px);
             transition: transform 0.4s ease 0.1s;
+            margin-top: 12px;
         }
 
-        .gallery-item:hover .gallery-overlay p {
+        .gallery-item:hover .view-btn {
             transform: translateY(0);
         }
 
-        /* Featured item spans 2 columns */
-        .gallery-item.featured {
-            grid-column: span 2;
-            aspect-ratio: 16/9;
-        }
+        .view-btn svg { width: 14px; height: 14px; }
 
         @media (max-width: 768px) {
             .nav { padding: 16px 20px; }
@@ -316,9 +289,8 @@
                 grid-template-columns: 1fr 1fr;
                 gap: 12px;
             }
-            .gallery-item.featured {
-                grid-column: span 2;
-            }
+            .gallery-overlay { padding: 16px; }
+            .gallery-overlay h3 { font-size: 18px; }
             .firefly-cursor, .firefly-trail { display: none; }
             * { cursor: auto; }
             a, button { cursor: pointer; }
@@ -327,10 +299,6 @@
         @media (max-width: 480px) {
             .gallery-grid {
                 grid-template-columns: 1fr;
-            }
-            .gallery-item.featured {
-                grid-column: span 1;
-                aspect-ratio: 4/5;
             }
         }
     </style>
@@ -369,63 +337,144 @@
     <main class="container">
         <header class="page-header">
             <h1>Gallery</h1>
-            <p>A visual journey through completed works and exhibitions</p>
+            <p>Click on any painting to explore its story</p>
         </header>
 
         <div class="gallery-grid">
-            <div class="gallery-item featured">
-                <img src="8.jpg" alt="artwork">
+            <a href="painting.html?id=1" class="gallery-item">
+                <img src="1.jpg" alt="Spectrum of Silence">
                 <div class="gallery-overlay">
                     <h3>Spectrum of Silence</h3>
-                    <p class="medium">Oil on Canvas, 48×72"</p>
-                    <p>Featured at "Windows of Wonder" Solo Exhibition, 2025</p>
+                    <p class="medium">Oil on Canvas</p>
+                    <span class="view-btn">
+                        View Details
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </span>
                 </div>
-            </div>
+            </a>
 
-            <div class="gallery-item">
-                <img src="11.jpg" alt="Portrait study">
+            <a href="painting.html?id=2" class="gallery-item">
+                <img src="4.jpg" alt="Twilight Mountains">
                 <div class="gallery-overlay">
-                    <h3>Contemplation</h3>
-                    <p class="medium">Charcoal & Pastel</p>
-                    <p>Portrait study series</p>
+                    <h3>Twilight Mountains</h3>
+                    <p class="medium">Oil on Canvas</p>
+                    <span class="view-btn">
+                        View Details
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </span>
                 </div>
-            </div>
+            </a>
 
-            <div class="gallery-item">
-                <img src="13.jpg" alt="Botanical">
+            <a href="painting.html?id=3" class="gallery-item">
+                <img src="8.jpg" alt="Garden of Solitude">
+                <div class="gallery-overlay">
+                    <h3>Garden of Solitude</h3>
+                    <p class="medium">Watercolor on Paper</p>
+                    <span class="view-btn">
+                        View Details
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+
+            <a href="painting.html?id=4" class="gallery-item">
+                <img src="9.jpg" alt="Dreams in Color">
+                <div class="gallery-overlay">
+                    <h3>Dreams in Color</h3>
+                    <p class="medium">Acrylic on Canvas</p>
+                    <span class="view-btn">
+                        View Details
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+
+            <a href="painting.html?id=5" class="gallery-item">
+                <img src="11.jpg" alt="Silent Whispers">
+                <div class="gallery-overlay">
+                    <h3>Silent Whispers</h3>
+                    <p class="medium">Charcoal & Pastel</p>
+                    <span class="view-btn">
+                        View Details
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+
+            <a href="painting.html?id=6" class="gallery-item">
+                <img src="12.jpg" alt="Monsoon Blooms">
                 <div class="gallery-overlay">
                     <h3>Monsoon Blooms</h3>
                     <p class="medium">Watercolor</p>
-                    <p>Botanical collection</p>
+                    <span class="view-btn">
+                        View Details
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </span>
                 </div>
-            </div>
+            </a>
 
-            <div class="gallery-item">
-                <img src="14.jpg" alt="Abstract">
+            <a href="painting.html?id=7" class="gallery-item">
+                <img src="16.jpg" alt="Echoes of Joy">
+                <div class="gallery-overlay">
+                    <h3>Echoes of Joy</h3>
+                    <p class="medium">Acrylic</p>
+                    <span class="view-btn">
+                        View Details
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+
+            <a href="painting.html?id=8" class="gallery-item">
+                <img src="28.jpg" alt="Urban Rhythms">
                 <div class="gallery-overlay">
                     <h3>Urban Rhythms</h3>
                     <p class="medium">Mixed Media</p>
-                    <p>City life series</p>
+                    <span class="view-btn">
+                        View Details
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </span>
                 </div>
-            </div>
+            </a>
 
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1582201942988-13e60e4556ee?w=600&q=80" alt="Landscape">
+            <a href="painting.html?id=9" class="gallery-item">
+                <img src="52.jpg" alt="Starlit Peaks">
                 <div class="gallery-overlay">
-                    <h3>Where Earth Meets Sky</h3>
+                    <h3>Starlit Peaks</h3>
                     <p class="medium">Oil on Canvas</p>
-                    <p>Landscape series</p>
+                    <span class="view-btn">
+                        View Details
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </span>
                 </div>
-            </div>
-
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=600&q=80" alt="Expression">
-                <div class="gallery-overlay">
-                    <h3>Joy Unbound</h3>
-                    <p class="medium">Acrylic</p>
-                    <p>Expressionist collection</p>
-                </div>
-            </div>
+            </a>
         </div>
     </main>
 

@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painting | Khidki</title>
+    <link rel="icon" href="https://cdn.beacons.ai/user_content/IVTnb25BwdSZ4vSK1vf1vnuBUeJ3/profile_khidki.png" type="image/png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --text-main: #ffffff;
+            --text-dim: #a1a1aa;
+            --accent-gold: #d4af37;
+            --accent-violet: #a78bfa;
+            --accent-rose: #e8b4bc;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.12);
+        }
+
+        * { box-sizing: border-box; cursor: none; margin: 0; padding: 0; }
+        a, button { cursor: none; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Firefly Cursor */
+        .firefly-cursor {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+        .firefly-body { display: flex; align-items: center; }
+        .firefly-head {
+            width: 6px; height: 5px;
+            background: #2a2520;
+            border-radius: 50% 50% 40% 40%;
+            position: relative; z-index: 3;
+        }
+        .firefly-head::before, .firefly-head::after {
+            content: ''; position: absolute;
+            width: 1px; height: 6px;
+            background: #3a3530; top: -5px;
+        }
+        .firefly-head::before { left: 1px; transform: rotate(-20deg); }
+        .firefly-head::after { right: 1px; transform: rotate(20deg); }
+        .firefly-thorax {
+            width: 8px; height: 7px;
+            background: linear-gradient(to bottom, #3a3530, #2a2520);
+            border-radius: 40%; margin-left: -2px;
+            position: relative; z-index: 2;
+        }
+        .firefly-wings { position: absolute; top: -3px; left: 4px; z-index: 1; }
+        .firefly-wing {
+            position: absolute; width: 12px; height: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50% 50% 30% 30%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: wingFlutter 0.08s ease-in-out infinite alternate;
+        }
+        .firefly-wing.left { transform: rotate(-25deg) translateY(-2px); transform-origin: bottom right; }
+        .firefly-wing.right { transform: rotate(25deg) translateY(8px); transform-origin: bottom left; animation-name: wingFlutterRight; }
+        @keyframes wingFlutter { 0% { transform: rotate(-25deg) translateY(-2px) scaleY(1); } 100% { transform: rotate(-30deg) translateY(-3px) scaleY(0.9); } }
+        @keyframes wingFlutterRight { 0% { transform: rotate(25deg) translateY(8px) scaleY(1); } 100% { transform: rotate(30deg) translateY(9px) scaleY(0.9); } }
+        .firefly-abdomen {
+            width: 10px; height: 9px;
+            background: radial-gradient(ellipse at 60% 50%, #fff87f 0%, #f0e050 30%, #d4b830 50%, #8a7520 70%, #4a3a10 100%);
+            border-radius: 30% 60% 60% 30%;
+            margin-left: -2px; position: relative; z-index: 2;
+            box-shadow: 0 0 8px 3px rgba(255, 248, 127, 0.6), 0 0 16px 6px rgba(255, 230, 100, 0.4), 0 0 24px 10px rgba(255, 220, 80, 0.2);
+            animation: glowPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 8px 3px rgba(255, 248, 127, 0.6), 0 0 16px 6px rgba(255, 230, 100, 0.4), 0 0 24px 10px rgba(255, 220, 80, 0.2); }
+            50% { box-shadow: 0 0 12px 5px rgba(255, 255, 180, 0.8), 0 0 24px 10px rgba(255, 248, 127, 0.5), 0 0 36px 16px rgba(255, 230, 100, 0.3); }
+        }
+        .firefly-cursor.hovering .firefly-abdomen {
+            box-shadow: 0 0 15px 6px rgba(255, 255, 180, 0.9), 0 0 30px 12px rgba(255, 248, 127, 0.6), 0 0 45px 20px rgba(255, 230, 100, 0.4);
+        }
+        .firefly-trail {
+            position: fixed; width: 5px; height: 5px;
+            background: radial-gradient(circle, rgba(255, 248, 127, 0.8) 0%, rgba(255, 220, 80, 0.4) 40%, transparent 70%);
+            border-radius: 50%; pointer-events: none; z-index: 9998;
+            opacity: 0; transform: translate(-50%, -50%);
+            box-shadow: 0 0 6px 2px rgba(255, 240, 100, 0.5);
+        }
+
+        .bg-gradient {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(167, 139, 250, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+        }
+
+        .nav {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(10, 10, 15, 0.95), transparent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            color: var(--text-main);
+            transform: translateX(-4px);
+        }
+        .back-link svg { width: 18px; height: 18px; }
+
+        .nav-arrows {
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-arrow {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .nav-arrow:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+        .nav-arrow.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        .nav-arrow svg { width: 18px; height: 18px; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 40px 80px;
+        }
+
+        .painting-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .painting-image-container {
+            position: relative;
+        }
+
+        .painting-image {
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--glass-border);
+        }
+
+        .painting-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .clarity-notice {
+            margin-top: 16px;
+            padding: 14px 18px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .clarity-notice svg {
+            width: 20px;
+            height: 20px;
+            color: var(--accent-gold);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .clarity-notice p {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .clarity-notice strong {
+            color: var(--accent-gold);
+        }
+
+        .painting-details {
+            padding-top: 20px;
+        }
+
+        .painting-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(36px, 5vw, 52px);
+            font-weight: 300;
+            margin: 0 0 8px 0;
+            background: linear-gradient(135deg, var(--text-main), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.02em;
+        }
+
+        .painting-medium {
+            font-size: 16px;
+            color: var(--accent-rose);
+            font-style: italic;
+            margin-bottom: 32px;
+        }
+
+        .painting-description {
+            color: var(--text-dim);
+            font-size: 16px;
+            line-height: 1.9;
+            margin-bottom: 40px;
+        }
+
+        .audio-section {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .audio-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .audio-header svg {
+            width: 24px;
+            height: 24px;
+            color: var(--accent-violet);
+        }
+
+        .audio-header h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        .audio-header span {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-left: auto;
+        }
+
+        .audio-player {
+            width: 100%;
+        }
+
+        .audio-player audio {
+            width: 100%;
+            height: 44px;
+            border-radius: 8px;
+        }
+
+        .audio-player audio::-webkit-media-controls-panel {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .audio-placeholder {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 14px;
+        }
+
+        .purchase-section {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(232, 180, 188, 0.1));
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .purchase-section h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 400;
+            margin: 0 0 12px 0;
+        }
+
+        .purchase-section p {
+            color: var(--text-dim);
+            font-size: 14px;
+            margin: 0 0 20px 0;
+            line-height: 1.6;
+        }
+
+        .purchase-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .purchase-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .purchase-btn.primary {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-rose));
+            color: #1a1a2e;
+        }
+        .purchase-btn.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px -10px rgba(212, 175, 55, 0.4);
+        }
+
+        .purchase-btn.secondary {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+        }
+        .purchase-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--text-main);
+        }
+
+        .purchase-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        @media (max-width: 900px) {
+            .painting-layout {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .painting-details {
+                padding-top: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav { padding: 16px 20px; }
+            .container { padding: 80px 20px 60px; }
+            .purchase-buttons { flex-direction: column; }
+            .purchase-btn { justify-content: center; }
+            .firefly-cursor, .firefly-trail { display: none; }
+            * { cursor: auto; }
+            a, button { cursor: pointer; }
+        }
+    </style>
+</head>
+<body>
+    <div class="firefly-cursor" id="cursor">
+        <div class="firefly-body">
+            <div class="firefly-head"></div>
+            <div class="firefly-thorax">
+                <div class="firefly-wings">
+                    <div class="firefly-wing left"></div>
+                    <div class="firefly-wing right"></div>
+                </div>
+            </div>
+            <div class="firefly-abdomen"></div>
+        </div>
+    </div>
+    <div class="firefly-trail" id="trail1"></div>
+    <div class="firefly-trail" id="trail2"></div>
+    <div class="firefly-trail" id="trail3"></div>
+    <div class="firefly-trail" id="trail4"></div>
+    <div class="firefly-trail" id="trail5"></div>
+
+    <div class="bg-gradient"></div>
+
+    <nav class="nav">
+        <a href="gallery.html" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Gallery
+        </a>
+        <div class="nav-arrows">
+            <a href="#" class="nav-arrow" id="prevBtn" title="Previous painting">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </a>
+            <a href="#" class="nav-arrow" id="nextBtn" title="Next painting">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="painting-layout">
+            <div class="painting-image-container">
+                <div class="painting-image">
+                    <img id="paintingImg" src="" alt="">
+                </div>
+                <div class="clarity-notice">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <p><strong>Note:</strong> This image is shown in reduced resolution for web display. The original artwork has much finer detail and richer colors. Contact us to view the painting in person or request high-resolution images.</p>
+                </div>
+            </div>
+
+            <div class="painting-details">
+                <h1 class="painting-title" id="paintingTitle">Loading...</h1>
+                <p class="painting-medium" id="paintingMedium"></p>
+                <p class="painting-description" id="paintingDescription"></p>
+
+                <div class="audio-section">
+                    <div class="audio-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>
+                        <h3>Artist's Commentary</h3>
+                        <span id="audioDuration"></span>
+                    </div>
+                    <div class="audio-player" id="audioPlayer">
+                        <!-- Audio will be inserted here dynamically -->
+                    </div>
+                </div>
+
+                <div class="purchase-section">
+                    <h3>Interested in this artwork?</h3>
+                    <p>This original painting is available for purchase. Get in touch to discuss pricing, custom sizes, or commission a similar piece.</p>
+                    <div class="purchase-buttons">
+                        <a href="mailto:sjkhidkee@gmail.com?subject=Inquiry about: " id="emailBtn" class="purchase-btn primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            Send Inquiry
+                        </a>
+                        <a href="https://instagram.com/saudamini_1612" target="_blank" class="purchase-btn secondary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                            Message on Instagram
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ============ PAINTINGS DATA - Edit this array to add/modify paintings ============
+        const paintings = [
+            {
+                id: 1,
+                image: "1.jpg",
+                title: "Spectrum of Silence",
+                medium: "Oil on Canvas, 48×72\"",
+                description: "This piece explores the quiet moments between breaths, where colors speak louder than words. The interplay of warm and cool tones represents the duality of peace and passion that exists within stillness. Created during a period of deep introspection, each brushstroke carries the weight of unspoken emotions.",
+                audio: null, // Add audio file path like "audio/painting1.mp3"
+                audioDuration: "Coming soon"
+            },
+            {
+                id: 2,
+                image: "4.jpg",
+                title: "Twilight Mountains",
+                medium: "Oil on Canvas, 36×48\"",
+                description: "Inspired by the fleeting moments when day surrenders to night, this landscape captures the mystical quality of mountains at dusk. The purple and gold hues dancing across the peaks represent the eternal dance between light and shadow, reminding us of nature's daily miracle.",
+                audio: null,
+                audioDuration: "Coming soon"
+            },
+            {
+                id: 3,
+                image: "8.jpg",
+                title: "Garden of Solitude",
+                medium: "Watercolor on Paper, 18×24\"",
+                description: "A meditation on finding peace in nature's embrace. The garden depicted here is both real and imagined—a sanctuary where thoughts bloom like flowers and worries dissolve into morning dew. The delicate watercolor technique mirrors the fragility and resilience of inner peace.",
+                audio: null,
+                audioDuration: "Coming soon"
+            },
+            {
+                id: 4,
+                image: "9.jpg",
+                title: "Dreams in Color",
+                medium: "Acrylic on Canvas, 24×36\"",
+                description: "What do dreams look like when they escape the boundaries of sleep? This abstract exploration captures the vivid, sometimes chaotic beauty of our subconscious wanderings. Bold colors collide and merge, creating a visual symphony of imagination unbound.",
+                audio: null,
+                audioDuration: "Coming soon"
+            },
+            {
+                id: 5,
+                image: "11.jpg",
+                title: "Silent Whispers",
+                medium: "Charcoal & Pastel, 16×20\"",
+                description: "A study in contrast and subtlety, this piece uses the rawness of charcoal softened by pastel to convey the gentle power of unspoken words. The figure emerges from shadow, caught in a moment of quiet revelation, inviting viewers to lean in and listen.",
+                audio: null,
+                audioDuration: "Coming soon"
+            },
+            {
+                id: 6,
+                image: "12.jpg",
+                title: "Monsoon Blooms",
+                medium: "Watercolor, 12×16\"",
+                description: "The first rain of monsoon season brings more than just water—it brings life, hope, and an explosion of color. This botanical study celebrates the flowers that bloom most vibrantly after the storm, a reminder that growth often follows the hardest times.",
+                audio: null,
+                audioDuration: "Coming soon"
+            },
+            {
+                id: 7,
+                image: "16.jpg",
+                title: "Echoes of Joy",
+                medium: "Acrylic, 30×40\"",
+                description: "Pure, unfiltered happiness translated onto canvas. This piece was created in a single session of creative flow, capturing the energy of a moment when everything feels possible. The dynamic composition and vibrant palette invite viewers to remember their own moments of unbridled joy.",
+                audio: null,
+                audioDuration: "Coming soon"
+            },
+            {
+                id: 8,
+                image: "28.jpg",
+                title: "Urban Rhythms",
+                medium: "Mixed Media, 24×36\"",
+                description: "The city has its own heartbeat, its own melody. This mixed media piece layers paint, paper, and found materials to create a textured portrait of urban life. Look closely and you'll find fragments of maps, tickets, and memories woven into the composition.",
+                audio: null,
+                audioDuration: "Coming soon"
+            },
+            {
+                id: 9,
+                image: "52.jpg",
+                title: "Starlit Peaks",
+                medium: "Oil on Canvas, 40×60\"",
+                description: "Under a canopy of stars, mountains become cathedrals of silence. This nocturnal landscape was painted from memory of a night spent in the highlands, where the Milky Way seemed close enough to touch. The luminous quality of the paint captures that magical, otherworldly light.",
+                audio: null,
+                audioDuration: "Coming soon"
+            }
+        ];
+
+        // Get painting ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const paintingId = parseInt(urlParams.get('id')) || 1;
+
+        // Find the painting
+        const painting = paintings.find(p => p.id === paintingId) || paintings[0];
+        const currentIndex = paintings.findIndex(p => p.id === paintingId);
+
+        // Update page content
+        document.title = `${painting.title} | Khidki`;
+        document.getElementById('paintingImg').src = painting.image;
+        document.getElementById('paintingImg').alt = painting.title;
+        document.getElementById('paintingTitle').textContent = painting.title;
+        document.getElementById('paintingMedium').textContent = painting.medium;
+        document.getElementById('paintingDescription').textContent = painting.description;
+        document.getElementById('audioDuration').textContent = painting.audioDuration;
+
+        // Update email button with painting title
+        const emailBtn = document.getElementById('emailBtn');
+        emailBtn.href = `mailto:sjkhidkee@gmail.com?subject=Inquiry about: ${encodeURIComponent(painting.title)}`;
+
+        // Setup audio player
+        const audioPlayer = document.getElementById('audioPlayer');
+        if (painting.audio) {
+            audioPlayer.innerHTML = `<audio controls><source src="${painting.audio}" type="audio/mpeg">Your browser does not support audio.</audio>`;
+        } else {
+            audioPlayer.innerHTML = `<div class="audio-placeholder">Audio commentary coming soon. Check back later!</div>`;
+        }
+
+        // Setup navigation arrows
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        if (currentIndex > 0) {
+            prevBtn.href = `painting.html?id=${paintings[currentIndex - 1].id}`;
+        } else {
+            prevBtn.classList.add('disabled');
+        }
+
+        if (currentIndex < paintings.length - 1) {
+            nextBtn.href = `painting.html?id=${paintings[currentIndex + 1].id}`;
+        } else {
+            nextBtn.classList.add('disabled');
+        }
+
+        // Firefly cursor
+        const cursor = document.getElementById('cursor');
+        const trails = [document.getElementById('trail1'), document.getElementById('trail2'), document.getElementById('trail3'), document.getElementById('trail4'), document.getElementById('trail5')];
+        let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0, prevCursorX = 0, prevCursorY = 0, currentAngle = 0;
+        const trailPositions = trails.map(() => ({ x: 0, y: 0 }));
+        
+        document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+
+        function animate() {
+            prevCursorX = cursorX; prevCursorY = cursorY;
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            
+            const deltaX = cursorX - prevCursorX, deltaY = cursorY - prevCursorY;
+            const speed = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            
+            if (speed > 0.5) {
+                const targetAngle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+                let angleDiff = targetAngle - currentAngle;
+                if (angleDiff > 180) angleDiff -= 360;
+                if (angleDiff < -180) angleDiff += 360;
+                currentAngle += angleDiff * 0.15;
+            }
+            
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            cursor.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
+
+            const tailOffsetX = Math.cos(currentAngle * Math.PI / 180) * 18;
+            const tailOffsetY = Math.sin(currentAngle * Math.PI / 180) * 18;
+            const tailX = cursorX + tailOffsetX, tailY = cursorY + tailOffsetY;
+            
+            trails.forEach((trail, i) => {
+                const lag = 0.12 - (i * 0.018);
+                const prevPos = i === 0 ? { x: tailX, y: tailY } : trailPositions[i - 1];
+                trailPositions[i].x += (prevPos.x - trailPositions[i].x) * lag;
+                trailPositions[i].y += (prevPos.y - trailPositions[i].y) * lag;
+                trail.style.left = trailPositions[i].x + 'px';
+                trail.style.top = trailPositions[i].y + 'px';
+                trail.style.opacity = (0.6 - (i * 0.1)) * (speed > 0.5 ? 1 : 0.3);
+                const size = 6 - i;
+                trail.style.width = size + 'px';
+                trail.style.height = size + 'px';
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+        });
+    </script>
+</body>
+</html>
