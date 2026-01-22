@@ -539,14 +539,12 @@
         /* Artist Section */
         .artist-content {
             display: grid;
-            grid-template-columns: minmax(280px, 350px) 1fr;
+            grid-template-columns: 280px 1fr;
             gap: 60px;
-            align-items: start;
+            align-items: stretch;
         }
 
         .artist-image {
-            width: 100%;
-            max-width: 350px;
             border-radius: 24px;
             overflow: hidden;
             opacity: 0;
@@ -563,7 +561,6 @@
 
         .artist-image img {
             width: 100%;
-            aspect-ratio: 1;
             object-fit: cover;
             object-position: top;
             display: block;
