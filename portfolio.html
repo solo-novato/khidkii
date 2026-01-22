@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Khidki | Artist Portfolio</title>
-    <link rel="icon" href="https://cdn.beacons.ai/user_content/IVTnb25BwdSZ4vSK1vf1vnuBUeJ3/profile_khidki.png" type="image/png">
+    <link rel="icon" href="dp_final.jpeg" type="image/png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,13 +107,33 @@
             max-width: 300px;
             z-index: -1;
             pointer-events: none;
+            overflow: hidden;
+            border-radius: 8px;
         }
 
         .video-bg video {
             width: 100%;
             height: auto;
+            aspect-ratio: 1;
             display: block;
             transform: scaleX(-1);
+        }
+
+        .video-spotlight {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: radial-gradient(
+                circle 650px at var(--video-mouse-x, 50%) var(--video-mouse-y, 50%),
+                transparent 0%,
+                transparent 0%,
+                rgba(0, 0, 0, 0.0) 0%,
+                rgba(0, 0, 0, 0.0) 0%,
+                rgba(0, 0, 0, 1.0) 100%
+            );
         }
 
         /* Decorative vine overlay (like in the image) */
@@ -233,6 +253,26 @@
             box-shadow: 0 0 6px 2px rgba(255, 240, 100, 0.5);
         }
 
+        /* Spotlight/Darkness Overlay */
+        .spotlight-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9990;
+            background: radial-gradient(
+                circle 650px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                transparent 0%,
+                transparent 0%,
+                rgba(0, 0, 0, 0.0) 0%,
+                rgba(0, 0, 0, 0.1) 0%,
+                rgba(0, 0, 0, 0.5) 50%
+            );
+            transition: opacity 0.3s ease;
+        }
+
         /* Fixed Navigation */
         .nav {
             position: fixed;
@@ -347,35 +387,43 @@
         }
 
         .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
+            position: fixed;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            z-index: 100;
             opacity: 0;
             animation: heroReveal 1s ease 1.2s forwards;
+            transition: opacity 0.4s ease;
         }
 
-        .scroll-indicator span {
-            font-size: 12px;
-            letter-spacing: 0.2em;
-            color: var(--text-dim);
-            text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+        .scroll-indicator.hidden {
+            opacity: 0 !important;
+            pointer-events: none;
         }
 
-        .scroll-indicator .line {
-            width: 1px;
-            height: 60px;
-            background: linear-gradient(to bottom, var(--accent-gold), transparent);
-            animation: scrollPulse 2s ease-in-out infinite;
+        .scroll-indicator .arrow {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-gold);
+            animation: arrowBounce 1.5s ease-in-out infinite;
+            filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.4));
         }
 
-        @keyframes scrollPulse {
-            0%, 100% { transform: scaleY(1); opacity: 1; }
-            50% { transform: scaleY(0.5); opacity: 0.5; }
+        .scroll-indicator .arrow svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        @keyframes arrowBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
         }
 
         @keyframes heroReveal {
@@ -491,13 +539,14 @@
         /* Artist Section */
         .artist-content {
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: minmax(280px, 350px) 1fr;
             gap: 60px;
             align-items: start;
         }
 
         .artist-image {
             width: 100%;
+            max-width: 350px;
             border-radius: 24px;
             overflow: hidden;
             opacity: 0;
@@ -516,6 +565,8 @@
             width: 100%;
             aspect-ratio: 1;
             object-fit: cover;
+            object-position: top;
+            display: block;
         }
 
         .artist-info {
@@ -792,7 +843,7 @@
             .gallery-grid { grid-template-columns: 1fr 1fr; }
             .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
             .artist-info { padding: 24px; }
-            .firefly-cursor, .firefly-trail { display: none; }
+            .firefly-cursor, .firefly-trail, .spotlight-overlay { display: none; }
             * { cursor: auto; }
             a, button, input, textarea { cursor: pointer; }
 
@@ -820,6 +871,8 @@
                 max-width: 100px;
             }
             
+            .video-spotlight { display: none; }
+            
             /* Ensure content is above the absolute background */
             .parallax-section {
                 position: relative;
@@ -843,21 +896,21 @@
 <body>
     <!-- Screensaver -->
     <div class="screensaver" id="screensaver">
-        <video id="screensaverVideo" muted loop playsinline>
-            <source src="screen_saver.mp4" type="video/mp4">
+        <video id="screensaverVideo" loop playsinline>
+            <source src="ss_final.mp4" type="video/mp4">
         </video>
         <div class="screensaver-hint">Move cursor or scroll to continue</div>
     </div>
 
     <!-- Parallax Background Image -->
     <div class="parallax-bg">
-        <img src="bg-parallax.png" alt="" id="parallaxImg">
+        <img src="wmremove-transformed.png" alt="" id="parallaxImg">
     </div>
 
     <!-- Video Background (above parallax, below all content) -->
-    <div class="video-bg">
+    <div class="video-bg" id="videoBgContainer">
         <video autoplay muted loop playsinline id="videoBg">
-            <source src="gk.webm"video/mp4">
+            <source src="gk.webm" type="video/webm">
         </video>
     </div>
 
@@ -892,6 +945,9 @@
     <div class="firefly-trail" id="trail4"></div>
     <div class="firefly-trail" id="trail5"></div>
 
+    <!-- Spotlight Darkness Overlay -->
+    <div class="spotlight-overlay" id="spotlightOverlay"></div>
+
     <!-- Navigation -->
     <nav class="nav" id="nav">
         <a href="#hero" class="nav-logo">Khidki</a>
@@ -910,9 +966,12 @@
             <p class="subtitle">— A Window to Art —</p>
             <p>Where imagination meets canvas. Explore a collection of paintings, illustrations, and visual stories that capture emotions, dreams, and the beauty of life.</p>
         </div>
-        <div class="scroll-indicator">
-            <span>SCROLL</span>
-            <div class="line"></div>
+        <div class="scroll-indicator" id="scrollIndicator">
+            <div class="arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
         </div>
     </section>
 
@@ -954,7 +1013,7 @@
         <div class="section-content">
             <div class="artist-content">
                 <div class="artist-image">
-                    <img src="https://cdn.beacons.ai/user_content/IVTnb25BwdSZ4vSK1vf1vnuBUeJ3/profile_khidki.png" alt="The Artist">
+                    <img src="dp_final.jpeg" alt="The Artist">
                 </div>
                 <div class="artist-info">
                     <h3>The Artist</h3>
@@ -1144,13 +1203,27 @@
         const screensaverVideo = document.getElementById('screensaverVideo');
         let idleTimer = null;
         let screensaverActive = false;
+        let userHasInteracted = false;
         const IDLE_TIME = 5000; // 5 seconds
+
+        // Track user interaction for audio autoplay permission
+        function enableAudio() {
+            if (!userHasInteracted) {
+                userHasInteracted = true;
+                screensaverVideo.muted = false;
+                screensaverVideo.volume = 1.0;
+            }
+        }
+        document.addEventListener('click', enableAudio, { once: true });
+        document.addEventListener('keydown', enableAudio, { once: true });
+        document.addEventListener('touchstart', enableAudio, { once: true });
 
         function showScreensaver() {
             if (window.scrollY > 50) return; // Only show when at top of page
             screensaverActive = true;
             screensaver.classList.add('active');
             screensaverVideo.currentTime = 0;
+            screensaverVideo.muted = !userHasInteracted; // Unmute if user has interacted
             screensaverVideo.play();
         }
 
@@ -1159,6 +1232,7 @@
             screensaverActive = false;
             screensaver.classList.remove('active');
             screensaverVideo.pause();
+            screensaverVideo.muted = true; // Mute when hidden to stop audio
         }
 
         function resetIdleTimer() {
@@ -1201,10 +1275,30 @@
         // Firefly Cursor
         const cursor = document.getElementById('cursor');
         const trails = [document.getElementById('trail1'), document.getElementById('trail2'), document.getElementById('trail3'), document.getElementById('trail4'), document.getElementById('trail5')];
+        const spotlightOverlay = document.getElementById('spotlightOverlay');
         let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0, prevCursorX = 0, prevCursorY = 0, currentAngle = 0;
         const trailPositions = trails.map(() => ({ x: 0, y: 0 }));
         
-        document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+        // Video spotlight elements
+        const videoBgContainer = document.getElementById('videoBgContainer');
+        const videoSpotlight = document.getElementById('videoSpotlight');
+
+        document.addEventListener('mousemove', (e) => { 
+            mouseX = e.clientX; 
+            mouseY = e.clientY;
+            // Update spotlight position
+            spotlightOverlay.style.setProperty('--mouse-x', e.clientX + 'px');
+            spotlightOverlay.style.setProperty('--mouse-y', e.clientY + 'px');
+            
+            // Update video spotlight position (relative to video container)
+            if (videoBgContainer && videoSpotlight) {
+                const rect = videoBgContainer.getBoundingClientRect();
+                const relX = e.clientX - rect.left;
+                const relY = e.clientY - rect.top;
+                videoSpotlight.style.setProperty('--video-mouse-x', relX + 'px');
+                videoSpotlight.style.setProperty('--video-mouse-y', relY + 'px');
+            }
+        });
 
         function animateCursor() {
             prevCursorX = cursorX; prevCursorY = cursorY;
@@ -1251,9 +1345,29 @@
             el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
         });
 
+        // Scroll indicator - hide when near bottom
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        function updateScrollIndicator() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight;
+            const winHeight = window.innerHeight;
+            const scrollableHeight = docHeight - winHeight;
+            
+            // Hide when within 100px of the bottom
+            if (scrollTop >= scrollableHeight - 100) {
+                scrollIndicator.classList.add('hidden');
+            } else {
+                scrollIndicator.classList.remove('hidden');
+            }
+        }
+        // Initial check
+        updateScrollIndicator();
+
         // Navigation scroll effect
         const nav = document.getElementById('nav');
         window.addEventListener('scroll', () => {
+            updateScrollIndicator();
+            
             if (window.scrollY > 100) {
                 nav.classList.add('scrolled');
             } else {
