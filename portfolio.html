@@ -100,15 +100,14 @@
         /* ========== VIDEO BACKGROUND ========== */
         .video-bg {
             position: fixed;
-            top: 10%;
-            left: 80%;
-            transform: translate(-5%, -5%);
+            transform: translate(-50%, -50%);
             width: 20%;
             max-width: 300px;
             z-index: -1;
             pointer-events: none;
             overflow: hidden;
             border-radius: 8px;
+            transition: none;
         }
 
         .video-bg video {
@@ -864,10 +863,12 @@
             /* Video background on mobile */
             .video-bg {
                 position: fixed;
+                top: 10% !important;
+                left: 80% !important;
                 width: 30%;
                 max-width: 100px;
             }
-            
+
             .video-spotlight { display: none; }
             
             /* Ensure content is above the absolute background */
@@ -1273,20 +1274,34 @@
         const cursor = document.getElementById('cursor');
         const trails = [document.getElementById('trail1'), document.getElementById('trail2'), document.getElementById('trail3'), document.getElementById('trail4'), document.getElementById('trail5')];
         const spotlightOverlay = document.getElementById('spotlightOverlay');
-        let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0, prevCursorX = 0, prevCursorY = 0, currentAngle = 0;
-        const trailPositions = trails.map(() => ({ x: 0, y: 0 }));
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2, cursorX = window.innerWidth / 2, cursorY = window.innerHeight / 2, prevCursorX = 0, prevCursorY = 0, currentAngle = 0;
+        const trailPositions = trails.map(() => ({ x: window.innerWidth / 2, y: window.innerHeight / 2 }));
         
         // Video spotlight elements
         const videoBgContainer = document.getElementById('videoBgContainer');
         const videoSpotlight = document.getElementById('videoSpotlight');
 
-        document.addEventListener('mousemove', (e) => { 
-            mouseX = e.clientX; 
+        // Calculate initial video position at middle of spotlight beam
+        const distance = 325;
+        const angle = 30 * (Math.PI / 180); // Right and down direction
+        const offsetX = Math.cos(angle) * distance;
+        const offsetY = Math.sin(angle) * distance;
+        let videoX = window.innerWidth / 2 + offsetX;
+        let videoY = window.innerHeight / 2 + offsetY;
+
+        // Initialize video position
+        if (!isMobile() && videoBgContainer) {
+            videoBgContainer.style.left = videoX + 'px';
+            videoBgContainer.style.top = videoY + 'px';
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
             mouseY = e.clientY;
             // Update spotlight position
             spotlightOverlay.style.setProperty('--mouse-x', e.clientX + 'px');
             spotlightOverlay.style.setProperty('--mouse-y', e.clientY + 'px');
-            
+
             // Update video spotlight position (relative to video container)
             if (videoBgContainer && videoSpotlight) {
                 const rect = videoBgContainer.getBoundingClientRect();
@@ -1296,6 +1311,43 @@
                 videoSpotlight.style.setProperty('--video-mouse-y', relY + 'px');
             }
         });
+
+        // Animate video position to follow cursor
+        function animateVideo() {
+            if (!isMobile() && videoBgContainer) {
+                // Smooth follow at middle of spotlight beam
+                const videoWidth = videoBgContainer.offsetWidth;
+                const videoHeight = videoBgContainer.offsetHeight;
+
+                // Position at middle of spotlight (325px = half of 650px radius)
+                // Place at 30-degree angle from cursor (right and slightly down)
+                const distance = 325;
+                const angle = 30 * (Math.PI / 180); // Right and down direction
+
+                const offsetX = Math.cos(angle) * distance;
+                const offsetY = Math.sin(angle) * distance;
+
+                let targetX = mouseX + offsetX;
+                let targetY = mouseY + offsetY;
+
+                // Keep video within viewport boundaries
+                const minY = 120; // Keep below header with padding
+                const maxY = window.innerHeight - videoHeight - 20;
+                const minX = videoWidth / 2 + 20;
+                const maxX = window.innerWidth - videoWidth / 2 - 20;
+
+                targetX = Math.max(minX, Math.min(maxX, targetX));
+                targetY = Math.max(minY, Math.min(maxY, targetY));
+
+                videoX += (targetX - videoX) * 0.12;
+                videoY += (targetY - videoY) * 0.12;
+
+                videoBgContainer.style.left = videoX + 'px';
+                videoBgContainer.style.top = videoY + 'px';
+            }
+            requestAnimationFrame(animateVideo);
+        }
+        animateVideo();
 
         function animateCursor() {
             prevCursorX = cursorX; prevCursorY = cursorY;
