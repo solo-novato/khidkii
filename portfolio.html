@@ -889,6 +889,29 @@
             /* Hide fireflies on mobile */
             .fireflies { display: none; }
         }
+        .dragonfly-fixed {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 100px;
+            z-index: 10;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            opacity: 1;
+        }
+
+        .dragonfly-fixed video {
+            width: 100%;
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            .dragonfly-fixed {
+                width: 150px;
+                bottom: 10px;
+                left: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -902,13 +925,20 @@
 
     <!-- Parallax Background Image -->
     <div class="parallax-bg">
-        <img src="wmremove-transformed.png" alt="" id="parallaxImg">
+        <img src="fdbg.jpg" alt="" id="parallaxImg">
     </div>
 
     <!-- Video Background (above parallax, below all content) -->
     <div class="video-bg" id="videoBgContainer">
         <video autoplay muted loop playsinline id="videoBg">
             <source src="gk.webm" type="video/webm">
+        </video>
+    </div>
+
+    <!-- Fixed Dragonfly Component -->
+    <div class="dragonfly-fixed">
+        <video autoplay loop muted playsinline webkit-playsinline>
+            <source src="dragonfly_web.mp4" type="video/mp4">
         </video>
     </div>
 
@@ -982,23 +1012,23 @@
             </div>
             <div class="artworks-grid">
                 <div class="artwork-card">
-                    <img src="11.jpg" alt="Dreams in Color">
+                    <img src="11.jpg" alt="Kshitij">
                     <div class="info">
-                        <h3>Dreams in Color</h3>
+                        <h3>Kshitij</h3>
                         <p class="medium">Acrylic on Canvas, 24×36"</p>
                     </div>
                 </div>
                 <div class="artwork-card">
-                    <img src="12.jpg" alt="Silent Whispers">
+                    <img src="12.jpg" alt="Parchhai">
                     <div class="info">
-                        <h3>Silent Whispers</h3>
+                        <h3>Parchhai</h3>
                         <p class="medium">Oil on Canvas, 18×24"</p>
                     </div>
                 </div>
                 <div class="artwork-card">
-                    <img src="8.jpg" alt="Garden of Solitude">
+                    <img src="8.jpg" alt="Kaarigari">
                     <div class="info">
-                        <h3>Garden of Solitude</h3>
+                        <h3>Kaarigari</h3>
                         <p class="medium">Watercolor on Paper, 12×16"</p>
                     </div>
                 </div>
