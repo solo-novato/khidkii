@@ -150,6 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const spotlightOverlay = document.getElementById('spotlightOverlay');
     let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2, cursorX = window.innerWidth / 2, cursorY = window.innerHeight / 2, prevCursorX = 0, prevCursorY = 0, currentAngle = 0;
     const trailPositions = trails.map(() => ({ x: window.innerWidth / 2, y: window.innerHeight / 2 }));
+    if (cursor && !isMobile()) {
+        document.body.classList.add('custom-cursor-active');
+    }
 
     // Video spotlight elements
     const videoBgContainer = document.getElementById('videoBgContainer');
@@ -294,6 +297,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // Initial check
     updateScrollIndicator();
+
+    // Mobile navigation is now handled by sidebar.js
 
     // Navigation scroll effect
     const nav = document.getElementById('nav');

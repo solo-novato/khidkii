@@ -52,9 +52,9 @@
     to { opacity: 1; }
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; cursor: none; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-a, button, input, textarea { cursor: none; }
+body.custom-cursor-active * { cursor: none !important; }
 
 body {
     font-family: 'Outfit', sans-serif;
@@ -316,6 +316,8 @@ body {
 
 .nav-links a:hover, .nav-links a.active { color: var(--text-main); }
 .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+/* Nav toggle styles are in sidebar.css */
 
 /* Content Sections */
 .parallax-section {
@@ -833,14 +835,14 @@ body {
 
 @media (max-width: 768px) {
     .nav { padding: 15px 20px; }
+    /* Old nav-links removed — sidebar handles navigation */
     .nav-links { display: none; }
     .section-content { padding: 80px 20px; }
-    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; padding: 0 10px; gap: 10px; }
+    .artworks-grid { padding: 0 10px; gap: 20px; }
     .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
     .artist-info { padding: 24px; }
-    .firefly-cursor, .firefly-trail, .spotlight-overlay { display: none; }
-    * { cursor: auto; }
-    a, button, input, textarea { cursor: pointer; }
+    .firefly-cursor, .firefly-trail, .spotlight-overlay, .fireflies, .dragonfly-fixed { display: none; }
 
     /* Mobile - background scrolls with page */
     .parallax-bg {

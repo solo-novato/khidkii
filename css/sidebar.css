@@ -1,0 +1,535 @@
+/* ========== SIDEBAR NAVIGATION ========== */
+
+/* Overlay behind sidebar */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Sidebar panel */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    max-width: 85vw;
+    height: 100%;
+    background: rgba(8, 10, 18, 0.97);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 2000;
+    transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sidebar.active {
+    transform: translateX(0);
+}
+
+/* Sidebar header */
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 28px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
+}
+
+.sidebar-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: #ffffff;
+    letter-spacing: 0.1em;
+    background: linear-gradient(135deg, #ffffff 0%, #d4af37 60%, #e8b4bc 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sidebar-close {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    line-height: 1;
+}
+
+.sidebar-close:hover {
+    background: rgba(212, 175, 55, 0.2);
+    border-color: #d4af37;
+    color: #d4af37;
+}
+
+/* Sidebar navigation */
+.sidebar-nav {
+    padding: 20px 0;
+    flex: 1;
+}
+
+.sidebar-nav a,
+.sidebar-nav .sidebar-parent {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 15px 28px;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    transition: all 0.3s ease;
+    position: relative;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav .sidebar-parent:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.sidebar-nav a.active {
+    color: #d4af37;
+    background: rgba(212, 175, 55, 0.08);
+}
+
+.sidebar-nav a.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background: linear-gradient(to bottom, #d4af37, #e8b4bc);
+    border-radius: 0 4px 4px 0;
+}
+
+/* Icon styling */
+.sidebar-nav .nav-icon {
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
+.sidebar-nav a:hover .nav-icon,
+.sidebar-nav .sidebar-parent:hover .nav-icon {
+    opacity: 1;
+}
+
+/* Divider */
+.sidebar-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin: 12px 28px;
+}
+
+/* Sidebar footer */
+.sidebar-footer {
+    padding: 20px 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
+}
+
+.sidebar-social {
+    display: flex;
+    gap: 12px;
+}
+
+.sidebar-social a {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.sidebar-social a:hover {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: rgba(212, 175, 55, 0.4);
+    color: #d4af37;
+    transform: translateY(-2px);
+}
+
+.sidebar-social a svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* ========== MOBILE HOME SPLASH ========== */
+
+.mobile-home-splash {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-home-splash {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 5;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .mobile-home-splash .splash-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* Subtle vignette overlay on the splash */
+    .mobile-home-splash::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
+        pointer-events: none;
+    }
+
+    /* Floating fireflies on splash */
+    .splash-fireflies {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .splash-firefly {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: radial-gradient(circle, rgba(255, 248, 127, 0.9) 0%, rgba(255, 220, 80, 0.5) 50%, transparent 70%);
+        border-radius: 50%;
+        box-shadow: 0 0 8px 3px rgba(255, 240, 100, 0.4);
+        animation: splashFirefly 6s ease-in-out infinite;
+    }
+
+    .splash-firefly:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; animation-duration: 7s; }
+    .splash-firefly:nth-child(2) { top: 70%; left: 85%; animation-delay: 1.2s; animation-duration: 5.5s; }
+    .splash-firefly:nth-child(3) { top: 40%; left: 5%; animation-delay: 2.4s; animation-duration: 8s; }
+    .splash-firefly:nth-child(4) { top: 80%; left: 20%; animation-delay: 0.8s; animation-duration: 6s; }
+    .splash-firefly:nth-child(5) { top: 25%; left: 90%; animation-delay: 3s; animation-duration: 7.5s; }
+    .splash-firefly:nth-child(6) { top: 60%; left: 50%; animation-delay: 1.5s; animation-duration: 5s; }
+
+    @keyframes splashFirefly {
+        0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+        25% { transform: translate(12px, -18px) scale(1.4); opacity: 1; }
+        50% { transform: translate(-8px, -30px) scale(0.6); opacity: 0.5; }
+        75% { transform: translate(18px, -12px) scale(1.2); opacity: 0.9; }
+    }
+
+    /* On mobile homepage, hide the scroll content */
+    body.is-home .parallax-section,
+    body.is-home .footer,
+    body.is-home .parallax-bg,
+    body.is-home .video-bg,
+    body.is-home .dragonfly-fixed,
+    body.is-home .fireflies,
+    body.is-home .scroll-indicator,
+    body.is-home .screensaver {
+        display: none !important;
+    }
+}
+
+/* ========== NAV TOGGLE ADJUSTMENTS ========== */
+
+/* Ensure nav-toggle is always visible and triggers sidebar */
+.nav-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 2001;
+    padding: 0;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: #d4af37;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* X animation when sidebar open */
+.nav-toggle.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+/* ========== PAGE TEMPLATE STYLES ========== */
+
+/* Shared page structure for sub-pages */
+.page-wrapper {
+    min-height: 100vh;
+    position: relative;
+}
+
+.page-bg-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background:
+        radial-gradient(ellipse at 15% 25%, rgba(212, 175, 55, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 75%, rgba(232, 180, 188, 0.06) 0%, transparent 50%);
+}
+
+.page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 40px 80px;
+}
+
+.page-hero {
+    text-align: center;
+    margin-bottom: 60px;
+    opacity: 0;
+    animation: pageSlideUp 0.8s ease forwards;
+}
+
+.page-hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 300;
+    margin: 0 0 16px 0;
+    background: linear-gradient(135deg, #ffffff, #d4af37);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.05em;
+}
+
+.page-hero .page-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: #e8b4bc;
+    margin: 0 0 12px 0;
+    letter-spacing: 0.1em;
+}
+
+.page-hero p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+@keyframes pageSlideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Coming soon badge */
+.coming-soon-section {
+    text-align: center;
+    padding: 80px 20px;
+    opacity: 0;
+    animation: pageSlideUp 0.8s ease 0.2s forwards;
+}
+
+.coming-soon-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 50px;
+    color: #d4af37;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+}
+
+.coming-soon-badge svg {
+    width: 18px;
+    height: 18px;
+}
+
+.coming-soon-section p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 16px;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* ========== TABS (for Windows within Khidki) ========== */
+
+.tabs-container {
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: pageSlideUp 0.8s ease 0.15s forwards;
+}
+
+.tabs-header {
+    display: flex;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 5px;
+    margin-bottom: 32px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tab-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 14px 20px;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+}
+
+.tab-btn:hover {
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.tab-btn.active {
+    color: #ffffff;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    font-weight: 500;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: tabFadeIn 0.4s ease;
+}
+
+@keyframes tabFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== GLASS CARD (shared) ========== */
+
+.glass-card-shared {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 32px;
+    transition: all 0.3s ease;
+}
+
+.glass-card-shared:hover {
+    border-color: rgba(212, 175, 55, 0.2);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 768px) {
+    .page-container {
+        padding: 80px 20px 60px;
+    }
+
+    .tabs-header {
+        border-radius: 12px;
+        padding: 4px;
+    }
+
+    .tab-btn {
+        padding: 12px 16px;
+        font-size: 13px;
+        min-width: 100px;
+    }
+
+    .glass-card-shared {
+        padding: 24px;
+        border-radius: 16px;
+    }
+}

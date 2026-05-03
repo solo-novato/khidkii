@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khidki | Artist Portfolio</title>
+    <title>Khidki | A Window Within</title>
+    <meta name="description" content="Khidki — A collection of feelings disguised as landscapes, windows, and moments that refuse to be ordinary. Art by Saudamini.">
     <link rel="icon" href="sjdp.jpeg" type="image/png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,11 +12,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/sidebar.css">
 </head>
-<body>
+<body class="is-home">
+    <!-- Mobile Home Splash (visible only on mobile) -->
+    <div class="mobile-home-splash" id="mobileHomeSplash">
+        <img src="khidki_home_bg.png" alt="Open the Khidki — A Window Within" class="splash-bg">
+        <div class="splash-fireflies">
+            <div class="splash-firefly"></div>
+            <div class="splash-firefly"></div>
+            <div class="splash-firefly"></div>
+            <div class="splash-firefly"></div>
+            <div class="splash-firefly"></div>
+            <div class="splash-firefly"></div>
+        </div>
+    </div>
+
     <!-- Screensaver -->
     <div class="screensaver" id="screensaver">
-        <video id="screensaverVideo" loop playsinline>
+        <video id="screensaverVideo" loop playsinline poster="scenery.jpg">
             <source src="ss_final.mp4" type="video/mp4">
         </video>
     </div>
@@ -27,14 +42,14 @@
 
     <!-- Video Background (above parallax, below all content) -->
     <div class="video-bg" id="videoBgContainer">
-        <video autoplay muted loop playsinline id="videoBg">
+        <video autoplay muted loop playsinline id="videoBg" poster="scenery.jpg">
             <source src="gk.webm" type="video/webm">
         </video>
     </div>
 
     <!-- Fixed Dragonfly Component -->
     <div class="dragonfly-fixed">
-        <video autoplay loop muted playsinline webkit-playsinline>
+        <video autoplay loop muted playsinline webkit-playsinline poster="scenery.jpg">
             <source src="dragonfly_web.mp4" type="video/mp4">
         </video>
     </div>
@@ -75,14 +90,84 @@
 
     <!-- Navigation -->
     <nav class="nav" id="nav">
-        <a href="#hero" class="nav-logo">Khidki</a>
-        <ul class="nav-links">
-            <li><a href="#artworks">Artworks</a></li>
-            <li><a href="#artist">Artist</a></li>
-            <li><a href="gallery.html">Gallery</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
+        <a href="index.html" class="nav-logo">Khidki</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </nav>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-brand">Khidki</span>
+            <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">&times;</button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                Home
+            </a>
+            <a href="collectors-room.html">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                Collector's Room
+            </a>
+            <a href="windows-within-khidki.html">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                Windows within Khidki
+            </a>
+            <a href="space-shop.html">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                Space Shop
+            </a>
+            <a href="khidki-store.html">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                Khidki Store
+            </a>
+            <div class="sidebar-divider"></div>
+            <a href="counter-window.html">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                Counter Window
+            </a>
+            <a href="face-behind-khidki.html">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                Face behind the Khidki
+            </a>
+            <a href="story-behind-khidki.html">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                Story Behind Khidki
+            </a>
+            <a href="voice-of-khidki.html">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                The Voice of Khidki
+            </a>
+            <a href="khidki-hangouts.html">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                Khidki Hangouts
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-social">
+                <a href="https://instagram.com/saudamini_1612" target="_blank" title="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                </a>
+                <a href="mailto:sjkhidkee@gmail.com" title="Email">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </aside>
 
     <!-- Hero Section -->
     <section id="hero" class="parallax-section">
@@ -112,21 +197,21 @@
             </div>
             <div class="artworks-grid">
                 <div class="artwork-card">
-                    <img src="khidki_artifacts/Kshitij 1.png" alt="Kshitij">
+                    <img loading="lazy" decoding="async" src="khidki_artifacts/Kshitij 1.png" alt="Kshitij">
                     <div class="info">
                         <h3>Kshitij</h3>
                         <p class="medium">Acrylic on Canvas, 24×36"</p>
                     </div>
                 </div>
                 <div class="artwork-card">
-                    <img src="khidki_artifacts/Talaash 2.png" alt="Parchhai">
+                    <img loading="lazy" decoding="async" src="khidki_artifacts/Talaash 2.png" alt="Parchhai">
                     <div class="info">
                         <h3>Parchhai</h3>
                         <p class="medium">Oil on Canvas, 18×24"</p>
                     </div>
                 </div>
                 <div class="artwork-card">
-                    <img src="khidki_artifacts/Kaarigari 5.png" alt="Kaarigari">
+                    <img loading="lazy" decoding="async" src="khidki_artifacts/Kaarigari 5.png" alt="Kaarigari">
                     <div class="info">
                         <h3>Kaarigari</h3>
                         <p class="medium">Watercolor on Paper, 12×16"</p>
@@ -145,8 +230,8 @@
                 </div>
                 <div class="artist-info">
                     <h3>The Artist</h3>
-                    <p class="tagline">Hi, I’m Saudamini</p>
-                    <p>I’m a visual artist, trained architect, professional overthinker, and lifelong observer of small, emotional details.
+                    <p class="tagline">Hi, I'm Saudamini</p>
+                    <p>I'm a visual artist, trained architect, professional overthinker, and lifelong observer of small, emotional details.
                         I make paintings that sit somewhere between memory and imagination. The kind that doesn't shout, but quietly stays with you. My work is influenced by spaces, silence, human connection, and the invisible stories we carry but rarely say out loud.</p>
                     <p><b>Khidki</b> (which means window) is how I see art:
                         A gentle opening between inner worlds and outer spaces.</p>
@@ -172,63 +257,63 @@
             </div>
             <div class="gallery-grid">
                 <div class="gallery-item">
-                    <img src="khidki_artifacts/Kshitij%201.png" alt="Kshitij">
+                    <img loading="lazy" decoding="async" src="khidki_artifacts/Kshitij%201.png" alt="Kshitij">
                     <div class="overlay">
                         <h4>Kshitij</h4>
                         <span>Artwork 1</span>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="khidki_artifacts/Talaash%202.png" alt="Talaash">
+                    <img loading="lazy" decoding="async" src="khidki_artifacts/Talaash%202.png" alt="Talaash">
                     <div class="overlay">
                         <h4>Talaash</h4>
                         <span>Artwork 2</span>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="khidki_artifacts/Ghungroo%203.png" alt="Ghungroo">
+                    <img loading="lazy" decoding="async" src="khidki_artifacts/Ghungroo%203.png" alt="Ghungroo">
                     <div class="overlay">
                         <h4>Ghungroo</h4>
                         <span>Artwork 3</span>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="khidki_artifacts/PORTAL%204.png" alt="Portal">
+                    <img loading="lazy" decoding="async" src="khidki_artifacts/PORTAL%204.png" alt="Portal">
                     <div class="overlay">
                         <h4>Portal</h4>
                         <span>Artwork 4</span>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="khidki_artifacts/Kaarigari%205.png" alt="Kaarigari">
+                    <img loading="lazy" decoding="async" src="khidki_artifacts/Kaarigari%205.png" alt="Kaarigari">
                     <div class="overlay">
                         <h4>Kaarigari</h4>
                         <span>Artwork 5</span>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="khidki_artifacts/Mannat%206.png" alt="Mannat">
+                    <img loading="lazy" decoding="async" src="khidki_artifacts/Mannat%206.png" alt="Mannat">
                     <div class="overlay">
                         <h4>Mannat</h4>
                         <span>Artwork 6</span>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="khidki_artifacts/Parchchai%207.png" alt="Parchchai">
+                    <img loading="lazy" decoding="async" src="khidki_artifacts/Parchchai%207.png" alt="Parchchai">
                     <div class="overlay">
                         <h4>Parchchai</h4>
                         <span>Artwork 7</span>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="khidki_artifacts/Bachpan%208.png" alt="Bachpan">
+                    <img loading="lazy" decoding="async" src="khidki_artifacts/Bachpan%208.png" alt="Bachpan">
                     <div class="overlay">
                         <h4>Bachpan</h4>
                         <span>Artwork 8</span>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="khidki_artifacts/Jharna%209.png" alt="Jharna">
+                    <img loading="lazy" decoding="async" src="khidki_artifacts/Jharna%209.png" alt="Jharna">
                     <div class="overlay">
                         <h4>Jharna</h4>
                         <span>Artwork 9</span>
@@ -300,5 +385,6 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script src="js/sidebar.js"></script>
 </body>
 </html>
