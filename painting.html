@@ -95,25 +95,7 @@
             box-shadow: 0 0 6px 2px rgba(255, 240, 100, 0.5);
         }
 
-        /* Spotlight/Darkness Overlay */
-        .spotlight-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9990;
-            background: radial-gradient(
-                circle 18px at var(--mouse-x, 50%) var(--mouse-y, 50%),
-                transparent 0%,
-                transparent 40%,
-                rgba(0, 0, 0, 0.3) 60%,
-                rgba(0, 0, 0, 0.7) 80%,
-                rgba(0, 0, 0, 0.85) 100%
-            );
-            transition: opacity 0.3s ease;
-        }
+
 
         .bg-gradient {
             position: fixed;
@@ -140,15 +122,20 @@
         .back-link {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
             color: var(--text-dim);
             text-decoration: none;
-            font-size: 14px;
             transition: all 0.3s ease;
         }
         .back-link:hover {
-            color: var(--text-main);
-            transform: translateX(-4px);
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
         }
         .back-link svg { width: 18px; height: 18px; }
 
@@ -441,12 +428,11 @@
     <div class="bg-gradient"></div>
 
     <nav class="nav">
-        <a href="gallery.html" class="back-link">
+        <a href="javascript:void(0)" onclick="history.back()" class="back-link" title="Go back">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
-            Back to Gallery
         </a>
         <div class="nav-arrows">
             <a href="#" class="nav-arrow" id="prevBtn" title="Previous painting">
@@ -657,16 +643,12 @@
         // Firefly cursor
         const cursor = document.getElementById('cursor');
         const trails = [document.getElementById('trail1'), document.getElementById('trail2'), document.getElementById('trail3'), document.getElementById('trail4'), document.getElementById('trail5')];
-        const spotlightOverlay = document.getElementById('spotlightOverlay');
         let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0, prevCursorX = 0, prevCursorY = 0, currentAngle = 0;
         const trailPositions = trails.map(() => ({ x: 0, y: 0 }));
         
         document.addEventListener('mousemove', (e) => { 
             mouseX = e.clientX; 
             mouseY = e.clientY;
-            // Update spotlight position
-            spotlightOverlay.style.setProperty('--mouse-x', e.clientX + 'px');
-            spotlightOverlay.style.setProperty('--mouse-y', e.clientY + 'px');
         });
 
         function animate() {

@@ -482,6 +482,9 @@ body {
 }
 
 .artwork-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
     position: relative;
     border-radius: 20px;
     overflow: hidden;
@@ -631,6 +634,9 @@ body {
 }
 
 .gallery-item {
+    display: block;
+    text-decoration: none;
+    color: inherit;
     position: relative;
     border-radius: 12px;
     overflow: hidden;
@@ -841,6 +847,9 @@ body {
     .gallery-grid { grid-template-columns: 1fr 1fr; padding: 0 10px; gap: 10px; }
     .artworks-grid { padding: 0 10px; gap: 20px; }
     .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+    .artwork-card, a.gallery-item { cursor: pointer; }
+    /* Show overlay on mobile since there's no hover */
+    .gallery-item .overlay { opacity: 1; }
     .artist-info { padding: 24px; }
     .firefly-cursor, .firefly-trail, .spotlight-overlay, .fireflies, .dragonfly-fixed { display: none; }
 
