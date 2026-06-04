@@ -8,123 +8,661 @@
     <link rel="icon" href="sjdp.jpeg" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Outfit:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/sidebar.css">
     <style>
-        :root { --bg-dark: #0a0a0f; --text-main: #ffffff; --text-dim: #a1a1aa; --accent-gold: #d4af37; --accent-rose: #e8b4bc; --accent-emerald: #34d399; --glass-bg: rgba(255, 255, 255, 0.06); --glass-border: rgba(255, 255, 255, 0.1); }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Outfit', sans-serif; background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; }
-        .nav { position: fixed; top: 0; left: 0; right: 0; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: linear-gradient(to bottom, rgba(10, 20, 40, 0.8), transparent); }
-        .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--text-main); text-decoration: none; letter-spacing: 0.1em; }
-        @media (max-width: 768px) { .nav { padding: 15px 20px; } }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .about-layout {
+        :root {
+            --bg: #f5f2ee;
+            --bg-warm: #ede8e0;
+            --ink: #111111;
+            --ink-soft: #555550;
+            --ink-muted: #888880;
+            --gold: #b8972a;
+            --rose: #c4727a;
+            --grain-opacity: 0.04;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            overflow-x: hidden;
+        }
+
+        /* ─── Grain overlay ───────────────────────────────────── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: var(--grain-opacity);
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-size: 180px;
+        }
+
+        /* ─── Nav ─────────────────────────────────────────────── */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 22px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            mix-blend-mode: multiply;
+        }
+        .nav.hidden-nav { opacity: 0; pointer-events: none; }
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 26px;
+            font-weight: 400;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            mix-blend-mode: normal;
+        }
+        .nav-logo.dark { color: var(--ink); }
+        @media (max-width: 768px) { .nav { padding: 16px 20px; } }
+
+        /* ─── Section base ────────────────────────────────────── */
+        section { position: relative; }
+
+        /* ══════════════════════════════════════════════════════
+           SECTION 1 — HERO
+        ══════════════════════════════════════════════════════ */
+        #s-hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0a0a0f;
+            overflow: hidden;
+        }
+        .hero-video-wrap {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+        .hero-video-wrap video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(18px) brightness(0.35) saturate(0.6);
+            transform: scale(1.08);
+        }
+        .hero-center {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 40px;
+            max-width: 700px;
+        }
+        .hero-line-1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(28px, 4vw, 52px);
+            font-weight: 300;
+            color: #fff;
+            line-height: 1.3;
+            letter-spacing: 0.02em;
+            opacity: 0;
+            animation: heroFadeUp 1.2s ease 0.4s forwards;
+        }
+        .hero-line-2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(20px, 2.8vw, 36px);
+            font-style: italic;
+            font-weight: 300;
+            color: rgba(255,255,255,0.55);
+            margin-top: 18px;
+            opacity: 0;
+            animation: heroFadeUp 1.2s ease 3.2s forwards;
+        }
+        @keyframes heroFadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero-scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            opacity: 0;
+            animation: heroFadeUp 0.8s ease 5s forwards;
+        }
+        .hero-scroll-hint svg {
+            width: 24px;
+            height: 24px;
+            stroke: rgba(255,255,255,0.4);
+            animation: arrowDrift 1.8s ease-in-out infinite;
+        }
+        @keyframes arrowDrift { 0%,100%{transform:translateY(0);} 50%{transform:translateY(7px);} }
+
+        /* ══════════════════════════════════════════════════════
+           SECTION 2 — HOW I SEE
+        ══════════════════════════════════════════════════════ */
+        #s-see {
+            background: var(--bg);
+            padding: clamp(80px,10vw,140px) clamp(24px,6vw,100px);
+        }
+        .see-header {
+            max-width: 560px;
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .see-header.visible { opacity: 1; transform: translateY(0); }
+        .see-header .section-label {
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+            margin-bottom: 16px;
+        }
+        .see-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(36px, 5vw, 64px);
+            font-weight: 300;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+        }
+        .see-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+        }
+        @media (max-width: 768px) { .see-grid { grid-template-columns: repeat(2, 1fr); } }
+        .see-item {
+            position: relative;
+            aspect-ratio: 4/5;
+            overflow: hidden;
+            cursor: default;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .see-item.visible { opacity: 1; transform: translateY(0); }
+        .see-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease, filter 0.5s ease;
+        }
+        .see-item:hover img { transform: scale(1.04); filter: brightness(0.55); }
+        .see-thought {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+        .see-item:hover .see-thought { opacity: 1; }
+        .see-thought span {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(16px, 2vw, 22px);
+            font-style: italic;
+            font-weight: 300;
+            color: #fff;
+            text-align: center;
+            line-height: 1.4;
+        }
+        .see-footer {
+            margin-top: 48px;
+            text-align: center;
+            font-size: 13px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+            opacity: 0;
+            transition: opacity 0.8s ease 0.3s;
+        }
+        .see-footer.visible { opacity: 1; }
+
+        /* ══════════════════════════════════════════════════════
+           SECTION 3 — PROCESS
+        ══════════════════════════════════════════════════════ */
+        #s-process {
+            background: var(--bg-warm);
+            padding: clamp(80px,10vw,140px) clamp(24px,6vw,100px);
+        }
+        .process-wrap {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .process-header { margin-bottom: 64px; }
+        .process-header .section-label {
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+            margin-bottom: 16px;
+        }
+        .process-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(32px, 4.5vw, 56px);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        .process-layout {
             display: grid;
             grid-template-columns: 260px 1fr;
             gap: 60px;
             align-items: start;
-            opacity: 0;
-            animation: pageSlideUp 0.8s ease 0.2s forwards;
         }
-        .about-photo {
-            position: sticky;
-            top: 120px;
-        }
-        .about-photo img {
-            width: 100%;
-            border-radius: 24px;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 50px -20px rgba(0,0,0,0.5);
-        }
-        .about-body { }
-        .about-body h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 36px;
-            font-weight: 300;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--text-main), var(--accent-emerald));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .about-body .tagline {
-            font-family: 'Cormorant Garamond', serif;
-            color: var(--accent-rose);
-            font-size: 18px;
-            font-style: italic;
-            margin-bottom: 28px;
-        }
-        .about-body p {
-            color: var(--text-dim);
-            line-height: 1.9;
-            margin-bottom: 20px;
-            font-size: 15px;
-        }
-        .about-body p b { color: var(--accent-gold); }
-
-        .mediums-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 12px;
-            margin-top: 32px;
-            margin-bottom: 40px;
-        }
-        .medium-item {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 14px;
-            padding: 18px 14px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        .medium-item:hover {
-            background: rgba(212, 175, 55, 0.1);
-            border-color: var(--accent-gold);
-            transform: translateY(-3px);
-        }
-        .medium-item .icon { font-size: 24px; margin-bottom: 6px; }
-        .medium-item span { font-size: 13px; display: block; }
-
-        .quote-block {
-            position: relative;
-            padding: 28px 36px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            margin-top: 32px;
-        }
-        .quote-block::before {
-            content: '"';
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 72px;
-            color: var(--accent-gold);
-            opacity: 0.3;
-            position: absolute;
-            top: -8px;
-            left: 20px;
-            line-height: 1;
-        }
-        .quote-block p {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 19px;
-            font-style: italic;
-            color: var(--text-main);
-            line-height: 1.7;
-            margin: 0;
-        }
-
         @media (max-width: 768px) {
-            .about-layout { grid-template-columns: 1fr; gap: 30px; }
-            .about-photo { position: static; max-width: 200px; margin: 0 auto; }
-            .about-body { text-align: center; }
-            .mediums-grid { grid-template-columns: repeat(3, 1fr); }
+            .process-layout { grid-template-columns: 1fr; gap: 32px; }
+        }
+        .process-flow { display: flex; flex-direction: column; gap: 0; }
+        .process-node {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 0;
+            cursor: pointer;
+            border-left: 2px solid #ddd8d0;
+            padding-left: 20px;
+            transition: border-color 0.3s ease;
+            position: relative;
+        }
+        .process-node::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #ddd8d0;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        .process-node.active { border-left-color: var(--ink); }
+        .process-node.active::before { background: var(--ink); transform: scale(1.3); }
+        .process-node-label {
+            font-size: 13px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+            transition: color 0.3s;
+        }
+        .process-node.active .process-node-label { color: var(--ink); font-weight: 400; }
+        .process-reveal {
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.06);
+            border-radius: 4px;
+            padding: 40px;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: opacity 0.4s ease;
+        }
+        .process-reveal-content { display: none; }
+        .process-reveal-content.active { display: block; animation: tabFade 0.4s ease; }
+        @keyframes tabFade { from{opacity:0;transform:translateY(6px);} to{opacity:1;transform:translateY(0);} }
+        .process-reveal .swatch-row {
+            display: flex; gap: 8px; margin-top: 16px;
+        }
+        .swatch {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .process-reveal p {
+            font-size: 15px;
+            color: var(--ink-soft);
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+        .process-reveal em {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-style: italic;
+            color: var(--ink);
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        /* ══════════════════════════════════════════════════════
+           SECTION 4 — LAYERING & DETAIL
+        ══════════════════════════════════════════════════════ */
+        #s-layer {
+            background: var(--bg);
+            padding: clamp(80px,10vw,140px) clamp(24px,6vw,100px);
+        }
+        .layer-header { margin-bottom: 48px; }
+        .layer-header .section-label {
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+            margin-bottom: 16px;
+        }
+        .layer-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(32px, 4.5vw, 56px);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+        .layer-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .layer-artwork {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .layer-artwork img {
+            width: 100%;
+            display: block;
+            border-radius: 2px;
+        }
+        .layer-zone {
+            position: absolute;
+            cursor: default;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+        .layer-zone:hover {
+            border-color: rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.06);
+        }
+        /* Zone positions (percentage-based, adjust to artwork) */
+        .layer-zone-1 { top: 8%; left: 55%; width: 30%; height: 25%; }
+        .layer-zone-2 { top: 30%; left: 10%; width: 35%; height: 20%; }
+        .layer-zone-3 { top: 65%; left: 20%; width: 60%; height: 20%; }
+        .layer-caption {
+            margin-top: 28px;
+            min-height: 40px;
+            text-align: center;
+        }
+        .layer-caption span {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-style: italic;
+            color: var(--ink-soft);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .layer-caption span.visible { opacity: 1; }
+
+        /* ══════════════════════════════════════════════════════
+           SECTION 5 — MEMORY SCROLL
+        ══════════════════════════════════════════════════════ */
+        #s-memory {
+            background: var(--bg);
+            padding: clamp(80px,10vw,140px) 0 clamp(40px,5vw,80px);
+            overflow: hidden;
+        }
+        .memory-header {
+            padding: 0 clamp(24px,6vw,100px);
+            margin-bottom: 48px;
+        }
+        .memory-header .section-label {
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+            margin-bottom: 16px;
+        }
+        .memory-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(32px, 4.5vw, 56px);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+        .memory-track-wrap {
+            position: relative;
+            overflow: hidden;
+        }
+        .memory-track {
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            cursor: grab;
+        }
+        .memory-track:active { cursor: grabbing; }
+        .memory-track::-webkit-scrollbar { display: none; }
+        .memory-frame {
+            flex: 0 0 min(80vw, 560px);
+            scroll-snap-align: start;
+            padding: clamp(40px,5vw,80px) clamp(32px,5vw,64px);
+            border-right: 1px solid rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 380px;
+        }
+        .memory-frame:first-child { padding-left: clamp(24px,6vw,100px); }
+        .memory-frame:last-child { border-right: none; padding-right: clamp(24px,6vw,100px); }
+        .memory-city {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(48px, 7vw, 96px);
+            font-weight: 300;
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            color: var(--ink);
+            margin-bottom: 28px;
+            opacity: 0.12;
+            transition: opacity 0.6s ease;
+        }
+        .memory-frame.in-view .memory-city { opacity: 1; }
+        .memory-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(18px, 2.2vw, 26px);
+            font-style: italic;
+            font-weight: 300;
+            color: var(--ink);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        .memory-realization {
+            font-size: 13px;
+            color: var(--ink-muted);
+            letter-spacing: 0.04em;
+            line-height: 1.6;
+        }
+        .memory-progress {
+            display: flex;
+            gap: 6px;
+            padding: 24px clamp(24px,6vw,100px) 0;
+        }
+        .memory-pip {
+            height: 2px;
+            flex: 1;
+            background: rgba(0,0,0,0.12);
+            border-radius: 2px;
+            transition: background 0.4s ease;
+        }
+        .memory-pip.active { background: var(--ink); }
+
+        /* ══════════════════════════════════════════════════════
+           SECTION 6 — COLLECTING
+        ══════════════════════════════════════════════════════ */
+        #s-collect {
+            background: var(--bg-warm);
+            padding: clamp(80px,10vw,140px) clamp(24px,6vw,100px);
+        }
+        .collect-header { margin-bottom: 56px; }
+        .collect-header .section-label {
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+            margin-bottom: 16px;
+        }
+        .collect-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(32px, 4.5vw, 56px);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+        .collect-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        @media (max-width: 768px) { .collect-grid { grid-template-columns: 1fr; } }
+        .flip-card {
+            perspective: 1000px;
+            height: 240px;
+            cursor: pointer;
+        }
+        .flip-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+        }
+        .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 32px 28px;
+        }
+        .flip-front {
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.07);
+        }
+        .flip-back {
+            background: var(--ink);
+            transform: rotateY(180deg);
+        }
+        .flip-front p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-style: italic;
+            font-weight: 300;
+            color: var(--ink);
+            line-height: 1.5;
+        }
+        .flip-back p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.75);
+            line-height: 1.7;
+        }
+        .flip-hint {
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+            margin-top: 16px;
+        }
+        .flip-back .flip-hint {
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* ══════════════════════════════════════════════════════
+           SECTION 7 — WHO THIS RESONATES WITH
+        ══════════════════════════════════════════════════════ */
+        #s-resonate {
+            background: var(--bg);
+            padding: clamp(100px,12vw,180px) clamp(24px,6vw,100px);
+            min-height: 60vh;
+        }
+        .resonate-header { margin-bottom: 72px; }
+        .resonate-header .section-label {
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+            margin-bottom: 16px;
+        }
+        .resonate-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(32px, 4.5vw, 56px);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+        .resonate-words {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            gap: clamp(20px, 3vw, 48px);
+            align-items: center;
+        }
+        .resonate-word {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(22px, 3vw, 44px);
+            font-weight: 300;
+            color: var(--ink);
+            opacity: 0.18;
+            cursor: default;
+            transition: opacity 0.4s ease;
+            position: relative;
+            white-space: nowrap;
+        }
+        .resonate-word:hover { opacity: 1; }
+        .resonate-thumb {
+            position: fixed;
+            pointer-events: none;
+            z-index: 500;
+            width: 160px;
+            height: 200px;
+            border-radius: 2px;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+        .resonate-thumb.visible { opacity: 1; }
+        .resonate-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* ══════════════════════════════════════════════════════
+           SECTION 8 — ENDING FRAME
+        ══════════════════════════════════════════════════════ */
+        #s-end {
+            background: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 40px;
+        }
+        .end-text {
+            text-align: center;
+            max-width: 600px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.2s ease, transform 1.2s ease;
+        }
+        .end-text.visible { opacity: 1; transform: translateY(0); }
+        .end-text p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(22px, 3.5vw, 40px);
+            font-weight: 300;
+            line-height: 1.5;
+            color: var(--ink);
+            letter-spacing: 0.01em;
         }
     </style>
 </head>
 <body>
-    <div class="page-bg-gradient"></div>
+    <!-- Nav -->
     <nav class="nav" id="nav">
-        <a href="index.html" class="nav-logo">Khidki</a>
+        <a href="index.html" class="nav-logo" id="navLogo">Khidki</a>
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
     </nav>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
@@ -149,47 +687,407 @@
         </div></div>
     </aside>
 
-    <main class="page-wrapper">
-        <div class="page-container">
-            <div class="page-hero">
-                <h1>Face behind the Khidki</h1>
-                <p class="page-subtitle">— The Artist —</p>
+    <!-- ═══ SECTION 1: HERO ═══════════════════════════════════════════════ -->
+    <section id="s-hero">
+        <div class="hero-video-wrap">
+            <video autoplay muted loop playsinline>
+                <source src="gk.webm" type="video/webm">
+            </video>
+        </div>
+        <div class="hero-center">
+            <p class="hero-line-1">I am interested in what people don't say.</p>
+            <p class="hero-line-2">And the emotions that live just beneath.</p>
+        </div>
+        <div class="hero-scroll-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ═══ SECTION 2: HOW I SEE ══════════════════════════════════════════ -->
+    <section id="s-see">
+        <div class="see-header">
+            <p class="section-label">How I See</p>
+            <h2>Observation as foundation</h2>
+        </div>
+        <div class="see-grid">
+            <div class="see-item">
+                <img loading="lazy" src="khidki_artifacts/Kshitij 1.png" alt="Kshitij">
+                <div class="see-thought"><span>longing for the horizon</span></div>
             </div>
+            <div class="see-item">
+                <img loading="lazy" src="khidki_artifacts/Talaash 2.png" alt="Talaash">
+                <div class="see-thought"><span>searching without knowing what for</span></div>
+            </div>
+            <div class="see-item">
+                <img loading="lazy" src="khidki_artifacts/Ghungroo 3.png" alt="Ghungroo">
+                <div class="see-thought"><span>joy that has weight</span></div>
+            </div>
+            <div class="see-item">
+                <img loading="lazy" src="khidki_artifacts/PORTAL 4.png" alt="Portal">
+                <div class="see-thought"><span>the moment before crossing</span></div>
+            </div>
+            <div class="see-item">
+                <img loading="lazy" src="khidki_artifacts/Kaarigari 5.png" alt="Kaarigari">
+                <div class="see-thought"><span>quiet devotion to craft</span></div>
+            </div>
+            <div class="see-item">
+                <img loading="lazy" src="khidki_artifacts/Mannat 6.png" alt="Mannat">
+                <div class="see-thought"><span>prayer disguised as patience</span></div>
+            </div>
+        </div>
+        <p class="see-footer">Observation forms the foundation of the work.</p>
+    </section>
 
-            <div class="about-layout">
-                <div class="about-photo">
-                    <img src="sjdp.jpeg" alt="Saudamini — The Artist">
-                </div>
-                <div class="about-body">
-                    <h2>Hi, I'm Saudamini</h2>
-                    <p class="tagline">Painting emotions, one canvas at a time.</p>
-
-                    <p>I'm a visual artist, trained architect, professional overthinker, and lifelong observer of small, emotional details. I make paintings that sit somewhere between memory and imagination. The kind that doesn't shout, but quietly stays with you.</p>
-
-                    <p>My work is influenced by spaces, silence, human connection, and the invisible stories we carry but rarely say out loud.</p>
-
-                    <p><b>Khidki</b> (which means window) is how I see art: A gentle opening between inner worlds and outer spaces.</p>
-
-                    <p>Sometimes I paint landscapes. My art for slow moments, thoughtful spaces, and hearts that feel a little too much. Sometimes I paint feelings disguised as rooms, hills, windows, or people standing still at just the wrong/right moment.</p>
-
-                    <p>Artist by stubborn choice. Making quiet art for loud hearts. Powered almost entirely by chai. ☕</p>
-
-                    <div class="mediums-grid">
-                        <div class="medium-item"><div class="icon">🎨</div><span>Oil Painting</span></div>
-                        <div class="medium-item"><div class="icon">💧</div><span>Watercolor</span></div>
-                        <div class="medium-item"><div class="icon">✏️</div><span>Sketching</span></div>
-                        <div class="medium-item"><div class="icon">🖼️</div><span>Mixed Media</span></div>
-                        <div class="medium-item"><div class="icon">🌸</div><span>Botanical Art</span></div>
-                        <div class="medium-item"><div class="icon">✨</div><span>Digital Art</span></div>
+    <!-- ═══ SECTION 3: PROCESS ════════════════════════════════════════════ -->
+    <section id="s-process">
+        <div class="process-wrap">
+            <div class="process-header">
+                <p class="section-label">Approach</p>
+                <h2>From feeling to painting</h2>
+            </div>
+            <div class="process-layout">
+                <div class="process-flow">
+                    <div class="process-node active" data-step="emotion">
+                        <span class="process-node-label">Emotion</span>
                     </div>
-
-                    <div class="quote-block">
-                        <p>Art is not what you see, but what you make others see. Every brushstroke carries a piece of my soul, waiting to find its home in someone else's heart.</p>
+                    <div class="process-node" data-step="observation">
+                        <span class="process-node-label">Observation</span>
+                    </div>
+                    <div class="process-node" data-step="analysis">
+                        <span class="process-node-label">Analysis</span>
+                    </div>
+                    <div class="process-node" data-step="pattern">
+                        <span class="process-node-label">Pattern Recognition</span>
+                    </div>
+                    <div class="process-node" data-step="translation">
+                        <span class="process-node-label">Visual Translation</span>
+                    </div>
+                    <div class="process-node" data-step="painting">
+                        <span class="process-node-label">Painting</span>
+                    </div>
+                </div>
+                <div class="process-reveal">
+                    <div class="process-reveal-content active" data-content="emotion">
+                        <em>Something stirs.</em>
+                        <p>It begins without a name. A feeling too large for words, too specific to ignore. Not all emotions become paintings — only the ones that refuse to leave.</p>
+                    </div>
+                    <div class="process-reveal-content" data-content="observation">
+                        <em>Looking carefully.</em>
+                        <p>The emotion turns outward. What does it look like in the world? A shadow falling wrong. A window left half-open. A person standing at the edge of something. I collect these.</p>
+                    </div>
+                    <div class="process-reveal-content" data-content="analysis">
+                        <em>Why does this stay with me?</em>
+                        <p>The image is examined. What makes it hold meaning? Is it the quality of light, the relationship between forms, the implied motion or stillness? Analysis is not cold — it is devoted attention.</p>
+                        <div class="swatch-row">
+                            <div class="swatch" style="background:#d4b483;"></div>
+                            <div class="swatch" style="background:#7a9bb5;"></div>
+                            <div class="swatch" style="background:#c17f6e;"></div>
+                            <div class="swatch" style="background:#4a6741;"></div>
+                            <div class="swatch" style="background:#2c2c38;"></div>
+                        </div>
+                    </div>
+                    <div class="process-reveal-content" data-content="pattern">
+                        <em>The recurring thing.</em>
+                        <p>Certain images keep returning across years of work — windows, thresholds, figures in transition, the geometry of longing. Pattern recognition is how personal language becomes a body of work.</p>
+                    </div>
+                    <div class="process-reveal-content" data-content="translation">
+                        <em>Choosing a form.</em>
+                        <p>Which medium holds this particular truth? Oil for weight and permanence. Watercolor for transience. The medium is not neutral — it is part of the meaning. The translation begins before the first mark.</p>
+                    </div>
+                    <div class="process-reveal-content" data-content="painting">
+                        <em>The work exists now.</em>
+                        <p>Something that was only felt is now visible. It belongs to the world. Whether it stays with its maker or finds its way to someone else's wall — the work is done, and it will mean what it means.</p>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </section>
+
+    <!-- ═══ SECTION 4: LAYERING & DETAIL ═════════════════════════════════ -->
+    <section id="s-layer">
+        <div class="layer-header">
+            <p class="section-label">Layering</p>
+            <h2>What the work holds</h2>
+        </div>
+        <div class="layer-wrap">
+            <div class="layer-artwork">
+                <img loading="lazy" src="khidki_artifacts/Kshitij 1.png" alt="Kshitij — hover to explore">
+                <div class="layer-zone layer-zone-1" data-caption="where the feeling begins — light used not to illuminate, but to suggest"></div>
+                <div class="layer-zone layer-zone-2" data-caption="the threshold between states — neither here nor there, a held breath"></div>
+                <div class="layer-zone layer-zone-3" data-caption="what we stand on but rarely see — ground as memory, as continuity"></div>
+            </div>
+            <div class="layer-caption">
+                <span id="layerCaption">Hover over areas of the painting to explore its meaning.</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ SECTION 5: MEMORY SCROLL ══════════════════════════════════════ -->
+    <section id="s-memory">
+        <div class="memory-header">
+            <p class="section-label">Context &amp; Perspective</p>
+            <h2>Where the work comes from</h2>
+        </div>
+        <div class="memory-track-wrap">
+            <div class="memory-track" id="memoryTrack">
+                <div class="memory-frame" data-index="0">
+                    <div class="memory-city">Gevra</div>
+                    <p class="memory-quote">"There was a particular quality of silence in the evenings — the kind that felt shared."</p>
+                    <p class="memory-realization">Realization: Community as the first landscape. The sense that belonging is a place.</p>
+                </div>
+                <div class="memory-frame" data-index="1">
+                    <div class="memory-city">Bhilai</div>
+                    <p class="memory-quote">"Independence begins quietly, in small decisions no one else knows about."</p>
+                    <p class="memory-realization">Realization: Identity is built in increments, not declared all at once.</p>
+                </div>
+                <div class="memory-frame" data-index="2">
+                    <div class="memory-city">Bhubaneswar</div>
+                    <p class="memory-quote">"Architecture taught me that structure and emotion speak the same language."</p>
+                    <p class="memory-realization">Realization: Form is never neutral. Every line is a choice about feeling.</p>
+                </div>
+                <div class="memory-frame" data-index="3">
+                    <div class="memory-city">Mumbai</div>
+                    <p class="memory-quote">"Eight million people, and somehow the loneliness had texture."</p>
+                    <p class="memory-realization">Realization: Humanity in chaos — connection and isolation as the same thing.</p>
+                </div>
+                <div class="memory-frame" data-index="4">
+                    <div class="memory-city">Surat</div>
+                    <p class="memory-quote">"Solitude stopped being something that happened to me and became something I chose."</p>
+                    <p class="memory-realization">Realization: Stillness as practice. Observation deepens when you stop needing company.</p>
+                </div>
+                <div class="memory-frame" data-index="5">
+                    <div class="memory-city">Bangalore</div>
+                    <p class="memory-quote">"The observations had been accumulating for years. They finally had somewhere to go."</p>
+                    <p class="memory-realization">Realization: Observation becoming practice. The work was always waiting.</p>
+                </div>
+            </div>
+        </div>
+        <div class="memory-progress" id="memoryProgress">
+            <div class="memory-pip active"></div>
+            <div class="memory-pip"></div>
+            <div class="memory-pip"></div>
+            <div class="memory-pip"></div>
+            <div class="memory-pip"></div>
+            <div class="memory-pip"></div>
+        </div>
+    </section>
+
+    <!-- ═══ SECTION 6: COLLECTING ═════════════════════════════════════════ -->
+    <section id="s-collect">
+        <div class="collect-header">
+            <p class="section-label">Collecting the Work</p>
+            <h2>What people carry with them</h2>
+        </div>
+        <div class="collect-grid">
+            <div class="flip-card">
+                <div class="flip-inner">
+                    <div class="flip-front">
+                        <p>"I kept thinking about this piece after I left."</p>
+                        <span class="flip-hint">Tap to read</span>
+                    </div>
+                    <div class="flip-back">
+                        <p>"The work is designed to unfold slowly. Its full meaning is not available at first glance — it arrives in the days after."</p>
+                        <span class="flip-hint">Tap to close</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-card">
+                <div class="flip-inner">
+                    <div class="flip-front">
+                        <p>"It reminded me of someone."</p>
+                        <span class="flip-hint">Tap to read</span>
+                    </div>
+                    <div class="flip-back">
+                        <p>"Collectors often recognize their own narratives within the work. The painting becomes a mirror. The person it reminds you of is usually you."</p>
+                        <span class="flip-hint">Tap to close</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-card">
+                <div class="flip-inner">
+                    <div class="flip-front">
+                        <p>"I noticed something new the second time I looked."</p>
+                        <span class="flip-hint">Tap to read</span>
+                    </div>
+                    <div class="flip-back">
+                        <p>"Meaning evolves through repeated engagement. What the work offers on day one is never the same as what it offers on day thirty."</p>
+                        <span class="flip-hint">Tap to close</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ SECTION 7: WHO THIS RESONATES WITH ═══════════════════════════ -->
+    <section id="s-resonate">
+        <div class="resonate-header">
+            <p class="section-label">Who This Is For</p>
+            <h2>No explanation needed.</h2>
+        </div>
+        <div class="resonate-words">
+            <span class="resonate-word" data-art="khidki_artifacts/Kshitij 1.png">Overthinkers</span>
+            <span class="resonate-word" data-art="khidki_artifacts/Talaash 2.png">Observers</span>
+            <span class="resonate-word" data-art="khidki_artifacts/Ghungroo 3.png">Quiet feelers</span>
+            <span class="resonate-word" data-art="khidki_artifacts/PORTAL 4.png">People who revisit memories</span>
+            <span class="resonate-word" data-art="khidki_artifacts/Kaarigari 5.png">Those searching for meaning</span>
+            <span class="resonate-word" data-art="khidki_artifacts/Mannat 6.png">Architects of inner worlds</span>
+            <span class="resonate-word" data-art="khidki_artifacts/Parchchai 7.png">Hearts that feel too much</span>
+        </div>
+        <div class="resonate-thumb" id="resonateThumb">
+            <img id="resonateThumbImg" src="" alt="">
+        </div>
+    </section>
+
+    <!-- ═══ SECTION 8: ENDING FRAME ══════════════════════════════════════ -->
+    <section id="s-end">
+        <div class="end-text" id="endText">
+            <p>The work is not intended to resolve emotion.<br>Only to make it visible.</p>
+        </div>
+    </section>
+
     <script src="js/sidebar.js"></script>
+    <script>
+    (function () {
+
+        // ── Nav color switch ─────────────────────────────────────────────
+        const nav = document.getElementById('nav');
+        const navLogo = document.getElementById('navLogo');
+        const hero = document.getElementById('s-hero');
+
+        function updateNav() {
+            const heroBottom = hero.getBoundingClientRect().bottom;
+            if (heroBottom < 80) {
+                nav.style.mixBlendMode = 'normal';
+                navLogo.classList.add('dark');
+            } else {
+                nav.style.mixBlendMode = 'multiply';
+                navLogo.classList.remove('dark');
+            }
+            // Hide nav on ending frame
+            const endRect = document.getElementById('s-end').getBoundingClientRect();
+            if (endRect.top < window.innerHeight * 0.6) {
+                nav.classList.add('hidden-nav');
+            } else {
+                nav.classList.remove('hidden-nav');
+            }
+        }
+        window.addEventListener('scroll', updateNav, { passive: true });
+        updateNav();
+
+        // ── Intersection observer helper ─────────────────────────────────
+        function onVisible(selector, cb, opts) {
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(e => { if (e.isIntersecting) cb(e.target); });
+            }, opts || { threshold: 0.2 });
+            document.querySelectorAll(selector).forEach(el => obs.observe(el));
+        }
+
+        // ── Section 2: How I See ─────────────────────────────────────────
+        onVisible('.see-header', el => el.classList.add('visible'));
+        onVisible('.see-item', el => el.classList.add('visible'), { threshold: 0.1 });
+        onVisible('.see-footer', el => el.classList.add('visible'), { threshold: 0.5 });
+
+        // ── Section 3: Process flow ──────────────────────────────────────
+        document.querySelectorAll('.process-node').forEach(node => {
+            node.addEventListener('click', () => {
+                const step = node.dataset.step;
+                document.querySelectorAll('.process-node').forEach(n => n.classList.remove('active'));
+                document.querySelectorAll('.process-reveal-content').forEach(c => c.classList.remove('active'));
+                node.classList.add('active');
+                document.querySelector('[data-content="' + step + '"]').classList.add('active');
+            });
+        });
+
+        // ── Section 4: Layer zones ────────────────────────────────────────
+        const captionEl = document.getElementById('layerCaption');
+        const defaultCaption = 'Hover over areas of the painting to explore its meaning.';
+        captionEl.classList.add('visible');
+        document.querySelectorAll('.layer-zone').forEach(zone => {
+            zone.addEventListener('mouseenter', () => {
+                captionEl.classList.remove('visible');
+                setTimeout(() => {
+                    captionEl.textContent = zone.dataset.caption;
+                    captionEl.classList.add('visible');
+                }, 150);
+            });
+            zone.addEventListener('mouseleave', () => {
+                captionEl.classList.remove('visible');
+                setTimeout(() => {
+                    captionEl.textContent = defaultCaption;
+                    captionEl.classList.add('visible');
+                }, 150);
+            });
+        });
+
+        // ── Section 5: Memory scroll ──────────────────────────────────────
+        const track = document.getElementById('memoryTrack');
+        const pips = document.querySelectorAll('.memory-pip');
+        const frames = document.querySelectorAll('.memory-frame');
+
+        // Highlight frames and update progress
+        const frameObs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('in-view');
+                    const idx = parseInt(e.target.dataset.index);
+                    pips.forEach((p, i) => p.classList.toggle('active', i === idx));
+                } else {
+                    e.target.classList.remove('in-view');
+                }
+            });
+        }, { root: track, threshold: 0.5 });
+        frames.forEach(f => frameObs.observe(f));
+
+        // Wheel hijack for horizontal scroll on desktop
+        track.addEventListener('wheel', (e) => {
+            if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                e.preventDefault();
+                track.scrollLeft += e.deltaY * 1.2;
+            }
+        }, { passive: false });
+
+        // Drag to scroll
+        let isDragging = false, dragStart = 0, scrollStart = 0;
+        track.addEventListener('mousedown', e => {
+            isDragging = true;
+            dragStart = e.clientX;
+            scrollStart = track.scrollLeft;
+        });
+        window.addEventListener('mousemove', e => {
+            if (!isDragging) return;
+            track.scrollLeft = scrollStart - (e.clientX - dragStart);
+        });
+        window.addEventListener('mouseup', () => { isDragging = false; });
+
+        // ── Section 6: Flip cards ─────────────────────────────────────────
+        document.querySelectorAll('.flip-card').forEach(card => {
+            card.addEventListener('click', () => card.classList.toggle('flipped'));
+        });
+
+        // ── Section 7: Resonate words ──────────────────────────────────────
+        const thumb = document.getElementById('resonateThumb');
+        const thumbImg = document.getElementById('resonateThumbImg');
+
+        document.querySelectorAll('.resonate-word').forEach(word => {
+            word.addEventListener('mouseenter', (e) => {
+                thumbImg.src = word.dataset.art;
+                thumb.classList.add('visible');
+            });
+            word.addEventListener('mousemove', (e) => {
+                thumb.style.left = (e.clientX + 20) + 'px';
+                thumb.style.top  = (e.clientY - 100) + 'px';
+            });
+            word.addEventListener('mouseleave', () => {
+                thumb.classList.remove('visible');
+            });
+        });
+
+        // ── Section 8: End frame ───────────────────────────────────────────
+        onVisible('#endText', el => el.classList.add('visible'), { threshold: 0.4 });
+
+    })();
+    </script>
 </body>
 </html>

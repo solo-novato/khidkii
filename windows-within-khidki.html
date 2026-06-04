@@ -150,16 +150,539 @@
         }
 
         @media (max-width: 768px) {
-            .artwork-showcase {
-                grid-template-columns: 1fr 1fr;
-                gap: 12px;
-            }
-            .showcase-card .card-info {
-                padding: 14px;
-            }
-            .showcase-card h3 {
-                font-size: 18px;
-            }
+            .artwork-showcase { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .showcase-card .card-info { padding: 14px; }
+            .showcase-card h3 { font-size: 18px; }
+        }
+
+        /* ══════════════════════════════════════════════════
+           MOODBOARD VIEWER
+        ══════════════════════════════════════════════════ */
+        .mbv-section {
+            margin-top: 72px;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 56px;
+        }
+        .mbv-intro {
+            max-width: 580px;
+            margin: 0 auto 40px;
+            text-align: center;
+        }
+        .mbv-eyebrow {
+            display: inline-block;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 12px;
+        }
+        .mbv-intro h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(22px, 3vw, 34px);
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+        .mbv-intro p { color: var(--text-dim); font-size: 14px; line-height: 1.7; }
+
+        /* Artwork tab bar */
+        .mbv-artwork-bar { display: flex; justify-content: center; margin-bottom: 28px; }
+        .mbv-artwork-tabs { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+        .mbv-artwork-tab {
+            background: none;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.35);
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 7px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .mbv-artwork-tab:hover { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); }
+        .mbv-artwork-tab.active {
+            background: rgba(212,175,55,0.12);
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        /* The document card */
+        .mbv-document {
+            background: #faf8f5;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.45);
+        }
+        .mbv-no-data {
+            text-align: center;
+            padding: 80px 24px;
+            color: rgba(0,0,0,0.25);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-style: italic;
+        }
+
+        /* Board grid: main left + palette right */
+        .mbv-board {
+            display: grid;
+            grid-template-columns: 1fr 210px;
+            color: #111;
+            font-family: 'Outfit', sans-serif;
+        }
+        @media (max-width: 680px) {
+            .mbv-board { grid-template-columns: 1fr; }
+            .mbv-board-right { border-left: none !important; border-top: 1px solid rgba(0,0,0,0.08); }
+        }
+
+        /* ── LEFT COLUMN ── */
+        .mbv-board-left { padding: 36px 36px 28px; }
+
+        .mbv-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+            margin-bottom: 16px;
+        }
+        .mbv-brand-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 26px;
+            font-weight: 400;
+            letter-spacing: 0.14em;
+            display: block;
+            line-height: 1;
+        }
+        .mbv-brand-sub {
+            font-size: 8px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #999;
+            display: block;
+            margin-top: 4px;
+        }
+        .mbv-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 12px;
+            font-style: italic;
+            color: #777;
+            max-width: 260px;
+            text-align: right;
+            line-height: 1.55;
+        }
+
+        .mbv-essence {
+            text-align: center;
+            padding: 10px 0 14px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            margin-bottom: 18px;
+        }
+        .mbv-essence-eyebrow {
+            font-size: 8px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: #bbb;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .mbv-essence-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            color: #222;
+        }
+
+        .mbv-room {
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 22px;
+            aspect-ratio: 16/9;
+            background: #e8e4de;
+        }
+        .mbv-room img {
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: center;
+            display: block;
+            cursor: zoom-in;
+        }
+
+        .mbv-section-label {
+            font-size: 8px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: #bbb;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .mbv-inspiration { margin-bottom: 22px; }
+        .mbv-inspiration ul { list-style: none; padding: 0; }
+        .mbv-inspiration li {
+            font-size: 12.5px;
+            color: #555;
+            line-height: 1.7;
+            padding-left: 14px;
+            position: relative;
+            margin-bottom: 5px;
+        }
+        .mbv-inspiration li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #ccc;
+            font-size: 9px;
+            top: 3px;
+        }
+
+        /* Design elements */
+        .mbv-elements {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            padding: 18px 0;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            margin-bottom: 22px;
+        }
+        @media (max-width: 540px) { .mbv-elements { grid-template-columns: repeat(3, 1fr); } }
+        .mbv-element { text-align: center; padding: 6px 3px; }
+        .mbv-element-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            background: #222;
+            color: #fff;
+            font-size: 9px;
+            margin-bottom: 5px;
+        }
+        .mbv-element strong { display: block; font-size: 9.5px; color: #222; margin-bottom: 3px; line-height: 1.25; }
+        .mbv-element p { font-size: 9px; color: #999; line-height: 1.45; }
+
+        /* Two options */
+        .mbv-options { margin-bottom: 22px; }
+        .mbv-options-label { font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase; color: #bbb; display: block; margin-bottom: 12px; }
+        .mbv-opt-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+        .mbv-opt-btn {
+            flex: 1;
+            background: #f0ede8;
+            border: 1px solid rgba(0,0,0,0.09);
+            color: #666;
+            font-family: 'Outfit', sans-serif;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 9px 6px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.25s;
+        }
+        .mbv-opt-btn.active { background: #111; color: #fff; border-color: #111; }
+        .mbv-opt-btn:hover:not(.active) { background: #e0ddd8; }
+
+        .mbv-tones-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .mbv-tone-group > span { font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: #bbb; display: block; margin-bottom: 6px; }
+        .mbv-tone-dots { display: flex; gap: 5px; }
+        .mbv-tone-dot { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.07); flex-shrink: 0; }
+
+        /* Materials */
+        .mbv-materials {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            padding: 18px 0;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+        }
+        .mbv-mat-label { font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: #bbb; display: block; margin-bottom: 7px; }
+        .mbv-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+        .mbv-pill { font-size: 10.5px; color: #555; background: #ede9e3; border: 1px solid rgba(0,0,0,0.07); border-radius: 20px; padding: 3px 9px; }
+
+        /* Quote */
+        .mbv-quote-block { text-align: center; padding: 14px 0 6px; }
+        .mbv-quote-block blockquote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 15px;
+            font-style: italic;
+            font-weight: 300;
+            color: #666;
+            margin: 0;
+            line-height: 1.65;
+        }
+        .mbv-quote-block blockquote::before { content: '\201C '; }
+        .mbv-quote-block blockquote::after  { content: ' \201D'; }
+
+        /* ── RIGHT PALETTE SIDEBAR ── */
+        .mbv-board-right {
+            background: #f0ede7;
+            padding: 28px 18px;
+            border-left: 1px solid rgba(0,0,0,0.07);
+        }
+        .mbv-palette-heading {
+            font-size: 8px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .mbv-variant-select {
+            width: 100%;
+            font-family: 'Outfit', sans-serif;
+            font-size: 10.5px;
+            color: #333;
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.12);
+            border-radius: 3px;
+            padding: 7px 8px;
+            cursor: pointer;
+            margin-bottom: 18px;
+            outline: none;
+        }
+        .mbv-swatches { display: flex; flex-direction: column; gap: 9px; }
+        .mbv-swatch-row { display: flex; align-items: center; gap: 9px; }
+        .mbv-swatch-dot { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.06); }
+        .mbv-swatch-name { font-size: 10.5px; color: #444; flex: 1; line-height: 1.2; }
+        .mbv-swatch-hex { font-size: 8.5px; color: #bbb; font-family: monospace; }
+
+        /* ── Moodboard Section ─────────────────────────────────── */
+        .moodboard-section {
+            margin-top: 72px;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 56px;
+        }
+
+        .moodboard-intro {
+            max-width: 580px;
+            margin: 0 auto 56px;
+            text-align: center;
+        }
+
+        .moodboard-intro .mb-label {
+            display: inline-block;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 14px;
+        }
+
+        .moodboard-intro h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(28px, 3.5vw, 40px);
+            font-weight: 300;
+            margin-bottom: 12px;
+            letter-spacing: 0.02em;
+        }
+
+        .moodboard-intro p {
+            color: var(--text-dim);
+            font-size: 14px;
+            line-height: 1.75;
+        }
+
+        /* Artwork group */
+        .mb-group {
+            margin-bottom: 48px;
+        }
+
+        .mb-group-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 14px;
+            padding: 0 2px;
+        }
+
+        .mb-artwork-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-weight: 400;
+            color: var(--text-main);
+        }
+
+        .mb-count {
+            font-size: 11px;
+            color: var(--text-dim);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Carousel */
+        .mb-track {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-bottom: 2px;
+            cursor: grab;
+        }
+
+        .mb-track:active { cursor: grabbing; }
+        .mb-track::-webkit-scrollbar { display: none; }
+
+        /* Card */
+        .mb-card {
+            flex: 0 0 200px;
+            scroll-snap-align: start;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .mb-card { flex: 0 0 150px; }
+        }
+
+        .mb-card:hover {
+            border-color: rgba(212,175,55,0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px -10px rgba(0,0,0,0.5);
+        }
+
+        .mb-card img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            object-position: top;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .mb-card:hover img { transform: scale(1.03); }
+
+        .mb-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 14px;
+        }
+
+        .mb-card:hover .mb-card-overlay { opacity: 1; }
+
+        .mb-card-overlay span {
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .mb-card-num {
+            position: absolute;
+            top: 10px;
+            left: 12px;
+            font-size: 10px;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 0.1em;
+            font-weight: 300;
+        }
+
+        /* ── Lightbox ──────────────────────────────────────────── */
+        .mb-lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 9000;
+            background: rgba(5, 5, 10, 0.97);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .mb-lightbox.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mb-lb-img-wrap {
+            max-width: min(88vw, 680px);
+            max-height: 88vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mb-lb-img-wrap img {
+            max-width: 100%;
+            max-height: 88vh;
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+            display: block;
+        }
+
+        .mb-lb-close {
+            position: absolute;
+            top: 20px;
+            right: 28px;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.4);
+            font-size: 36px;
+            cursor: pointer;
+            transition: color 0.2s;
+            line-height: 1;
+            padding: 4px;
+        }
+        .mb-lb-close:hover { color: #fff; }
+
+        .mb-lb-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.3);
+            font-size: 64px;
+            cursor: pointer;
+            padding: 16px 24px;
+            transition: color 0.2s;
+            line-height: 1;
+            user-select: none;
+        }
+        .mb-lb-nav:hover { color: rgba(255,255,255,0.9); }
+        .mb-lb-prev { left: 0; }
+        .mb-lb-next { right: 0; }
+
+        .mb-lb-info {
+            position: absolute;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .mb-lb-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            font-style: italic;
+            color: rgba(255,255,255,0.45);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .mb-lb-counter {
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.2);
+            text-transform: uppercase;
         }
     </style>
 </head>
@@ -244,6 +767,19 @@
                             </div>
                         </a>
                     </div>
+
+                    <!-- Interior Moodboards — HTML Viewer -->
+                    <div class="mbv-section">
+                        <div class="mbv-intro">
+                            <span class="mbv-eyebrow">Interior Moodboards</span>
+                            <h3>See it in your space</h3>
+                            <p>Select an artwork, then explore its curated interior palette — room settings, colour combinations, material guides, and two styling options per variant.</p>
+                        </div>
+                        <div class="mbv-artwork-bar">
+                            <div class="mbv-artwork-tabs" id="mbvArtworkTabs"></div>
+                        </div>
+                        <div class="mbv-document" id="mbvDocument"></div>
+                    </div>
                 </div>
 
                 <!-- Raw Strokes Tab -->
@@ -311,6 +847,172 @@
         </div>
     </main>
 
+    <!-- Moodboard room photo lightbox (must be before scripts) -->
+    <div class="mb-lightbox" id="mbvLightbox" role="dialog" aria-modal="true">
+        <button class="mb-lb-close" id="mbvLbClose" aria-label="Close">&#215;</button>
+        <div class="mb-lb-img-wrap">
+            <img src="" alt="" id="mbvLbImg">
+        </div>
+    </div>
+
     <script src="js/sidebar.js"></script>
+    <script src="js/moodboard-data.js"></script>
+    <script>
+    (function () {
+        const tabsEl = document.getElementById('mbvArtworkTabs');
+        const docEl  = document.getElementById('mbvDocument');
+
+        let curArtwork = 'Jharna';
+        let curVariant = 0;
+        let curOption  = 0;
+
+        // ── Artwork tabs ────────────────────────────────────────────────
+        Object.keys(MOODBOARD_DATA).forEach(name => {
+            const btn = document.createElement('button');
+            btn.className = 'mbv-artwork-tab' + (name === curArtwork ? ' active' : '');
+            btn.textContent = name;
+            btn.addEventListener('click', () => {
+                curArtwork = name;
+                curVariant = 0;
+                curOption  = 0;
+                document.querySelectorAll('.mbv-artwork-tab').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                render();
+            });
+            tabsEl.appendChild(btn);
+        });
+
+        // ── Render board ────────────────────────────────────────────────
+        function render() {
+            const artwork = MOODBOARD_DATA[curArtwork];
+            if (!artwork.variants || artwork.variants.length === 0) {
+                docEl.innerHTML = '<div class="mbv-no-data">Moodboards for ' + curArtwork + ' are coming soon.</div>';
+                return;
+            }
+
+            const v   = artwork.variants[curVariant];
+            const opt = v.options[curOption];
+
+            docEl.innerHTML =
+                '<div class="mbv-board">' +
+
+                '  <div class="mbv-board-left">' +
+
+                    // Header
+                    '  <div class="mbv-header">' +
+                    '    <div><span class="mbv-brand-name">KHIDKI</span><span class="mbv-brand-sub">MOOD BOARD</span></div>' +
+                    '    <p class="mbv-tagline">' + artwork.artworkSubtitle + '</p>' +
+                    '  </div>' +
+
+                    // Essence
+                    '  <div class="mbv-essence">' +
+                    '    <span class="mbv-essence-eyebrow">The Design Essence</span>' +
+                    '    <strong class="mbv-essence-text">' + v.essenceLabel + '</strong>' +
+                    '  </div>' +
+
+                    // Room photo
+                    '  <div class="mbv-room"><img src="' + v.roomPhoto + '" alt="' + curArtwork + ' interior" loading="lazy"></div>' +
+
+                    // Inspiration
+                    '  <div class="mbv-inspiration">' +
+                    '    <span class="mbv-section-label">The Inspiration</span>' +
+                    '    <ul>' + v.inspiration.map(b => '<li>' + b + '</li>').join('') + '</ul>' +
+                    '  </div>' +
+
+                    // Design elements
+                    '  <div class="mbv-elements">' +
+                    v.elements.map((el, i) =>
+                        '<div class="mbv-element">' +
+                        '  <span class="mbv-element-num">' + (i + 1) + '</span>' +
+                        '  <strong>' + el.label + '</strong>' +
+                        '  <p>' + el.desc + '</p>' +
+                        '</div>'
+                    ).join('') +
+                    '  </div>' +
+
+                    // Two options
+                    '  <div class="mbv-options">' +
+                    '    <span class="mbv-options-label">Two ways to bring this palette home</span>' +
+                    '    <div class="mbv-opt-tabs">' +
+                    v.options.map((o, i) =>
+                        '<button class="mbv-opt-btn' + (i === curOption ? ' active' : '') + '" data-opt="' + i + '">' + o.name + '</button>'
+                    ).join('') +
+                    '    </div>' +
+                    '    <div class="mbv-tones-row">' +
+                    '      <div class="mbv-tone-group"><span>Accent Tone</span><div class="mbv-tone-dots"><div class="mbv-tone-dot" style="background:' + opt.accentHex + '" title="' + opt.accentHex + '"></div></div></div>' +
+                    '      <div class="mbv-tone-group"><span>Art\'s Tones</span><div class="mbv-tone-dots">' + opt.artTones.map(h => '<div class="mbv-tone-dot" style="background:' + h + '" title="' + h + '"></div>').join('') + '</div></div>' +
+                    '      <div class="mbv-tone-group"><span>Interior Tones</span><div class="mbv-tone-dots">' + opt.interiorTones.map(h => '<div class="mbv-tone-dot" style="background:' + h + '" title="' + h + '"></div>').join('') + '</div></div>' +
+                    '    </div>' +
+                    '  </div>' +
+
+                    // Materials & botanicals
+                    '  <div class="mbv-materials">' +
+                    '    <div><span class="mbv-mat-label">Material Palette</span><div class="mbv-pills">' + v.materials.map(m => '<span class="mbv-pill">' + m + '</span>').join('') + '</div></div>' +
+                    '    <div><span class="mbv-mat-label">Botanicals &amp; Foliage</span><div class="mbv-pills">' + v.botanicals.map(b => '<span class="mbv-pill">' + b + '</span>').join('') + '</div></div>' +
+                    '  </div>' +
+
+                    // Quote
+                    '  <div class="mbv-quote-block"><blockquote>' + v.quote + '</blockquote></div>' +
+
+                    '</div>' + // end .mbv-board-left
+
+                // Right sidebar: palette
+                '  <div class="mbv-board-right">' +
+                '    <span class="mbv-palette-heading">Color Palette</span>' +
+                '    <select class="mbv-variant-select" id="mbvVarSel">' +
+                artwork.variants.map((vv, i) =>
+                    '<option value="' + i + '"' + (i === curVariant ? ' selected' : '') + '>Variant ' + vv.id + ' — ' + vv.essenceLabel.replace(/·/g, '').split('  ')[0].trim().slice(0, 22) + '</option>'
+                ).join('') +
+                '    </select>' +
+                '    <div class="mbv-swatches">' +
+                v.palette.map(c =>
+                    '<div class="mbv-swatch-row">' +
+                    '  <div class="mbv-swatch-dot" style="background:' + c.hex + '"></div>' +
+                    '  <span class="mbv-swatch-name">' + c.name + '</span>' +
+                    '  <span class="mbv-swatch-hex">' + c.hex + '</span>' +
+                    '</div>'
+                ).join('') +
+                '    </div>' +
+                '  </div>' +
+
+                '</div>'; // end .mbv-board
+
+            // Variant select
+            document.getElementById('mbvVarSel').addEventListener('change', e => {
+                curVariant = parseInt(e.target.value);
+                curOption  = 0;
+                render();
+            });
+
+            // Option buttons
+            document.querySelectorAll('.mbv-opt-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    curOption = parseInt(btn.dataset.opt);
+                    render();
+                });
+            });
+
+            // Room photo lightbox
+            const roomImg = document.querySelector('.mbv-room img');
+            if (roomImg) {
+                roomImg.addEventListener('click', () => {
+                    mbvLbImg.src = roomImg.src;
+                    mbvLbImg.alt = roomImg.alt;
+                    mbvLb.classList.add('open');
+                });
+            }
+        }
+
+        // Lightbox wiring (once, outside render)
+        const mbvLb    = document.getElementById('mbvLightbox');
+        const mbvLbImg = document.getElementById('mbvLbImg');
+        document.getElementById('mbvLbClose').addEventListener('click', () => mbvLb.classList.remove('open'));
+        mbvLb.addEventListener('click', e => { if (e.target === mbvLb) mbvLb.classList.remove('open'); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') mbvLb.classList.remove('open'); });
+
+        render();
+    })();
+    </script>
+
 </body>
 </html>

@@ -13,6 +13,117 @@
     
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/sidebar.css">
+    <style>
+        /* Artist section enhancements */
+        .artist-greeting { margin-bottom: 24px; }
+        .handwriting-reveal {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 26px;
+            font-style: italic;
+            color: var(--accent-rose);
+            display: inline-block;
+            clip-path: inset(0 100% 0 0);
+        }
+        .handwriting-reveal.animate {
+            animation: writeReveal 1.8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+        }
+        @keyframes writeReveal { to { clip-path: inset(0 0% 0 0); } }
+
+        .artist-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 12px;
+        }
+        .artist-tab {
+            background: none;
+            border: 1px solid transparent;
+            color: var(--text-dim);
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .artist-tab:hover { color: var(--text-main); border-color: var(--glass-border); }
+        .artist-tab.active {
+            background: rgba(212,175,55,0.12);
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+        .artist-tab-content { display: none; min-height: 90px; margin-bottom: 20px; animation: tabFadeIn 0.4s ease; }
+        .artist-tab-content.active { display: block; }
+        @keyframes tabFadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+        .typewriter-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 19px;
+            font-style: italic;
+            color: var(--text-dim);
+            line-height: 1.75;
+            min-height: 56px;
+        }
+        .typewriter-quote.typing::after {
+            content: '|';
+            color: var(--accent-gold);
+            animation: cursorBlink 0.65s step-end infinite;
+        }
+        @keyframes cursorBlink { 50% { opacity: 0; } }
+
+        .artist-tab-content p { color: var(--text-dim); line-height: 1.85; }
+
+        .chai-counter {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--text-dim);
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.3s;
+        }
+        .chai-counter:hover { color: var(--text-main); }
+        #chaiCount { color: var(--accent-gold); font-weight: 600; }
+        #chaiCount.bounce { animation: chaiBounce 0.28s ease; }
+        @keyframes chaiBounce { 0%,100%{transform:scale(1);} 50%{transform:scale(1.5);} }
+
+        .artist-cta {
+            display: inline-block;
+            margin-top: 24px;
+            color: var(--accent-rose);
+            text-decoration: none;
+            font-size: 14px;
+            font-style: italic;
+            letter-spacing: 0.04em;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .artist-cta:hover { color: var(--accent-gold); border-bottom-color: var(--accent-gold); }
+
+        .skill-tag { cursor: pointer; }
+        .skill-tag.active {
+            background: rgba(212,175,55,0.18) !important;
+            border-color: var(--accent-gold) !important;
+            color: var(--accent-gold);
+        }
+        .gallery-item { transition: opacity 0.4s ease, transform 0.4s ease !important; }
+        .gallery-item.filtered-out { opacity: 0.12 !important; transform: scale(0.96) !important; }
+        .gallery-filter-label {
+            font-size: 12px;
+            color: var(--accent-gold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .gallery-filter-label.visible { opacity: 1; }
+    </style>
 </head>
 <body class="is-home">
     <!-- Mobile Home Splash (visible only on mobile) -->
@@ -230,18 +341,37 @@
                 </div>
                 <div class="artist-info">
                     <h3>The Artist</h3>
-                    <p class="tagline">Hi, I'm Saudamini</p>
-                    <p>I'm a visual artist, trained architect, professional overthinker, and lifelong observer of small, emotional details.
-                        I make paintings that sit somewhere between memory and imagination. The kind that doesn't shout, but quietly stays with you. My work is influenced by spaces, silence, human connection, and the invisible stories we carry but rarely say out loud.</p>
-                    <p><b>Khidki</b> (which means window) is how I see art:
-                        A gentle opening between inner worlds and outer spaces.</p>
-                    <p>Sometimes I paint landscapes. My Art for slow moments, thoughtful spaces, and hearts that feel a little too much. Sometimes I paint feelings disguised as rooms, hills, windows, or people standing still at just the wrong/right moment. Artist by stubborn choice and Making quiet art for loud hearts, . Powered almost entirely by chai.                        </p>
+                    <div class="artist-greeting">
+                        <span class="handwriting-reveal">Hi, I'm Saudamini</span>
+                    </div>
+
+                    <div class="artist-tabs">
+                        <button class="artist-tab active" data-tab="artist">Artist</button>
+                        <button class="artist-tab" data-tab="architect">Architect</button>
+                        <button class="artist-tab" data-tab="observer">Observer</button>
+                    </div>
+
+                    <div class="artist-tab-content active" data-panel="artist">
+                        <div class="typewriter-quote typing"></div>
+                    </div>
+                    <div class="artist-tab-content" data-panel="architect">
+                        <p>Trained in the grammar of space — where walls hold stories and every threshold is a decision. Architecture taught me that structure and feeling are not opposites. They are the same conversation, spoken differently.</p>
+                    </div>
+                    <div class="artist-tab-content" data-panel="observer">
+                        <p>I collect details most people walk past. The way light falls at 4pm. The pause before someone speaks. The weight of an unsaid thing. These become paintings.</p>
+                    </div>
+
                     <div class="skills-list">
-                        <span class="skill-tag">🎨 Oil Painting</span>
-                        <span class="skill-tag">💧 Watercolor</span>
-                        <span class="skill-tag">✏️ Sketching</span>
-                        <span class="skill-tag">🖼️ Mixed Media</span>
-                        <span class="skill-tag">🌸 Botanical Art</span>
+                        <span class="skill-tag" data-filter="oil">🎨 Oil Painting</span>
+                        <span class="skill-tag" data-filter="watercolor">💧 Watercolor</span>
+                        <span class="skill-tag" data-filter="sketch">✏️ Sketching</span>
+                        <span class="skill-tag" data-filter="mixed">🖼️ Mixed Media</span>
+                        <span class="skill-tag" data-filter="botanical">🌸 Botanical Art</span>
+                    </div>
+
+                    <div>
+                        <span class="chai-counter" id="chaiCounter">☕ Powered by <span id="chaiCount">∞</span> cups of chai</span>
+                        <a href="face-behind-khidki.html" class="artist-cta">The whole story →</a>
                     </div>
                 </div>
             </div>
@@ -255,64 +385,65 @@
                 <h2>Gallery</h2>
                 <p>A visual journey through completed works and exhibitions.</p>
             </div>
+            <div class="gallery-filter-label" id="galleryFilterLabel"></div>
             <div class="gallery-grid">
-                <a href="painting.html?id=1" class="gallery-item">
+                <a href="painting.html?id=1" class="gallery-item" data-medium="oil">
                     <img loading="lazy" decoding="async" src="khidki_artifacts/Kshitij%201.png" alt="Kshitij">
                     <div class="overlay">
                         <h4>Kshitij</h4>
                         <span>Artwork 1</span>
                     </div>
                 </a>
-                <a href="painting.html?id=2" class="gallery-item">
+                <a href="painting.html?id=2" class="gallery-item" data-medium="mixed">
                     <img loading="lazy" decoding="async" src="khidki_artifacts/Talaash%202.png" alt="Talaash">
                     <div class="overlay">
                         <h4>Talaash</h4>
                         <span>Artwork 2</span>
                     </div>
                 </a>
-                <a href="painting.html?id=3" class="gallery-item">
+                <a href="painting.html?id=3" class="gallery-item" data-medium="mixed,sketch">
                     <img loading="lazy" decoding="async" src="khidki_artifacts/Ghungroo%203.png" alt="Ghungroo">
                     <div class="overlay">
                         <h4>Ghungroo</h4>
                         <span>Artwork 3</span>
                     </div>
                 </a>
-                <a href="painting.html?id=4" class="gallery-item">
+                <a href="painting.html?id=4" class="gallery-item" data-medium="oil,mixed">
                     <img loading="lazy" decoding="async" src="khidki_artifacts/PORTAL%204.png" alt="Portal">
                     <div class="overlay">
                         <h4>Portal</h4>
                         <span>Artwork 4</span>
                     </div>
                 </a>
-                <a href="painting.html?id=5" class="gallery-item">
+                <a href="painting.html?id=5" class="gallery-item" data-medium="watercolor">
                     <img loading="lazy" decoding="async" src="khidki_artifacts/Kaarigari%205.png" alt="Kaarigari">
                     <div class="overlay">
                         <h4>Kaarigari</h4>
                         <span>Artwork 5</span>
                     </div>
                 </a>
-                <a href="painting.html?id=6" class="gallery-item">
+                <a href="painting.html?id=6" class="gallery-item" data-medium="oil">
                     <img loading="lazy" decoding="async" src="khidki_artifacts/Mannat%206.png" alt="Mannat">
                     <div class="overlay">
                         <h4>Mannat</h4>
                         <span>Artwork 6</span>
                     </div>
                 </a>
-                <a href="painting.html?id=7" class="gallery-item">
+                <a href="painting.html?id=7" class="gallery-item" data-medium="sketch,mixed">
                     <img loading="lazy" decoding="async" src="khidki_artifacts/Parchchai%207.png" alt="Parchchai">
                     <div class="overlay">
                         <h4>Parchchai</h4>
                         <span>Artwork 7</span>
                     </div>
                 </a>
-                <a href="painting.html?id=8" class="gallery-item">
+                <a href="painting.html?id=8" class="gallery-item" data-medium="watercolor,botanical">
                     <img loading="lazy" decoding="async" src="khidki_artifacts/Bachpan%208.png" alt="Bachpan">
                     <div class="overlay">
                         <h4>Bachpan</h4>
                         <span>Artwork 8</span>
                     </div>
                 </a>
-                <a href="painting.html?id=9" class="gallery-item">
+                <a href="painting.html?id=9" class="gallery-item" data-medium="watercolor">
                     <img loading="lazy" decoding="async" src="khidki_artifacts/Jharna%209.png" alt="Jharna">
                     <div class="overlay">
                         <h4>Jharna</h4>
@@ -384,6 +515,103 @@
         <p>© 2026 Khidki. All artworks are original creations.</p>
     </footer>
 
+    <script>
+    (function () {
+        // ── Typewriter cycling quotes ──────────────────────────────────────
+        const quotes = [
+            "I make paintings that sit somewhere between memory and imagination.",
+            "Influenced by spaces, silence, and the invisible stories we carry.",
+            "Making quiet art for loud hearts.",
+            "A gentle opening between inner worlds and outer spaces."
+        ];
+        let qIdx = 0, cIdx = 0, deleting = false, twTimer = null;
+        const twEl = document.querySelector('.typewriter-quote');
+
+        function tick() {
+            const q = quotes[qIdx];
+            if (!deleting) {
+                cIdx++;
+                twEl.textContent = q.slice(0, cIdx);
+                if (cIdx === q.length) {
+                    twTimer = setTimeout(() => { deleting = true; tick(); }, 2800);
+                    return;
+                }
+            } else {
+                cIdx--;
+                twEl.textContent = q.slice(0, cIdx);
+                if (cIdx === 0) {
+                    deleting = false;
+                    qIdx = (qIdx + 1) % quotes.length;
+                }
+            }
+            twTimer = setTimeout(tick, deleting ? 22 : 52);
+        }
+
+        // ── Trigger on scroll into view ────────────────────────────────────
+        let artistStarted = false;
+        const artistObs = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !artistStarted) {
+                artistStarted = true;
+                document.querySelector('.handwriting-reveal').classList.add('animate');
+                setTimeout(tick, 900);
+            }
+        }, { threshold: 0.25 });
+        artistObs.observe(document.querySelector('#artist'));
+
+        // ── Tab switching ──────────────────────────────────────────────────
+        document.querySelectorAll('.artist-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+                document.querySelectorAll('.artist-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.artist-tab-content').forEach(p => p.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelector('[data-panel="' + target + '"]').classList.add('active');
+                if (target === 'artist') {
+                    clearTimeout(twTimer);
+                    cIdx = 0; deleting = false;
+                    twEl.textContent = '';
+                    setTimeout(tick, 200);
+                }
+            });
+        });
+
+        // ── Chai counter ───────────────────────────────────────────────────
+        let chaiN = null, chaiInf = true;
+        document.getElementById('chaiCounter').addEventListener('click', () => {
+            chaiN = chaiInf ? 1247 : chaiN + 1;
+            chaiInf = false;
+            const el = document.getElementById('chaiCount');
+            el.textContent = chaiN.toLocaleString();
+            el.classList.remove('bounce');
+            void el.offsetWidth;
+            el.classList.add('bounce');
+        });
+
+        // ── Gallery filter ─────────────────────────────────────────────────
+        const filterLabel = document.getElementById('galleryFilterLabel');
+        const filterNames = { oil: 'Oil & Acrylic', watercolor: 'Watercolor', sketch: 'Sketching', mixed: 'Mixed Media', botanical: 'Botanical Art' };
+
+        document.querySelectorAll('.skill-tag[data-filter]').forEach(tag => {
+            tag.addEventListener('click', () => {
+                const f = tag.dataset.filter;
+                const wasActive = tag.classList.contains('active');
+                document.querySelectorAll('.skill-tag').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.gallery-item').forEach(i => i.classList.remove('filtered-out'));
+                filterLabel.classList.remove('visible');
+                if (!wasActive) {
+                    tag.classList.add('active');
+                    filterLabel.textContent = 'Showing: ' + filterNames[f];
+                    filterLabel.classList.add('visible');
+                    document.querySelectorAll('.gallery-item').forEach(item => {
+                        const mediums = (item.dataset.medium || '').split(',');
+                        if (!mediums.includes(f)) item.classList.add('filtered-out');
+                    });
+                    document.querySelector('#gallery').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    })();
+    </script>
     <script src="js/main.js"></script>
     <script src="js/sidebar.js"></script>
 </body>
