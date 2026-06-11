@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collection | Khidki</title>
+    <meta name="description" content="Detailed Khidki collection page with palette, mood, spaces, narratives, formats, and featured paintings.">
+    <link rel="icon" href="sjdp.jpeg" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <style>
+        :root {
+            --void: #050509;
+            --ink: #0b0b13;
+            --ink-2: #11111c;
+            --bone: #f4ede0;
+            --bone-dim: #c9c0b2;
+            --bone-mute: #8d8477;
+            --gold: #c9a06a;
+            --gold-bright: #e0b988;
+            --gold-deep: #8a6a3c;
+            --serif: 'Cormorant Garamond', Georgia, serif;
+            --sans: 'Inter', 'Outfit', system-ui, sans-serif;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--void);
+            color: var(--bone);
+            font-family: var(--sans);
+            font-weight: 300;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        a, button { font: inherit; }
+        ::selection { background: var(--gold); color: var(--ink); }
+
+        .collection-rail {
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: 56px;
+            height: 100vh;
+            background: var(--void);
+            border-right: 1px solid #1a1a26;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 0;
+            z-index: 90;
+        }
+        .collection-rail .nav-toggle {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            background: transparent;
+            border: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 2001;
+        }
+        .collection-rail .nav-toggle span {
+            display: block;
+            width: 18px;
+            height: 1px;
+            background: var(--gold);
+            transition: transform 0.3s var(--ease-out), opacity 0.3s var(--ease-out);
+        }
+        .collection-rail .nav-toggle:hover span:first-child { transform: translateX(-3px); }
+        .collection-rail .nav-toggle:hover span:last-child { transform: translateX(3px); }
+        .collection-rail .nav-toggle.active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .collection-rail .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .collection-rail .nav-toggle.active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+        .rail-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            align-items: center;
+        }
+        .rail-links li {
+            width: 56px;
+            height: 86px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .rail-links a {
+            color: var(--bone-mute);
+            display: inline-block;
+            font-size: 9.5px;
+            letter-spacing: 0.28em;
+            text-decoration: none;
+            text-transform: uppercase;
+            transform: rotate(-90deg);
+            white-space: nowrap;
+            transition: color 0.2s;
+        }
+        .rail-links a:hover,
+        .rail-links a.active { color: var(--gold); }
+        .rail-foot {
+            color: var(--bone-mute);
+            font-size: 8.5px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            transform: rotate(-90deg);
+            white-space: nowrap;
+        }
+
+        .page {
+            margin-left: 56px;
+            min-height: 100vh;
+            background:
+                radial-gradient(ellipse at 18% 20%, rgba(201, 160, 106, 0.08), transparent 36%),
+                radial-gradient(ellipse at 88% 44%, rgba(112, 152, 184, 0.08), transparent 42%),
+                var(--void);
+        }
+        .top-bar {
+            align-items: center;
+            background: rgba(5, 5, 9, 0.94);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid #1a1a26;
+            display: flex;
+            gap: 24px;
+            justify-content: space-between;
+            padding: 22px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 60;
+        }
+        .wordmark {
+            color: var(--gold);
+            font-family: var(--serif);
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 0.32em;
+            text-decoration: none;
+        }
+        .top-bar-center {
+            color: var(--bone-mute);
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+        .line-link {
+            align-items: center;
+            background: transparent;
+            border: 1px solid #2a2a36;
+            color: var(--bone);
+            display: inline-flex;
+            gap: 12px;
+            padding: 10px 18px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            transition: all 0.3s var(--ease-out);
+        }
+        .line-link:hover { border-color: var(--gold); color: var(--gold); }
+        .arr {
+            background: currentColor;
+            display: inline-block;
+            height: 1px;
+            position: relative;
+            transition: width 0.3s var(--ease-out);
+            width: 18px;
+        }
+        .arr::after {
+            border-right: 1px solid currentColor;
+            border-top: 1px solid currentColor;
+            content: '';
+            height: 6px;
+            position: absolute;
+            right: 0;
+            top: -3px;
+            transform: rotate(45deg);
+            width: 6px;
+        }
+        a:hover .arr { width: 26px; }
+
+        .collection-hero {
+            min-height: calc(100vh - 67px);
+            display: grid;
+            grid-template-columns: minmax(360px, 0.82fr) minmax(420px, 1.18fr);
+            border-bottom: 1px solid #1a1a26;
+        }
+        .hero-copy {
+            align-self: end;
+            padding: 72px 52px;
+        }
+        .eyebrow {
+            color: var(--gold);
+            font-size: 9.5px;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        .collection-num {
+            color: var(--gold);
+            font-family: var(--serif);
+            font-size: 30px;
+            line-height: 1;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            color: var(--bone);
+            font-family: var(--serif);
+            font-size: clamp(52px, 6vw, 96px);
+            font-weight: 300;
+            line-height: 0.92;
+            margin-bottom: 24px;
+        }
+        .hero-title em {
+            color: var(--gold);
+            display: block;
+            font-style: italic;
+        }
+        .hero-subtitle {
+            color: var(--gold-bright);
+            font-family: var(--serif);
+            font-size: 24px;
+            font-style: italic;
+            line-height: 1.15;
+            max-width: 460px;
+            margin-bottom: 28px;
+        }
+        .hero-description {
+            color: var(--bone-dim);
+            font-size: 14px;
+            line-height: 1.82;
+            max-width: 500px;
+            margin-bottom: 34px;
+        }
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .hero-actions .primary {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--ink);
+        }
+        .hero-media {
+            min-height: 620px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-media::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, #050509 0%, rgba(5, 5, 9, 0.15) 32%, rgba(5, 5, 9, 0.76) 100%),
+                linear-gradient(180deg, rgba(5, 5, 9, 0.08), rgba(5, 5, 9, 0.74));
+        }
+        .hero-media img {
+            display: block;
+            height: 100%;
+            object-fit: cover;
+            width: 100%;
+        }
+        .hero-stats {
+            bottom: 38px;
+            display: grid;
+            gap: 1px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            left: 38px;
+            position: absolute;
+            right: 38px;
+            z-index: 2;
+        }
+        .hero-stat {
+            background: rgba(5, 5, 9, 0.72);
+            border: 1px solid rgba(201, 160, 106, 0.25);
+            padding: 18px;
+        }
+        .hero-stat strong {
+            color: var(--gold);
+            display: block;
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            margin-bottom: 7px;
+            text-transform: uppercase;
+        }
+        .hero-stat span {
+            color: var(--bone-dim);
+            display: block;
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .detail-section {
+            border-bottom: 1px solid #1a1a26;
+            padding: 96px 60px;
+        }
+        .section-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: minmax(320px, 0.9fr) minmax(420px, 1.1fr);
+            gap: 64px;
+        }
+        .body-copy {
+            display: grid;
+            gap: 16px;
+        }
+        .body-copy p {
+            color: var(--bone-dim);
+            font-size: 14px;
+            line-height: 1.82;
+        }
+        .section-title {
+            color: var(--bone);
+            font-family: var(--serif);
+            font-size: clamp(38px, 4vw, 64px);
+            font-weight: 300;
+            line-height: 0.98;
+            margin-bottom: 28px;
+        }
+        .section-title em {
+            color: var(--gold);
+            font-style: italic;
+        }
+        .attribute-grid {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .attribute-card {
+            background: var(--ink);
+            border: 1px solid #222232;
+            padding: 24px;
+        }
+        .attribute-label {
+            color: var(--bone-mute);
+            display: block;
+            font-size: 8.5px;
+            letter-spacing: 0.24em;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+        }
+        .chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+        .chip,
+        .palette-chip {
+            align-items: center;
+            border: 1px solid #2a2a36;
+            color: var(--bone-dim);
+            display: inline-flex;
+            gap: 8px;
+            min-height: 30px;
+            padding: 7px 10px;
+            font-size: 11px;
+            line-height: 1.25;
+        }
+        .sw {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            display: inline-block;
+            height: 14px;
+            width: 14px;
+        }
+
+        .works-section {
+            background: var(--ink);
+            padding: 96px 60px;
+        }
+        .section-head {
+            align-items: flex-end;
+            display: flex;
+            gap: 40px;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        .section-note {
+            color: var(--bone-dim);
+            font-size: 13px;
+            line-height: 1.75;
+            max-width: 420px;
+        }
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 20px;
+        }
+        .work-card {
+            background: #0a0a12;
+            border: 1px solid #1f1f2d;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
+            text-decoration: none;
+            transition: border-color 0.35s var(--ease-out), transform 0.35s var(--ease-out);
+        }
+        .work-card:hover {
+            border-color: rgba(201, 160, 106, 0.62);
+            transform: translateY(-4px);
+        }
+        .work-card img {
+            aspect-ratio: 4 / 5;
+            background: var(--ink-2);
+            display: block;
+            object-fit: cover;
+            width: 100%;
+        }
+        .work-card-body {
+            display: grid;
+            gap: 7px;
+            padding: 16px;
+        }
+        .work-collection {
+            color: var(--bone-mute);
+            font-size: 8.5px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+        }
+        .work-title {
+            color: var(--bone);
+            font-family: var(--serif);
+            font-size: 22px;
+            font-style: italic;
+            line-height: 1.05;
+        }
+        .work-status {
+            color: var(--gold);
+            font-size: 10.5px;
+        }
+
+        .more-section {
+            background: var(--bone);
+            color: var(--ink);
+            padding: 76px 60px;
+        }
+        .more-inner {
+            align-items: center;
+            display: flex;
+            gap: 28px;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .more-title {
+            color: var(--ink);
+            font-family: var(--serif);
+            font-size: clamp(34px, 4vw, 58px);
+            font-weight: 300;
+            line-height: 1;
+        }
+        .more-title em {
+            color: var(--gold-deep);
+            font-style: italic;
+        }
+        .more-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        .more-links a {
+            border: 1px solid #d4c4a8;
+            color: var(--ink);
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            padding: 12px 14px;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        .more-links a:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+
+        footer {
+            align-items: center;
+            background: var(--void);
+            border-top: 1px solid #1a1a26;
+            color: var(--bone-mute);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: space-between;
+            padding: 34px 60px;
+        }
+        .foot-word {
+            color: var(--gold);
+            font-family: var(--serif);
+            font-size: 18px;
+            letter-spacing: 0.3em;
+        }
+        .foot-meta {
+            color: var(--bone-mute);
+            font-size: 9.5px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+        .foot-meta a {
+            color: var(--bone-mute);
+            text-decoration: none;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+        }
+        .reveal.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1100px) {
+            .collection-hero,
+            .detail-grid { grid-template-columns: 1fr; }
+            .hero-media { min-height: 520px; }
+            .work-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .more-inner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+            .more-links { justify-content: flex-start; }
+        }
+        @media (max-width: 760px) {
+            .collection-rail { width: 44px; }
+            .page { margin-left: 44px; }
+            .rail-links { display: none; }
+            .rail-foot { display: none; }
+            .top-bar {
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 18px 20px;
+            }
+            .wordmark { font-size: 17px; }
+            .top-bar-center { display: none; }
+            .hero-copy,
+            .detail-section,
+            .works-section,
+            .more-section { padding: 64px 24px; }
+            .hero-title { font-size: 46px; }
+            .hero-media { min-height: 360px; }
+            .hero-stats,
+            .attribute-grid,
+            .work-grid { grid-template-columns: 1fr; }
+            .hero-stats {
+                bottom: 20px;
+                left: 20px;
+                right: 20px;
+            }
+            .section-head {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 16px;
+            }
+            footer {
+                flex-direction: column;
+                padding: 30px 24px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="collection-rail">
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="rail-links">
+            <li><a href="#works">Works</a></li>
+            <li><a href="#details">Details</a></li>
+            <li><a href="#top" class="active">Collection</a></li>
+        </ul>
+        <span class="rail-foot">Collection Detail</span>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-brand">Khidki</span>
+            <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">&times;</button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Home</a>
+            <a href="collectors-room.html"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>Collector's Room</a>
+            <a href="windows-within-khidki.html"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>Windows within Khidki</a>
+            <a href="space-shop.html"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>Space Shop</a>
+            <a href="khidki-store.html"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>Khidki Store</a>
+            <div class="sidebar-divider"></div>
+            <a href="counter-window.html"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>Counter Window</a>
+            <a href="face-behind-khidki.html"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Face behind the Khidki</a>
+            <a href="story-behind-khidki.html"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>Story Behind Khidki</a>
+            <a href="voice-of-khidki.html"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>The Voice of Khidki</a>
+            <a href="khidki-hangouts.html"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>Khidki Hangouts</a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-social">
+                <a href="https://instagram.com/saudamini_1612" target="_blank" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                <a href="mailto:sjkhidkee@gmail.com" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="page" id="top">
+        <section class="top-bar">
+            <a class="wordmark" href="index.html">KHIDKI</a>
+            <span class="top-bar-center" id="topLabel">Collection Detail</span>
+            <a class="line-link" href="collectors-room.html">All Collections <span class="arr"></span></a>
+        </section>
+
+        <section class="collection-hero">
+            <div class="hero-copy reveal">
+                <p class="eyebrow">Khidki Collection</p>
+                <div class="collection-num" id="collectionNumber"></div>
+                <h1 class="hero-title" id="collectionTitle"></h1>
+                <p class="hero-subtitle" id="collectionSubtitle"></p>
+                <p class="hero-description" id="collectionDescription"></p>
+                <div class="hero-actions">
+                    <a class="line-link primary" id="inquiryLink" href="#">Inquire About This Collection <span class="arr"></span></a>
+                    <a class="line-link" href="#works">View Works <span class="arr"></span></a>
+                </div>
+            </div>
+            <div class="hero-media reveal">
+                <img id="heroImage" src="" alt="">
+                <div class="hero-stats">
+                    <div class="hero-stat"><strong>Atmosphere</strong><span id="statAtmosphere"></span></div>
+                    <div class="hero-stat"><strong>Palette</strong><span id="statPalette"></span></div>
+                    <div class="hero-stat"><strong>Ideal Market</strong><span id="statMarket"></span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="detail-section" id="details">
+            <div class="section-inner detail-grid">
+                <div class="reveal">
+                    <p class="eyebrow">Collection Language</p>
+                    <h2 class="section-title">What this<br><em>world holds.</em></h2>
+                    <div class="body-copy" id="collectionBody"></div>
+                </div>
+                <div class="attribute-grid reveal" id="attributeGrid"></div>
+            </div>
+        </section>
+
+        <section class="works-section" id="works">
+            <div class="section-inner">
+                <div class="section-head reveal">
+                    <div>
+                        <p class="eyebrow">Featured Works</p>
+                        <h2 class="section-title">Paintings in<br><em>this collection.</em></h2>
+                    </div>
+                    <p class="section-note">These works come from the current Khidki inventory and are connected to this collection's atmosphere, palette, and story language.</p>
+                </div>
+                <div class="work-grid reveal" id="workGrid"></div>
+            </div>
+        </section>
+
+        <section class="more-section">
+            <div class="more-inner">
+                <h2 class="more-title">Explore another<br><em>atmosphere.</em></h2>
+                <div class="more-links" id="moreLinks"></div>
+            </div>
+        </section>
+
+        <footer>
+            <span class="foot-word">KHIDKI</span>
+            <span class="foot-meta">2026 Khidki Studio</span>
+            <span class="foot-meta"><a href="mailto:sjkhidkee@gmail.com">sjkhidkee@gmail.com</a></span>
+        </footer>
+    </main>
+
+    <script src="js/collections-data.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script>
+        (function () {
+            'use strict';
+
+            const data = window.KHIDKI_COLLECTION_PAGE;
+            if (!data) return;
+
+            const params = new URLSearchParams(window.location.search);
+            const requested = params.get('collection') || params.get('id') || 'signature';
+            const collections = data.collections;
+            const artworks = data.artworks;
+            const collection = collections.find(item => item.id === requested) || collections[0];
+
+            function escapeHTML(value) {
+                return String(value).replace(/[&<>"']/g, function (char) {
+                    return {
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        "'": '&#39;'
+                    }[char];
+                });
+            }
+
+            function titleBreak(title) {
+                return escapeHTML(title).replace(' Collection', '<em>Collection</em>');
+            }
+
+            function chips(items) {
+                return (items || []).map(item => `<span class="chip">${escapeHTML(item)}</span>`).join('');
+            }
+
+            function paletteChips(collectionData) {
+                return (collectionData.paletteNames || []).map((name, index) => `
+                    <span class="palette-chip">
+                        <span class="sw" style="background:${escapeHTML(collectionData.palette[index] || collectionData.palette[0])}"></span>
+                        ${escapeHTML(name)}
+                    </span>
+                `).join('');
+            }
+
+            function attributeCard(label, content) {
+                return `
+                    <article class="attribute-card">
+                        <span class="attribute-label">${escapeHTML(label)}</span>
+                        <div class="chip-row">${content}</div>
+                    </article>
+                `;
+            }
+
+            function renderHeader() {
+                document.title = `${collection.title} | Khidki Collections`;
+                document.getElementById('topLabel').textContent = collection.shortTitle;
+                document.getElementById('collectionNumber').textContent = collection.number;
+                document.getElementById('collectionTitle').innerHTML = titleBreak(collection.title);
+                document.getElementById('collectionSubtitle').textContent = collection.subtitle;
+                document.getElementById('collectionDescription').textContent = collection.description;
+                document.getElementById('heroImage').src = collection.heroImage || collection.coverImage;
+                document.getElementById('heroImage').alt = collection.title;
+                document.getElementById('statAtmosphere').textContent = collection.atmosphere;
+                document.getElementById('statPalette').textContent = collection.corePalette;
+                document.getElementById('statMarket').textContent = collection.idealMarket;
+                document.getElementById('inquiryLink').href = `mailto:sjkhidkee@gmail.com?subject=${encodeURIComponent('Collection inquiry: ' + collection.title)}`;
+            }
+
+            function renderBody() {
+                document.getElementById('collectionBody').innerHTML = (collection.body || [collection.description]).map(paragraph => `<p>${escapeHTML(paragraph)}</p>`).join('');
+                const featured = collection.featuredWorks || collection.artworkIds.map(id => artworks[id]).filter(Boolean).map(artwork => artwork.title);
+                document.getElementById('attributeGrid').innerHTML = [
+                    attributeCard('Dominant Palette', paletteChips(collection)),
+                    attributeCard('Emotional Tone', chips(collection.tones)),
+                    attributeCard('Ideal Spaces', chips(collection.idealSpaces)),
+                    attributeCard('Featured Narratives', chips(collection.narratives)),
+                    attributeCard('Available As', chips(collection.availableAs)),
+                    attributeCard('Featured Works', chips(featured))
+                ].join('');
+            }
+
+            function renderWorks() {
+                document.getElementById('workGrid').innerHTML = collection.artworkIds.map(artworkId => {
+                    const artwork = artworks[artworkId];
+                    if (!artwork) return '';
+                    return `
+                        <a class="work-card" href="mailto:sjkhidkee@gmail.com?subject=${encodeURIComponent('Inquiry about: ' + artwork.title)}">
+                            <img src="${escapeHTML(artwork.image)}" alt="${escapeHTML(artwork.title)}" loading="lazy">
+                            <span class="work-card-body">
+                                <span class="work-collection">${escapeHTML(collection.shortTitle)}</span>
+                                <span class="work-title">${escapeHTML(artwork.title)}</span>
+                                <span class="work-status">${escapeHTML(artwork.status)}</span>
+                            </span>
+                        </a>
+                    `;
+                }).join('');
+            }
+
+            function renderMoreLinks() {
+                document.getElementById('moreLinks').innerHTML = collections
+                    .filter(item => item.id !== collection.id)
+                    .map(item => `<a href="collection-detail.html?collection=${encodeURIComponent(item.id)}">${escapeHTML(item.shortTitle)}</a>`)
+                    .join('');
+            }
+
+            function observeReveals() {
+                const revealObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('in');
+                            revealObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+                document.querySelectorAll('.reveal').forEach(element => revealObserver.observe(element));
+            }
+
+            function updateActiveRailLink() {
+                const sectionIds = ['top', 'details', 'works'];
+                let active = sectionIds[0];
+                sectionIds.forEach(sectionId => {
+                    const section = document.getElementById(sectionId);
+                    if (section && section.getBoundingClientRect().top < window.innerHeight * 0.42) {
+                        active = sectionId;
+                    }
+                });
+
+                document.querySelectorAll('.rail-links a').forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === '#' + active);
+                });
+            }
+
+            renderHeader();
+            renderBody();
+            renderWorks();
+            renderMoreLinks();
+            observeReveals();
+            updateActiveRailLink();
+            window.addEventListener('scroll', updateActiveRailLink, { passive: true });
+        })();
+    </script>
+</body>
+</html>

@@ -3,174 +3,1439 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collector's Room | Khidki</title>
-    <meta name="description" content="A private collection of curated artworks — handpicked, cherished, and held close to the heart.">
+    <title>Collections | Khidki</title>
+    <meta name="description" content="Explore Khidki's five art collections, then browse the featured paintings from each atmosphere system.">
     <link rel="icon" href="sjdp.jpeg" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/sidebar.css">
     <style>
         :root {
-            --bg-dark: #0a0a0f;
-            --text-main: #ffffff;
-            --text-dim: #a1a1aa;
-            --accent-gold: #d4af37;
-            --accent-rose: #e8b4bc;
-            --glass-bg: rgba(255, 255, 255, 0.06);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --void: #050509;
+            --ink: #0b0b13;
+            --ink-2: #11111c;
+            --ink-3: #171725;
+            --bone: #f4ede0;
+            --bone-dim: #c9c0b2;
+            --bone-mute: #8d8477;
+            --gold: #c9a06a;
+            --gold-bright: #e0b988;
+            --gold-deep: #8a6a3c;
+            --rose: #d78ca5;
+            --green: #7da27c;
+            --blue: #7098b8;
+            --serif: 'Cormorant Garamond', Georgia, serif;
+            --sans: 'Inter', 'Outfit', system-ui, sans-serif;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
         body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
             min-height: 100vh;
+            background: var(--void);
+            color: var(--bone);
+            font-family: var(--sans);
+            font-weight: 300;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
-        .nav {
+        body.locked { overflow: hidden; }
+        ::selection { background: var(--gold); color: var(--ink); }
+        button, a { font: inherit; }
+
+        .catalogue-rail {
             position: fixed;
-            top: 0; left: 0; right: 0;
-            padding: 20px 50px;
+            inset: 0 auto 0 0;
+            width: 56px;
+            height: 100vh;
+            background: var(--void);
+            border-right: 1px solid #1a1a26;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 0;
+            z-index: 90;
+        }
+
+        .catalogue-rail .nav-toggle {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            background: transparent;
+            border: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 2001;
+        }
+        .catalogue-rail .nav-toggle span {
+            display: block;
+            width: 18px;
+            height: 1px;
+            border-radius: 0;
+            background: var(--gold);
+            transition: transform 0.3s var(--ease-out), opacity 0.3s var(--ease-out);
+        }
+        .catalogue-rail .nav-toggle:hover span:first-child { transform: translateX(-3px); }
+        .catalogue-rail .nav-toggle:hover span:last-child { transform: translateX(3px); }
+        .catalogue-rail .nav-toggle.active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .catalogue-rail .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .catalogue-rail .nav-toggle.active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+        .rail-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            align-items: center;
+        }
+        .rail-links li {
+            width: 56px;
+            height: 86px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .rail-links a {
+            display: inline-block;
+            color: var(--bone-mute);
+            font-size: 9.5px;
+            letter-spacing: 0.28em;
+            line-height: 1;
+            text-decoration: none;
+            text-transform: uppercase;
+            transform: rotate(-90deg);
+            white-space: nowrap;
+            transition: color 0.2s;
+        }
+        .rail-links a:hover,
+        .rail-links a.active {
+            color: var(--gold);
+        }
+        .rail-links a.active {
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--gold);
+        }
+        .rail-foot {
+            color: var(--bone-mute);
+            font-size: 8.5px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            transform: rotate(-90deg);
+            white-space: nowrap;
+        }
+
+        .catalogue-main {
+            margin-left: 56px;
+            min-height: 100vh;
+            background:
+                linear-gradient(180deg, rgba(5, 5, 9, 0.15), rgba(5, 5, 9, 0.82)),
+                radial-gradient(ellipse at 15% 18%, rgba(125, 162, 124, 0.12), transparent 38%),
+                radial-gradient(ellipse at 85% 38%, rgba(112, 152, 184, 0.12), transparent 42%),
+                var(--void);
+        }
+
+        .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 1000;
-            background: linear-gradient(to bottom, rgba(10, 20, 40, 0.8), transparent);
-        }
-        .nav-logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 28px;
-            font-weight: 400;
-            color: var(--text-main);
-            text-decoration: none;
-            letter-spacing: 0.1em;
-        }
-        @media (max-width: 768px) {
-            .nav { padding: 15px 20px; }
-        }
-
-        /* Private Collection Grid */
-        .collection-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 24px;
-            opacity: 0;
-            animation: pageSlideUp 0.8s ease 0.3s forwards;
+            padding: 22px 40px;
+            border-bottom: 1px solid #1a1a26;
+            background: rgba(5, 5, 9, 0.94);
+            position: sticky;
+            top: 0;
+            z-index: 60;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
         }
-
-        .collection-card {
-            display: block;
+        .wordmark {
+            color: var(--gold);
+            font-family: var(--serif);
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 0.32em;
             text-decoration: none;
-            color: inherit;
+        }
+        .top-bar-center {
+            color: var(--bone-mute);
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+        .line-link {
+            color: var(--bone);
+            border: 1px solid #2a2a36;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 18px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            transition: all 0.3s var(--ease-out);
+            background: transparent;
+            cursor: pointer;
+        }
+        .line-link:hover { border-color: var(--gold); color: var(--gold); }
+        .arr {
+            display: inline-block;
+            width: 18px;
+            height: 1px;
+            background: currentColor;
             position: relative;
-            border-radius: 20px;
+            transition: width 0.3s var(--ease-out);
+        }
+        .arr::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: 0;
+            width: 6px;
+            height: 6px;
+            border-top: 1px solid currentColor;
+            border-right: 1px solid currentColor;
+            transform: rotate(45deg);
+        }
+        a:hover .arr,
+        button:hover .arr { width: 26px; }
+
+        .hero-collections {
+            display: grid;
+            grid-template-columns: minmax(320px, 380px) 1fr;
+            min-height: calc(100vh - 67px);
+        }
+        .hero-panel {
+            background:
+                linear-gradient(180deg, rgba(11, 11, 19, 0.15), rgba(7, 7, 12, 0.97)),
+                radial-gradient(ellipse at 30% 80%, rgba(201, 160, 106, 0.16), transparent 60%),
+                radial-gradient(ellipse at 75% 25%, rgba(112, 152, 184, 0.16), transparent 58%);
+            border-right: 1px solid #1a1a26;
             overflow: hidden;
-            aspect-ratio: 3/4;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            transition: all 0.4s ease;
+            padding: 60px 44px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
         }
-
-        .collection-card:hover {
-            border-color: var(--accent-gold);
-            transform: translateY(-6px);
-            box-shadow: 0 20px 50px -15px rgba(212, 175, 55, 0.2);
+        .hero-scene {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.9;
         }
-
-        .collection-card img {
+        .framed-window {
+            position: absolute;
+            top: 78px;
+            right: 30px;
+            width: 140px;
+            height: 202px;
+            border: 4px solid #58452c;
+            box-shadow: 0 18px 60px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(244, 237, 224, 0.22);
+            overflow: hidden;
+            background: #10131f;
+        }
+        .framed-window img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s ease;
+            opacity: 0.72;
+            filter: saturate(0.85) contrast(1.06);
         }
-
-        .collection-card:hover img {
-            transform: scale(1.05);
-        }
-
-        .collection-card .card-overlay {
+        .room-floor {
             position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.3) 40%, transparent 70%);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 40%;
+            background: linear-gradient(180deg, transparent, rgba(12, 9, 16, 0.96));
+        }
+        .floor-lamp {
+            position: absolute;
+            left: 30px;
+            bottom: 80px;
+            width: 60px;
+            height: 110px;
+        }
+        .lamp-shade {
+            position: absolute;
+            top: 0;
+            left: 10px;
+            width: 40px;
+            height: 36px;
+            background: linear-gradient(180deg, #4c351e, #1e1711);
+            clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%);
+            box-shadow: 0 0 40px rgba(201, 160, 106, 0.24);
+        }
+        .lamp-light {
+            position: absolute;
+            top: 34px;
+            left: 0;
+            width: 64px;
+            height: 74px;
+            background: radial-gradient(ellipse at 50% 0%, rgba(224, 185, 136, 0.32), transparent 68%);
+            filter: blur(2px);
+        }
+        .lamp-pole {
+            position: absolute;
+            left: 29px;
+            bottom: 0;
+            width: 2px;
+            height: 76px;
+            background: #17120d;
+        }
+        .chair {
+            position: absolute;
+            left: 100px;
+            bottom: 20px;
+            width: 180px;
+            height: 100px;
+            background: linear-gradient(180deg, #252131, #120f18);
+            border-radius: 6px 6px 2px 2px;
+            opacity: 0.74;
+            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.55);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding-bottom: 40px;
+        }
+        .hero-title {
+            color: var(--bone);
+            font-family: var(--serif);
+            font-size: clamp(42px, 4.3vw, 64px);
+            font-weight: 300;
+            line-height: 0.98;
+            margin-bottom: 28px;
+        }
+        .hero-title em {
+            color: var(--gold);
+            font-style: normal;
+        }
+        .hero-sub {
+            color: var(--bone-dim);
+            font-size: 13px;
+            line-height: 1.75;
+            max-width: 292px;
+            margin-bottom: 44px;
+        }
+
+        .collection-landing {
+            min-height: calc(100vh - 67px);
+            background:
+                linear-gradient(90deg, rgba(5, 5, 9, 0.96) 0%, rgba(5, 5, 9, 0.78) 28%, rgba(5, 5, 9, 0.2) 62%, rgba(5, 5, 9, 0.82) 100%),
+                linear-gradient(180deg, rgba(5, 5, 9, 0.18) 0%, rgba(5, 5, 9, 0.72) 58%, #050509 100%),
+                url('INVENTORY/DHOOP CHAAV (1).png') center / cover no-repeat;
+            border-bottom: 1px solid #1a1a26;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 24px;
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            padding: clamp(58px, 7vw, 96px) clamp(22px, 4vw, 64px) 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .collection-landing::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(201, 160, 106, 0.04) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(201, 160, 106, 0.04) 1px, transparent 1px);
+            background-size: 92px 92px;
+            opacity: 0.32;
+            pointer-events: none;
+        }
+        .collection-hero {
+            max-width: 520px;
+            position: relative;
+            z-index: 2;
+            padding-bottom: 34px;
+        }
+        .collection-hero .eyebrow {
+            margin-bottom: 18px;
+        }
+        .collection-hero-title {
+            color: var(--bone);
+            font-family: var(--serif);
+            font-size: clamp(56px, 7.5vw, 108px);
+            font-weight: 300;
+            letter-spacing: 0;
+            line-height: 0.94;
+            margin-bottom: 26px;
+        }
+        .collection-hero-rule {
+            align-items: center;
+            color: var(--gold);
+            display: flex;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+        .collection-hero-rule::before {
+            content: '*';
+            font-family: var(--serif);
+            font-size: 26px;
+            line-height: 1;
+        }
+        .collection-hero-rule::after {
+            content: '';
+            background: rgba(201, 160, 106, 0.45);
+            height: 1px;
+            width: 180px;
+        }
+        .collection-hero-copy {
+            color: var(--bone-dim);
+            font-size: 14px;
+            line-height: 1.75;
+            max-width: 390px;
+        }
+        .collection-card-grid {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            position: relative;
+            z-index: 2;
+        }
+        .collection-card {
+            background: rgba(6, 14, 14, 0.88);
+            border: 1px solid rgba(201, 160, 106, 0.36);
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            min-height: 430px;
+            overflow: hidden;
+            text-decoration: none;
+            transition: transform 0.35s var(--ease-out), border-color 0.35s var(--ease-out), background 0.35s var(--ease-out);
+        }
+        .collection-card:hover {
+            background: rgba(9, 22, 22, 0.96);
+            border-color: rgba(224, 185, 136, 0.82);
+            transform: translateY(-6px);
+        }
+        .collection-card-media {
+            aspect-ratio: 1.06 / 0.9;
+            background: var(--ink-2);
+            overflow: hidden;
+        }
+        .collection-card-media img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.65s var(--ease-out);
+        }
+        .collection-card:hover .collection-card-media img {
+            transform: scale(1.045);
+        }
+        .collection-card-body {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            padding: 22px 22px 20px;
+        }
+        .collection-card-num {
+            color: var(--gold);
+            font-family: var(--serif);
+            font-size: 20px;
+            line-height: 1;
+            margin-bottom: 14px;
+        }
+        .collection-card-title {
+            color: var(--gold-bright);
+            font-family: var(--serif);
+            font-size: clamp(22px, 1.6vw, 29px);
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            line-height: 0.95;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+        .collection-card-copy {
+            color: var(--bone-dim);
+            font-size: 13px;
+            line-height: 1.55;
+            margin-bottom: 28px;
+        }
+        .collection-card-link {
+            align-items: center;
+            color: var(--gold);
+            display: inline-flex;
+            gap: 12px;
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            margin-top: auto;
+            text-transform: uppercase;
+        }
+        .collection-benefits {
+            border-top: 1px solid rgba(201, 160, 106, 0.25);
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(280px, 0.8fr);
+            margin: 18px calc(clamp(22px, 4vw, 64px) * -1) 0;
+            position: relative;
+            z-index: 2;
+        }
+        .collection-benefit,
+        .muse-card {
+            align-items: center;
+            background: rgba(5, 10, 10, 0.82);
+            border-right: 1px solid rgba(201, 160, 106, 0.18);
+            display: grid;
+            gap: 16px;
+            grid-template-columns: 48px 1fr;
+            min-height: 130px;
+            padding: 28px 34px;
+        }
+        .benefit-icon {
+            align-items: center;
+            border: 1px solid rgba(201, 160, 106, 0.62);
+            border-radius: 50%;
+            color: var(--gold);
+            display: inline-flex;
+            font-family: var(--serif);
+            font-size: 28px;
+            height: 48px;
+            justify-content: center;
+            width: 48px;
+        }
+        .benefit-title {
+            color: var(--gold);
+            display: block;
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            margin-bottom: 7px;
+            text-transform: uppercase;
+        }
+        .benefit-copy {
+            color: var(--bone-dim);
+            display: block;
+            font-size: 12px;
+            line-height: 1.55;
+        }
+        .muse-card {
+            grid-template-columns: 76px 1fr;
+        }
+        .muse-card img {
+            border: 1px solid rgba(201, 160, 106, 0.34);
+            height: 82px;
+            object-fit: cover;
+            width: 62px;
+        }
+        .muse-card a {
+            color: var(--gold);
+            display: inline-flex;
+            gap: 10px;
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            margin-top: 10px;
+            text-decoration: none;
+            text-transform: uppercase;
         }
 
-        .collection-card:hover .card-overlay {
-            opacity: 1;
+        .suites-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-auto-rows: minmax(320px, 1fr);
         }
-
-        .card-overlay h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 22px;
+        .suite-cell {
+            display: grid;
+            grid-template-columns: minmax(170px, 0.92fr) minmax(210px, 1.32fr);
+            gap: 28px;
+            min-height: 320px;
+            padding: 32px 32px 28px;
+            border-right: 1px solid #1a1a26;
+            border-bottom: 1px solid #1a1a26;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: background 0.45s var(--ease-out), transform 0.45s var(--ease-out);
+        }
+        .suite-cell:nth-child(2n) { border-right: 0; }
+        .suite-cell:last-child:nth-child(odd) {
+            grid-column: span 2;
+            border-right: 0;
+        }
+        .suite-cell:last-child { border-bottom: 0; }
+        .suite-cell:hover { background: rgba(255, 255, 255, 0.018); }
+        .suite-cell::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0.18;
+            pointer-events: none;
+            background: linear-gradient(135deg, var(--suite-accent, #c9a06a), transparent 36%);
+        }
+        .suite-copy {
+            position: relative;
+            z-index: 2;
+        }
+        .suite-num {
+            color: var(--gold);
+            font-family: var(--serif);
+            font-size: 32px;
+            font-weight: 300;
+            line-height: 1;
+            margin-bottom: 14px;
+        }
+        .suite-name {
+            color: var(--bone);
+            font-family: var(--serif);
+            font-size: 23px;
             font-weight: 400;
-            margin-bottom: 6px;
+            line-height: 1.08;
+            margin-bottom: 10px;
         }
-
-        .card-overlay .card-tag {
+        .suite-count {
+            color: var(--bone-mute);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .suite-subtitle {
+            color: var(--bone-dim);
+            font-family: var(--serif);
+            font-size: 15px;
+            font-style: italic;
+            line-height: 1.25;
+            margin-bottom: 16px;
+        }
+        .suite-mood {
+            color: var(--gold);
+            font-size: 9.5px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+        .suite-desc {
+            color: var(--bone-dim);
+            font-size: 11.8px;
+            line-height: 1.7;
+            max-width: 240px;
+            margin-bottom: 20px;
+        }
+        .suite-palette {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 22px;
+        }
+        .sw {
+            display: block;
+            width: 18px;
+            height: 18px;
+            border-radius: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .suite-explore {
+            color: var(--bone);
+            background: transparent;
+            border: 0;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            color: var(--accent-gold);
+            gap: 10px;
+            cursor: pointer;
+            font-size: 10px;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            transition: color 0.3s;
+        }
+        .suite-explore:hover { color: var(--gold); }
+
+        .mosaic {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 4px;
+            align-self: start;
+            position: relative;
+            z-index: 2;
+        }
+        .tile {
+            border: 0;
+            background: var(--ink-2);
+            display: block;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 1;
+            padding: 0;
+            transition: transform 0.45s var(--ease-out);
+        }
+        .tile:hover {
+            transform: scale(1.04);
+            z-index: 4;
+        }
+        .tile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: saturate(0.92) contrast(1.03);
+        }
+        .tile-label {
+            position: absolute;
+            inset: auto 0 0 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.86));
+            padding: 8px 10px;
+            opacity: 0;
+            text-align: left;
+            transition: opacity 0.25s;
+        }
+        .tile:hover .tile-label { opacity: 1; }
+        .tile-title {
+            color: var(--bone);
+            display: block;
+            font-family: var(--serif);
+            font-size: 11px;
+            font-style: italic;
+            line-height: 1.1;
+        }
+        .tile-meta {
+            color: var(--gold);
+            display: block;
+            font-size: 8.5px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-top: 2px;
         }
 
-        .card-overlay .card-tag svg {
+        .details-section {
+            background:
+                radial-gradient(ellipse at 10% 10%, rgba(201, 160, 106, 0.09), transparent 42%),
+                var(--ink-2);
+            border-top: 1px solid #1a1a26;
+            padding: 96px 60px;
+        }
+        .collection-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1px;
+            background: #1a1a26;
+            border: 1px solid #1a1a26;
+        }
+        .collection-detail-card {
+            background: var(--ink);
+            min-height: 100%;
+            padding: 30px 26px;
+        }
+        .detail-num {
+            color: var(--gold);
+            font-family: var(--serif);
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+        .detail-title {
+            color: var(--bone);
+            font-family: var(--serif);
+            font-size: 25px;
+            font-weight: 400;
+            line-height: 1.05;
+            margin-bottom: 9px;
+        }
+        .detail-subtitle {
+            color: var(--gold);
+            font-family: var(--serif);
+            font-size: 15px;
+            font-style: italic;
+            line-height: 1.25;
+            margin-bottom: 22px;
+        }
+        .detail-body {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 26px;
+        }
+        .detail-body p {
+            color: var(--bone-dim);
+            font-size: 11.8px;
+            line-height: 1.72;
+        }
+        .detail-groups {
+            display: grid;
+            gap: 18px;
+        }
+        .detail-label {
+            color: var(--bone-mute);
+            display: block;
+            font-size: 8.5px;
+            letter-spacing: 0.24em;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .detail-chip,
+        .palette-chip {
+            border: 1px solid #292938;
+            color: var(--bone-dim);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 28px;
+            padding: 6px 9px;
+            font-size: 10.5px;
+            line-height: 1.2;
+        }
+        .palette-chip .sw {
+            flex: 0 0 auto;
             width: 14px;
             height: 14px;
+            margin: 0;
         }
 
-        .private-notice {
-            text-align: center;
-            padding: 40px 20px 0;
+        .featured-section {
+            background: var(--ink);
+            border-top: 1px solid #1a1a26;
+            padding: 96px 60px;
+        }
+        .section-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 40px;
+            margin-bottom: 46px;
+        }
+        .eyebrow {
+            color: var(--gold);
+            font-size: 9.5px;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .section-title {
+            color: var(--bone);
+            font-family: var(--serif);
+            font-size: clamp(36px, 4vw, 58px);
+            font-weight: 300;
+            line-height: 1;
+        }
+        .section-title em {
+            color: var(--gold);
+            font-style: italic;
+        }
+        .section-intro {
+            color: var(--bone-dim);
+            font-size: 13px;
+            line-height: 1.75;
+            max-width: 390px;
+        }
+        .filters {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+        .filter-pill {
+            color: var(--bone-dim);
+            background: transparent;
+            border: 1px solid #2a2a36;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            padding: 9px 16px;
+            text-transform: uppercase;
+            transition: all 0.3s var(--ease-out);
+        }
+        .filter-pill:hover { border-color: var(--bone-mute); color: var(--bone); }
+        .filter-pill.active {
+            background: var(--gold);
+            color: var(--ink);
+            border-color: var(--gold);
+        }
+        .artwork-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 28px 12px;
+        }
+        .art-card {
+            background: transparent;
+            border: 0;
+            color: inherit;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            text-align: left;
+        }
+        .art-card[hidden] { display: none; }
+        .art-image {
+            background: var(--ink-2);
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 4 / 5;
+        }
+        .art-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s var(--ease-out);
+        }
+        .art-card:hover .art-image img { transform: scale(1.04); }
+        .art-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 38%, rgba(0, 0, 0, 0.86));
+            display: flex;
+            align-items: flex-end;
+            padding: 18px;
             opacity: 0;
-            animation: pageSlideUp 0.8s ease 0.4s forwards;
+            transition: opacity 0.25s;
+        }
+        .art-card:hover .art-overlay { opacity: 1; }
+        .quick-view {
+            width: 100%;
+            color: var(--ink);
+            background: var(--gold);
+            border: 0;
+            padding: 11px 10px;
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 9.5px;
+            letter-spacing: 0.22em;
+        }
+        .art-caption { padding: 0 4px; }
+        .art-tag {
+            color: var(--bone-mute);
+            font-size: 8.5px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .art-name {
+            color: var(--bone);
+            font-family: var(--serif);
+            font-size: 19px;
+            font-style: italic;
+            line-height: 1.1;
+            margin-bottom: 5px;
+        }
+        .art-status {
+            color: var(--gold);
+            font-size: 10.5px;
+            letter-spacing: 0.08em;
         }
 
-        .private-notice p {
-            color: rgba(255, 255, 255, 0.4);
+        .catalogue-section {
+            background:
+                linear-gradient(180deg, #050509, #08060a),
+                radial-gradient(ellipse at 82% 24%, rgba(201, 160, 106, 0.08), transparent 42%);
+            border-top: 1px solid #1a1a26;
+            padding: 130px 60px;
+            overflow: hidden;
+        }
+        .archive-head {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 80px;
+            margin-bottom: 60px;
+        }
+        .archive-title {
+            color: var(--bone);
+            font-family: var(--serif);
+            font-size: clamp(48px, 5vw, 84px);
+            font-weight: 300;
+            line-height: 0.95;
+        }
+        .archive-title em {
+            color: var(--gold);
+            display: block;
+            font-style: italic;
+        }
+        .archive-body {
+            align-self: end;
+            color: var(--bone-mute);
+            font-size: 13px;
+            line-height: 1.85;
+            max-width: 420px;
+            padding-bottom: 6px;
+        }
+        .archive-body p + p { margin-top: 12px; }
+        .positioning-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 1px;
+            background: #1a1a26;
+            border: 1px solid #1a1a26;
+            margin-bottom: 56px;
+        }
+        .positioning-card {
+            background: var(--ink-2);
+            padding: 28px 24px;
+        }
+        .positioning-label {
+            color: var(--gold);
+            display: block;
+            font-size: 8.5px;
+            letter-spacing: 0.32em;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+        .positioning-title {
+            color: var(--bone);
+            font-family: var(--serif);
+            font-size: 22px;
+            font-style: italic;
+            font-weight: 400;
+            line-height: 1.05;
+            margin-bottom: 20px;
+        }
+        .positioning-row {
+            border-top: 1px solid #252535;
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+        .positioning-row strong {
+            color: var(--bone-mute);
+            display: block;
+            font-size: 8.5px;
+            letter-spacing: 0.22em;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+        .positioning-row span {
+            color: var(--bone-dim);
+            display: block;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .formats-panel {
+            border-top: 1px solid #1a1a22;
+            padding-top: 46px;
+        }
+        .formats-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 24px;
+        }
+        .formats-title {
+            color: var(--bone);
+            font-family: var(--serif);
+            font-size: 30px;
+            font-weight: 400;
+        }
+        .formats-note {
+            color: var(--bone-mute);
+            font-size: 12px;
+            line-height: 1.7;
+            max-width: 420px;
+        }
+        .formats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+            margin-bottom: 34px;
+        }
+        .format-card {
+            border: 1px solid #252535;
+            color: var(--bone-dim);
+            padding: 18px 16px;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            min-height: 70px;
+            text-transform: uppercase;
+        }
+        .catalogue-closing {
+            border-top: 1px solid #1a1a22;
+            color: var(--bone);
+            display: grid;
+            gap: 8px;
+            padding-top: 28px;
+        }
+        .catalogue-closing span:first-child {
+            color: var(--gold);
+            font-family: var(--serif);
+            font-size: 24px;
+            font-style: italic;
+        }
+        .catalogue-closing span:last-child {
+            color: var(--bone-dim);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .contact-band {
+            background: var(--bone);
+            color: var(--ink);
+            border-top: 1px solid #1a1a26;
+            padding: 96px 60px;
+        }
+        .contact-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+        .contact-eyebrow {
+            color: #6a5a3a;
+            font-size: 10px;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+        .contact-title {
+            color: var(--ink);
+            font-family: var(--serif);
+            font-size: clamp(40px, 4.5vw, 64px);
+            font-weight: 300;
+            line-height: 1;
+            margin-bottom: 28px;
+        }
+        .contact-title em {
+            color: var(--gold-deep);
+            font-style: italic;
+        }
+        .contact-body {
+            color: #4a4030;
+            font-size: 14px;
+            line-height: 1.8;
+            max-width: 480px;
+            margin-bottom: 28px;
+        }
+        .contact-email {
+            color: var(--ink);
+            border-bottom: 1px solid var(--ink);
+            font-family: var(--serif);
+            font-size: 22px;
+            font-style: italic;
+            padding-bottom: 4px;
+            text-decoration: none;
+        }
+        .contact-panel {
+            background: #fffaf1;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            padding: 34px;
+        }
+        .contact-panel h3 {
+            color: var(--ink);
+            font-family: var(--serif);
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 22px;
+        }
+        .contact-list {
+            display: grid;
+            gap: 18px;
+        }
+        .contact-item {
+            border-top: 1px solid #e5d7bd;
+            padding-top: 16px;
+        }
+        .contact-item strong {
+            color: var(--ink);
+            display: block;
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+        .contact-item span {
+            color: #5c513f;
+            display: block;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: var(--void);
+            border-top: 1px solid #1a1a26;
+            color: var(--bone-mute);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+            padding: 34px 60px;
+        }
+        .foot-word {
+            color: var(--gold);
+            font-family: var(--serif);
+            font-size: 18px;
+            letter-spacing: 0.3em;
+        }
+        .foot-meta {
+            color: var(--bone-mute);
+            font-size: 9.5px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+        .foot-meta a {
+            color: var(--bone-mute);
+            text-decoration: none;
+        }
+        .foot-meta a:hover { color: var(--gold); }
+        .foot-tag {
+            color: var(--bone-dim);
+            font-family: var(--serif);
             font-size: 14px;
             font-style: italic;
         }
 
-        @media (max-width: 768px) {
-            .collection-grid {
-                grid-template-columns: 1fr 1fr;
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 2100;
+            background: rgba(5, 5, 9, 0.86);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s var(--ease-out);
+        }
+        .modal-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .art-modal {
+            background: var(--ink);
+            border: 1px solid #2a2a36;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            max-width: 980px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: auto;
+            position: relative;
+            transform: translateY(18px);
+            transition: transform 0.35s var(--ease-out);
+        }
+        .modal-backdrop.open .art-modal { transform: translateY(0); }
+        .modal-close {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            z-index: 3;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid rgba(244, 237, 224, 0.2);
+            background: rgba(244, 237, 224, 0.1);
+            color: var(--bone);
+            cursor: pointer;
+            font-size: 22px;
+            line-height: 1;
+            transition: all 0.25s;
+        }
+        .modal-close:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--ink);
+        }
+        .modal-art {
+            min-height: 460px;
+            background: var(--ink-2);
+        }
+        .modal-art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .modal-body {
+            padding: 48px 40px;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-tag {
+            color: var(--gold);
+            font-size: 9.5px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        .modal-name {
+            color: var(--bone);
+            font-family: var(--serif);
+            font-size: 42px;
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        .modal-meta {
+            color: var(--bone-mute);
+            font-family: var(--serif);
+            font-size: 15px;
+            font-style: italic;
+            margin-bottom: 28px;
+        }
+        .modal-desc {
+            color: var(--bone-dim);
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 34px;
+        }
+        .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: auto;
+        }
+        .modal-btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #2a2a36;
+            color: var(--bone);
+            background: transparent;
+            cursor: pointer;
+            min-height: 48px;
+            padding: 14px 16px;
+            text-align: center;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.22em;
+            transition: all 0.25s;
+        }
+        .modal-btn.primary {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--ink);
+        }
+        .modal-btn:hover { border-color: var(--gold); color: var(--gold); }
+        .modal-btn.primary:hover {
+            background: var(--gold-bright);
+            border-color: var(--gold-bright);
+            color: var(--ink);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+        }
+        .reveal.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1220px) {
+            .hero-collections { grid-template-columns: 1fr; }
+            .collection-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .collection-card { min-height: 390px; }
+            .collection-benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .muse-card { grid-column: span 2; }
+            .hero-panel {
+                min-height: 72vh;
+                border-right: 0;
+                border-bottom: 1px solid #1a1a26;
+            }
+            .suite-cell:last-child:nth-child(odd) { grid-column: auto; }
+            .artwork-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .archive-head,
+            .contact-inner { grid-template-columns: 1fr; gap: 36px; }
+            .collection-details-grid,
+            .positioning-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .formats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 900px) {
+            .catalogue-rail { width: 44px; }
+            .catalogue-main { margin-left: 44px; }
+            .rail-links { gap: 10px; }
+            .rail-links li { width: 44px; height: 74px; }
+            .rail-links a { font-size: 8.5px; letter-spacing: 0.24em; }
+            .rail-foot { display: none; }
+            .top-bar { padding: 18px 20px; }
+            .wordmark { font-size: 17px; }
+            .top-bar-center { display: none; }
+            .line-link { padding: 9px 13px; }
+            .hero-panel { padding: 42px 28px; }
+            .framed-window { width: 92px; height: 132px; top: 52px; right: 22px; }
+            .chair { left: 82px; width: 138px; }
+            .suites-grid { grid-template-columns: 1fr; }
+            .suite-cell {
+                grid-template-columns: 1fr;
+                padding: 28px 24px;
+                border-right: 0;
+            }
+            .mosaic { min-height: 180px; }
+            .featured-section,
+            .details-section,
+            .catalogue-section,
+            .contact-band { padding: 68px 24px; }
+            .section-head {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            .artwork-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .formats-head {
+                flex-direction: column;
                 gap: 12px;
             }
-            .collection-card {
-                aspect-ratio: 3/4;
+            .art-modal {
+                grid-template-columns: 1fr;
+                max-height: 95vh;
+            }
+            .modal-art { min-height: 320px; }
+            .modal-body { padding: 34px 26px; }
+            footer {
+                flex-direction: column;
+                text-align: center;
+                padding: 30px 24px;
             }
         }
 
-        @media (max-width: 480px) {
-            .collection-grid {
+        @media (max-width: 620px) {
+            .rail-links { display: none; }
+            .top-bar { align-items: flex-start; flex-direction: column; }
+            .hero-title { font-size: 42px; }
+            .hero-sub { max-width: 250px; }
+            .collection-landing { padding: 54px 18px 0; }
+            .collection-hero-title { font-size: 48px; }
+            .collection-card-grid { grid-template-columns: 1fr; }
+            .collection-card { min-height: 360px; }
+            .collection-benefits {
                 grid-template-columns: 1fr;
+                margin-left: -18px;
+                margin-right: -18px;
             }
+            .muse-card { grid-column: auto; }
+            .artwork-grid { grid-template-columns: 1fr; }
+            .collection-details-grid,
+            .positioning-grid,
+            .formats-grid { grid-template-columns: 1fr; }
+            .contact-panel { padding: 26px; }
+            .modal-backdrop { padding: 18px; }
+            .modal-actions { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="page-bg-gradient"></div>
-
-    <!-- Navigation -->
-    <nav class="nav" id="nav">
-        <a href="index.html" class="nav-logo">Khidki</a>
+    <aside class="catalogue-rail">
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
             <span></span><span></span><span></span>
         </button>
-    </nav>
+        <ul class="rail-links">
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#featured">Works</a></li>
+            <li><a href="#collections" class="active">Collections</a></li>
+        </ul>
+        <span class="rail-foot">Curated with Intention</span>
+    </aside>
 
-    <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <!-- Sidebar Navigation -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <span class="sidebar-brand">Khidki</span>
@@ -197,53 +1462,385 @@
         </div>
     </aside>
 
-    <main class="page-wrapper">
-        <div class="page-container">
-            <div class="page-hero">
-                <h1>Collector's Room</h1>
-                <p class="page-subtitle">— Private Collection —</p>
-                <p>Handpicked pieces that hold a special place. These artworks are part of the private collection — curated, cherished, and held close to the heart.</p>
+    <main class="catalogue-main">
+        <section id="collections">
+            <div class="top-bar">
+                <a class="wordmark" href="index.html">KHIDKI</a>
+                <span class="top-bar-center">Art • Story • Atmosphere</span>
+                <a class="line-link" href="#featured">View Paintings <span class="arr"></span></a>
             </div>
 
-            <div class="collection-grid">
-                <a href="painting.html?id=1" class="collection-card">
-                    <img loading="lazy" src="khidki_artifacts/Kshitij 1.png" alt="Kshitij">
-                    <div class="card-overlay">
-                        <h3>Kshitij</h3>
-                        <span class="card-tag">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                            Private Collection
-                        </span>
-                    </div>
-                </a>
-                <a href="painting.html?id=4" class="collection-card">
-                    <img loading="lazy" src="khidki_artifacts/PORTAL 4.png" alt="Portal">
-                    <div class="card-overlay">
-                        <h3>Portal</h3>
-                        <span class="card-tag">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                            Private Collection
-                        </span>
-                    </div>
-                </a>
-                <a href="painting.html?id=6" class="collection-card">
-                    <img loading="lazy" src="khidki_artifacts/Mannat 6.png" alt="Mannat">
-                    <div class="card-overlay">
-                        <h3>Mannat</h3>
-                        <span class="card-tag">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                            Private Collection
-                        </span>
-                    </div>
-                </a>
-            </div>
+            <div class="collection-landing">
+                <div class="collection-hero reveal">
+                    <p class="eyebrow">Our Collections</p>
+                    <h1 class="collection-hero-title">Five Worlds.<br>Infinite<br>Atmospheres.</h1>
+                    <div class="collection-hero-rule" aria-hidden="true"></div>
+                    <p class="collection-hero-copy">Each Khidki collection is a universe of emotions, stories and colors - crafted to transform spaces into experiences people carry with them.</p>
+                </div>
 
-            <div class="private-notice">
-                <p>These pieces are not currently available for sale. For inquiries about similar works, visit the <a href="counter-window.html" style="color: var(--accent-gold); text-decoration: none;">Counter Window</a>.</p>
+                <div class="collection-card-grid reveal" id="collectionsGrid" aria-label="Khidki collection suites"></div>
+
+                <div class="collection-benefits reveal">
+                    <div class="collection-benefit">
+                        <span class="benefit-icon">I</span>
+                        <span>
+                            <strong class="benefit-title">Curated with Intention</strong>
+                            <span class="benefit-copy">Every artwork is selected to build a meaningful atmosphere.</span>
+                        </span>
+                    </div>
+                    <div class="collection-benefit">
+                        <span class="benefit-icon">II</span>
+                        <span>
+                            <strong class="benefit-title">Art that Speaks</strong>
+                            <span class="benefit-copy">Originals, prints and experiences that tell your story.</span>
+                        </span>
+                    </div>
+                    <div class="collection-benefit">
+                        <span class="benefit-icon">III</span>
+                        <span>
+                            <strong class="benefit-title">Designed for Spaces</strong>
+                            <span class="benefit-copy">Created to elevate hospitality, homes and workspaces.</span>
+                        </span>
+                    </div>
+                    <div class="collection-benefit">
+                        <span class="benefit-icon">IV</span>
+                        <span>
+                            <strong class="benefit-title">Made to Be Remembered</strong>
+                            <span class="benefit-copy">We create lasting impressions, not just decorated walls.</span>
+                        </span>
+                    </div>
+                    <div class="muse-card">
+                        <img src="INVENTORY/COLLECTOR (1).png" alt="">
+                        <span>
+                            <strong class="benefit-title">Muse Card</strong>
+                            <span class="benefit-copy">Discover the story behind each artwork.</span>
+                            <a href="space-shop.html">Explore Now <span class="arr"></span></a>
+                        </span>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <section class="featured-section" id="featured">
+            <div class="section-inner">
+                <div class="section-head reveal">
+                    <div>
+                        <p class="eyebrow">Featured Works</p>
+                        <h2 class="section-title">Browse by <em>Collection.</em></h2>
+                    </div>
+                    <p class="section-intro">The work grid renders directly from the inventory folder. Filter by collection, then open a piece for its catalogue context and inquiry path.</p>
+                </div>
+                <div class="filters reveal" id="collectionFilters"></div>
+                <div class="artwork-grid reveal" id="artworkGrid"></div>
+            </div>
+        </section>
+
+        <section class="contact-band" id="contact">
+            <div class="contact-inner">
+                <div class="reveal">
+                    <p class="contact-eyebrow">Begin a Conversation</p>
+                    <h2 class="contact-title">Let's place<br><em>the right feeling</em><br>in the room.</h2>
+                    <p class="contact-body">Tell us about the space, the mood, or the piece you are drawn to. Khidki can help with a single work, a fine art print, a hospitality package, or a complete atmosphere system.</p>
+                    <a class="contact-email" href="mailto:sjkhidkee@gmail.com">sjkhidkee@gmail.com</a>
+                </div>
+                <div class="contact-panel reveal">
+                    <h3>Collection Paths</h3>
+                    <div class="contact-list">
+                        <div class="contact-item">
+                            <strong>Originals & Prints</strong>
+                            <span>Original paintings, fine art prints, framed editions, and collector editions.</span>
+                        </div>
+                        <div class="contact-item">
+                            <strong>Hospitality Packages</strong>
+                            <span>Curated sets for cafes, boutique stays, offices, studios, lounges, and common areas.</span>
+                        </div>
+                        <div class="contact-item">
+                            <strong>Atmosphere Systems</strong>
+                            <span>Moodboards, muse card experiences, and interior story installations built around the collection mood.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <span class="foot-word">KHIDKI</span>
+            <span class="foot-meta">2026 Khidki Studio</span>
+            <span class="foot-tag">Curated with intention.</span>
+            <span class="foot-meta"><a href="mailto:sjkhidkee@gmail.com">sjkhidkee@gmail.com</a></span>
+        </footer>
     </main>
 
+    <div class="modal-backdrop" id="artworkModal" aria-hidden="true">
+        <div class="art-modal" role="dialog" aria-modal="true" aria-labelledby="modalName">
+            <button class="modal-close" type="button" id="modalClose" aria-label="Close artwork details">&times;</button>
+            <div class="modal-art">
+                <img id="modalImage" src="" alt="">
+            </div>
+            <div class="modal-body">
+                <p class="modal-tag" id="modalTag"></p>
+                <h2 class="modal-name" id="modalName"></h2>
+                <p class="modal-meta" id="modalMeta"></p>
+                <p class="modal-desc" id="modalDesc"></p>
+                <div class="modal-actions">
+                    <a class="modal-btn" id="modalStory" href="#">View Full Story</a>
+                    <a class="modal-btn primary" id="modalInquiry" href="#">Send Inquiry</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/collections-data.js"></script>
     <script src="js/sidebar.js"></script>
+    <script>
+        (function () {
+            'use strict';
+
+            const data = window.KHIDKI_COLLECTION_PAGE;
+            if (!data) return;
+
+            const catalogue = data.catalogue || {};
+            const collections = data.collections;
+            const artworks = data.artworks;
+            const collectionById = Object.fromEntries(collections.map(collection => [collection.id, collection]));
+            const artworkEntries = Object.entries(artworks);
+            const collectionsGrid = document.getElementById('collectionsGrid');
+            const filters = document.getElementById('collectionFilters');
+            const artworkGrid = document.getElementById('artworkGrid');
+            const modal = document.getElementById('artworkModal');
+            const modalClose = document.getElementById('modalClose');
+
+            function escapeHTML(value) {
+                return String(value).replace(/[&<>"']/g, function (char) {
+                    return {
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        "'": '&#39;'
+                    }[char];
+                });
+            }
+
+            function getCollectionIdsForArtwork(artworkId) {
+                return collections
+                    .filter(collection => collection.artworkIds.includes(artworkId))
+                    .map(collection => collection.id);
+            }
+
+            function getPrimaryCollection(artworkId) {
+                const collectionId = getCollectionIdsForArtwork(artworkId)[0];
+                return collectionById[collectionId] || collections[0];
+            }
+
+            function renderPalette(collection) {
+                return collection.palette.map((color, index) => (
+                    `<span class="sw" title="${escapeHTML((collection.paletteNames || [])[index] || color)}" style="background:${escapeHTML(color)}"></span>`
+                )).join('');
+            }
+
+            function renderChipList(items) {
+                return (items || []).map(item => (
+                    `<span class="detail-chip">${escapeHTML(item)}</span>`
+                )).join('');
+            }
+
+            function renderPaletteList(collection) {
+                return (collection.paletteNames || []).map((name, index) => `
+                    <span class="palette-chip">
+                        <span class="sw" style="background:${escapeHTML(collection.palette[index] || collection.palette[0])}"></span>
+                        ${escapeHTML(name)}
+                    </span>
+                `).join('');
+            }
+
+            function renderDetailGroup(label, content) {
+                if (!content) return '';
+                return `
+                    <div>
+                        <span class="detail-label">${escapeHTML(label)}</span>
+                        <div class="chip-row">${content}</div>
+                    </div>
+                `;
+            }
+
+            function renderMosaic(collection) {
+                const tileIds = collection.artworkIds.filter(artworkId => artworks[artworkId]);
+                if (!tileIds.length) return '';
+
+                while (tileIds.length < 8) {
+                    tileIds.push(collection.artworkIds[tileIds.length % collection.artworkIds.length]);
+                }
+
+                return tileIds.slice(0, 8).map(artworkId => {
+                    const artwork = artworks[artworkId];
+                    return `
+                        <button class="tile" type="button" data-artwork="${escapeHTML(artworkId)}" aria-label="View ${escapeHTML(artwork.title)}">
+                            <img src="${escapeHTML(artwork.image)}" alt="${escapeHTML(artwork.title)}" loading="lazy">
+                            <span class="tile-label">
+                                <span class="tile-title">${escapeHTML(artwork.title)}</span>
+                                <span class="tile-meta">${escapeHTML(artwork.status)}</span>
+                            </span>
+                        </button>
+                    `;
+                }).join('');
+            }
+
+            function renderCollections() {
+                collectionsGrid.innerHTML = collections.map(collection => `
+                    <a class="collection-card" href="collection-detail.html?collection=${encodeURIComponent(collection.id)}" style="--suite-accent:${escapeHTML(collection.palette[2] || collection.palette[0])}">
+                        <span class="collection-card-media">
+                            <img src="${escapeHTML(collection.coverImage || artworks[collection.artworkIds[0]].image)}" alt="${escapeHTML(collection.title)}" loading="lazy">
+                        </span>
+                        <span class="collection-card-body">
+                            <span class="collection-card-num">${escapeHTML(collection.number)}</span>
+                            <span class="collection-card-title">${escapeHTML(collection.title)}</span>
+                            <span class="collection-card-copy">${escapeHTML(collection.cardText || collection.subtitle)}</span>
+                            <span class="suite-palette" aria-label="${escapeHTML(collection.shortTitle)} palette">${renderPalette(collection)}</span>
+                            <span class="collection-card-link">Explore Collection <span class="arr"></span></span>
+                        </span>
+                    </a>
+                `).join('');
+            }
+
+            function renderFilters() {
+                const collectionFilters = collections.map(collection => `
+                    <button class="filter-pill" type="button" data-filter="${escapeHTML(collection.id)}">${escapeHTML(collection.shortTitle)}</button>
+                `).join('');
+
+                filters.innerHTML = `
+                    <button class="filter-pill active" type="button" data-filter="all">All Works</button>
+                    ${collectionFilters}
+                `;
+            }
+
+            function renderArtworkGrid() {
+                artworkGrid.innerHTML = artworkEntries.map(([artworkId, artwork]) => {
+                    const collectionIds = getCollectionIdsForArtwork(artworkId);
+                    const primary = getPrimaryCollection(artworkId);
+                    return `
+                        <button class="art-card" type="button" data-artwork="${escapeHTML(artworkId)}" data-collections="${escapeHTML(collectionIds.join(' '))}">
+                            <span class="art-image">
+                                <img src="${escapeHTML(artwork.image)}" alt="${escapeHTML(artwork.title)}" loading="lazy">
+                                <span class="art-overlay"><span class="quick-view">Quick View</span></span>
+                            </span>
+                            <span class="art-caption">
+                                <span class="art-tag">${escapeHTML(primary.shortTitle)}</span>
+                                <span class="art-name">${escapeHTML(artwork.title)}</span>
+                                <span class="art-status">${escapeHTML(artwork.status)}</span>
+                            </span>
+                        </button>
+                    `;
+                }).join('');
+            }
+
+            function filterWorks(filter) {
+                filters.querySelectorAll('.filter-pill').forEach(button => {
+                    button.classList.toggle('active', button.dataset.filter === filter);
+                });
+
+                artworkGrid.querySelectorAll('.art-card').forEach(card => {
+                    const show = filter === 'all' || card.dataset.collections.split(' ').includes(filter);
+                    card.hidden = !show;
+                });
+
+                document.getElementById('featured').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            function openArtwork(artworkId) {
+                const artwork = artworks[artworkId];
+                if (!artwork) return;
+
+                const collectionNames = getCollectionIdsForArtwork(artworkId)
+                    .map(collectionId => collectionById[collectionId].shortTitle)
+                    .join(' / ');
+
+                document.getElementById('modalTag').textContent = collectionNames;
+                document.getElementById('modalName').textContent = artwork.title;
+                document.getElementById('modalMeta').textContent = `${artwork.medium}  /  ${artwork.status}`;
+                document.getElementById('modalDesc').textContent = artwork.description;
+                document.getElementById('modalImage').src = artwork.image;
+                document.getElementById('modalImage').alt = artwork.title;
+                const storyLink = document.getElementById('modalStory');
+                if (artwork.paintingId) {
+                    storyLink.hidden = false;
+                    storyLink.href = `painting.html?id=${artwork.paintingId}`;
+                } else {
+                    storyLink.hidden = true;
+                    storyLink.removeAttribute('href');
+                }
+                document.getElementById('modalInquiry').href = `mailto:sjkhidkee@gmail.com?subject=${encodeURIComponent('Inquiry about: ' + artwork.title)}`;
+
+                modal.classList.add('open');
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('locked');
+            }
+
+            function closeArtwork() {
+                modal.classList.remove('open');
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('locked');
+            }
+
+            function observeReveals() {
+                const revealObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('in');
+                            revealObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+                document.querySelectorAll('.reveal').forEach(element => revealObserver.observe(element));
+            }
+
+            function updateActiveRailLink() {
+                const sectionIds = ['collections', 'featured', 'contact'];
+                let active = sectionIds[0];
+                sectionIds.forEach(sectionId => {
+                    const section = document.getElementById(sectionId);
+                    if (section && section.getBoundingClientRect().top < window.innerHeight * 0.42) {
+                        active = sectionId;
+                    }
+                });
+
+                document.querySelectorAll('.rail-links a').forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === '#' + active);
+                });
+            }
+
+            renderCollections();
+            renderFilters();
+            renderArtworkGrid();
+            observeReveals();
+            updateActiveRailLink();
+
+            filters.addEventListener('click', function (event) {
+                const filter = event.target.closest('[data-filter]');
+                if (filter) filterWorks(filter.dataset.filter);
+            });
+
+            artworkGrid.addEventListener('click', function (event) {
+                const card = event.target.closest('[data-artwork]');
+                if (card) openArtwork(card.dataset.artwork);
+            });
+
+            document.querySelectorAll('[data-scroll-target]').forEach(button => {
+                button.addEventListener('click', function () {
+                    document.getElementById(button.dataset.scrollTarget).scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            modalClose.addEventListener('click', closeArtwork);
+            modal.addEventListener('click', function (event) {
+                if (event.target === modal) closeArtwork();
+            });
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') closeArtwork();
+            });
+            window.addEventListener('scroll', updateActiveRailLink, { passive: true });
+        })();
+    </script>
 </body>
 </html>

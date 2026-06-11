@@ -1,0 +1,2829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KHIDKI — Art Collections for Hospitality &amp; Spaces</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050509;
+    --ink: #0a0a14;
+    --ink-2: #11111c;
+    --ink-3: #181826;
+    --bone: #f4ede0;
+    --bone-dim: #c8bfb0;
+    --bone-mute: #8a8275;
+    --gold: #c9a06a;
+    --gold-bright: #e0b988;
+    --gold-deep: #8a6a3c;
+    --ember: #d97a3d;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --easeOut: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--void);
+    color: var(--bone);
+    font-family: var(--sans);
+    font-weight: 300;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  body.locked { overflow: hidden; }
+  ::selection { background: var(--gold); color: var(--ink); }
+
+  /* ============ SIDE NAV ============ */
+  .sidenav {
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    width: 56px;
+    background: var(--void);
+    border-right: 1px solid #1a1a26;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 0;
+    z-index: 80;
+  }
+  .menu-btn {
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    color: var(--gold);
+  }
+  .menu-btn span {
+    display: block;
+    width: 18px;
+    height: 1px;
+    background: var(--gold);
+    transition: transform 0.3s var(--easeOut);
+  }
+  .menu-btn:hover span:first-child { transform: translateX(-3px); }
+  .menu-btn:hover span:last-child { transform: translateX(3px); }
+
+  .side-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+  }
+  .side-links li {
+    height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+  }
+  .side-links li a {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--bone-mute);
+    text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+    transform: rotate(-90deg);
+    transform-origin: center;
+    white-space: nowrap;
+    display: inline-block;
+  }
+  .side-links li a:hover, .side-links li a.active { color: var(--gold); }
+  .side-links li a.active {
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--gold);
+  }
+
+  .side-foot {
+    font-family: var(--sans);
+    font-size: 8.5px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--bone-mute);
+    transform: rotate(-90deg);
+    white-space: nowrap;
+  }
+
+  .cart-toggle {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 81;
+    background: var(--ink);
+    border: 1px solid #2a2a36;
+    color: var(--bone);
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 14px 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s var(--easeOut);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+  }
+  .cart-toggle:hover { border-color: var(--gold); color: var(--gold); }
+  .cart-count {
+    background: var(--gold);
+    color: var(--ink);
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    font-size: 9px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+  }
+
+  /* ============ MAIN WRAPPER ============ */
+  main { margin-left: 56px; }
+
+  /* ============ TOP BAR ============ */
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 40px;
+    border-bottom: 1px solid #1a1a26;
+    background: var(--void);
+  }
+  .wordmark {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.32em;
+    color: var(--gold);
+    font-weight: 400;
+  }
+  .top-bar-center {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--bone-mute);
+  }
+  .view-collector {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bone);
+    border: 1px solid #2a2a36;
+    padding: 10px 18px;
+    text-decoration: none;
+    transition: all 0.3s var(--easeOut);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .view-collector:hover { border-color: var(--gold); color: var(--gold); }
+  .arr { display: inline-block; width: 18px; height: 1px; background: currentColor; position: relative; vertical-align: middle; transition: width 0.3s var(--easeOut); }
+  .arr::after { content: ''; position: absolute; right: 0; top: -3px; width: 6px; height: 6px; border-top: 1px solid currentColor; border-right: 1px solid currentColor; transform: rotate(45deg); }
+  a:hover .arr, button:hover .arr { width: 26px; }
+
+  .hero-collections {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    min-height: calc(100vh - 64px);
+  }
+
+  /* HERO PANEL */
+  .hero-panel {
+    background:
+      radial-gradient(ellipse at 30% 80%, rgba(217,122,61,0.12), transparent 60%),
+      radial-gradient(ellipse at 70% 30%, rgba(40,30,60,0.4), transparent 60%),
+      linear-gradient(180deg, #0a0a14 0%, #08080f 100%);
+    padding: 60px 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Faux room ambiance — moody chair lamp scene with framed window painting */
+  .hero-scene {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.9;
+  }
+  .room-floor {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 40%;
+    background: linear-gradient(180deg, transparent 0%, rgba(20,15,30,0.6) 50%, rgba(10,8,16,0.95) 100%);
+  }
+  .framed-window {
+    position: absolute;
+    top: 80px;
+    right: 30px;
+    width: 140px;
+    height: 200px;
+    border: 4px solid #5a4a32;
+    box-shadow:
+      0 0 40px rgba(217,170,90,0.15),
+      0 20px 60px rgba(0,0,0,0.6),
+      inset 0 0 0 1px rgba(217,170,90,0.3);
+    background:
+      radial-gradient(ellipse at 50% 40%, rgba(220,180,100,0.6) 0%, transparent 50%),
+      radial-gradient(circle at 50% 30%, #f4d896 0%, #c9a06a 20%, transparent 40%),
+      linear-gradient(180deg, #1a3a5c 0%, #2a4a6c 30%, #1a2a3c 60%, #0a1018 100%);
+    overflow: hidden;
+  }
+  .framed-window::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 80%, rgba(180,140,80,0.5), transparent 30%),
+      radial-gradient(circle at 70% 90%, rgba(150,100,60,0.4), transparent 25%);
+  }
+  .framed-window::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 50%;
+    background:
+      linear-gradient(180deg, rgba(120,80,40,0.3), rgba(60,40,20,0.6)),
+      radial-gradient(ellipse at 50% 100%, rgba(220,170,90,0.4), transparent 50%);
+  }
+  .moon-glow {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #f4e0b0 0%, rgba(220,180,100,0.4) 40%, transparent 70%);
+    box-shadow: 0 0 30px rgba(220,180,100,0.6);
+  }
+  .floor-lamp {
+    position: absolute;
+    bottom: 80px;
+    left: 30px;
+    width: 60px;
+    height: 110px;
+    pointer-events: none;
+  }
+  .lamp-shade {
+    position: absolute;
+    top: 0; left: 10px;
+    width: 40px; height: 36px;
+    background: linear-gradient(180deg, #3a2a18 0%, #5a3a20 100%);
+    clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%);
+    box-shadow: 0 0 40px 10px rgba(217,170,90,0.25);
+  }
+  .lamp-light {
+    position: absolute;
+    top: 36px; left: 0;
+    width: 60px; height: 60px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(220,170,90,0.35) 0%, transparent 60%);
+    filter: blur(2px);
+  }
+  .lamp-pole {
+    position: absolute;
+    bottom: 0; left: 28px;
+    width: 2px; height: 74px;
+    background: #1a1410;
+  }
+  .chair {
+    position: absolute;
+    bottom: 20px;
+    left: 100px;
+    width: 180px; height: 100px;
+    background: linear-gradient(180deg, #2a2025 0%, #1a1218 100%);
+    border-radius: 8px 8px 4px 4px;
+    box-shadow: 0 -2px 0 rgba(70,55,40,0.3), 0 20px 40px rgba(0,0,0,0.6);
+    opacity: 0.7;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+    padding-bottom: 40px;
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(40px, 4.2vw, 64px);
+    font-weight: 300;
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    color: var(--bone);
+    margin-bottom: 28px;
+  }
+  .hero-title em {
+    font-style: normal;
+    color: var(--gold);
+  }
+  .hero-sub {
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--bone-dim);
+    max-width: 280px;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--bone);
+  }
+  .hero-cta .play-circle {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    border: 1px solid rgba(244,237,224,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s var(--easeOut);
+  }
+  .hero-cta:hover .play-circle {
+    border-color: var(--gold);
+    transform: scale(1.05);
+  }
+  .hero-cta .play-circle::before {
+    content: '';
+    width: 0; height: 0;
+    border-left: 8px solid var(--bone);
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    margin-left: 3px;
+    transition: border-color 0.3s;
+  }
+  .hero-cta:hover .play-circle::before { border-left-color: var(--gold); }
+  .hero-cta-label {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--bone);
+  }
+
+  /* PHILOSOPHY BLOCK (bottom-left, replaces hero in lower row) */
+  .philosophy-block {
+    background: var(--ink);
+    padding: 56px 44px;
+    position: relative;
+    border-top: 1px solid #1a1a26;
+    overflow: hidden;
+  }
+  .phil-painterly {
+    position: absolute;
+    top: 0; right: 0;
+    width: 60%;
+    height: 100%;
+    background:
+      radial-gradient(ellipse at 30% 40%, rgba(217,122,61,0.5) 0%, transparent 40%),
+      radial-gradient(ellipse at 70% 60%, rgba(180,90,140,0.4) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(100,40,80,0.3) 0%, transparent 50%);
+    opacity: 0.65;
+    filter: blur(8px);
+  }
+  .phil-content {
+    position: relative;
+    z-index: 2;
+  }
+  .phil-eyebrow {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .phil-stack {
+    font-family: var(--serif);
+    font-size: clamp(22px, 1.9vw, 30px);
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--bone);
+    margin-bottom: 28px;
+  }
+  .phil-signature {
+    width: 80px;
+    margin-bottom: 24px;
+    opacity: 0.5;
+  }
+  .phil-body {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--bone-dim);
+    max-width: 280px;
+  }
+  .khidki-mark {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,160,106,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    opacity: 0.7;
+  }
+  .khidki-mark .km-1 {
+    font-family: var(--serif);
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+  }
+  .khidki-mark .km-2 {
+    width: 10px; height: 10px;
+    margin: 4px 0;
+    background: var(--gold);
+    transform: rotate(45deg);
+    opacity: 0.5;
+  }
+
+  /* SIX SUITES GRID */
+  .suites-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    border-left: 1px solid #1a1a26;
+  }
+
+  .suite-cell {
+    border-right: 1px solid #1a1a26;
+    border-bottom: 1px solid #1a1a26;
+    padding: 32px 32px 28px;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 28px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background 0.5s var(--easeOut);
+    min-height: 280px;
+  }
+  .suite-cell:nth-child(2n) { border-right: none; }
+  .suite-cell:nth-last-child(-n+2) { border-bottom: none; }
+  .suite-cell:hover { background: rgba(255,255,255,0.015); }
+
+  .suite-num {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 14px;
+  }
+  .suite-name {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--bone);
+    margin-bottom: 8px;
+  }
+  .suite-count {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bone-mute);
+    margin-bottom: 20px;
+  }
+  .suite-desc {
+    font-family: var(--sans);
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: var(--bone-dim);
+    margin-bottom: 22px;
+    max-width: 220px;
+  }
+  .suite-palette {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 22px;
+  }
+  .sw {
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+  }
+  .suite-explore {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--bone);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    transition: color 0.3s;
+  }
+  .suite-explore:hover { color: var(--gold); }
+  .suite-explore .a {
+    width: 24px; height: 1px; background: currentColor;
+    transition: width 0.3s;
+    position: relative;
+  }
+  .suite-explore .a::after {
+    content: '';
+    position: absolute; right: 0; top: -3px;
+    width: 6px; height: 6px;
+    border-top: 1px solid currentColor;
+    border-right: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
+  .suite-explore:hover .a { width: 36px; }
+
+  /* SUITE MOSAICS — each cell gets a custom 8-tile collage */
+  .mosaic {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    position: relative;
+    align-self: start;
+  }
+  .tile {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--ink-2);
+    transition: transform 0.5s var(--easeOut);
+  }
+  .tile::before { content: ''; display: block; padding-top: 100%; }
+  .tile-art {
+    position: absolute; inset: 0;
+  }
+  .tile:hover { transform: scale(1.04); z-index: 3; }
+  .tile-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 8px 10px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 2;
+  }
+  .tile:hover .tile-label { opacity: 1; }
+  .tile-label-title {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 11px;
+    color: var(--bone);
+    display: block;
+  }
+  .tile-label-price {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+
+  /* SUITE-SPECIFIC PAINTERLY TILES (procedural gradients) */
+  /* 01 SIGNATURE — sunset/amber/dusk */
+  .s01 .t1 .tile-art { background: radial-gradient(circle at 50% 70%, #d97a3d 0%, #8a4a20 40%, #2a1810 100%); }
+  .s01 .t2 .tile-art { background: radial-gradient(ellipse at 50% 80%, #f4c878 0%, #c98a4a 30%, #4a2a14 80%); }
+  .s01 .t3 .tile-art { background: radial-gradient(circle at 30% 30%, #f4d896 0%, #d99a5a 30%, #5a3018 80%); }
+  .s01 .t4 .tile-art { background: linear-gradient(180deg, #d97a3d 0%, #8a3a20 40%, #2a1410 100%); }
+  .s01 .t5 .tile-art { background: radial-gradient(ellipse at 70% 60%, #e0a06a 0%, #8a4a2a 40%, #1a0e08 90%); }
+  .s01 .t6 .tile-art { background: radial-gradient(circle at 50% 50%, #f4c068 0%, #b46a30 30%, #3a1810 80%); }
+  .s01 .t7 .tile-art { background: linear-gradient(135deg, #c96a3a 0%, #8a4020 50%, #1a0a08 100%); }
+  .s01 .t8 .tile-art { background: radial-gradient(circle at 50% 70%, #e09060 0%, #a04a28 40%, #2a1410 90%); }
+
+  /* 02 STORYSCAPE — magenta/pink/lightning */
+  .s02 .t1 .tile-art { background: radial-gradient(circle at 50% 30%, #e4a0d8 0%, #8a4a8a 50%, #1a0a1c 100%); }
+  .s02 .t2 .tile-art { background: linear-gradient(180deg, #c87aa8 0%, #5a2a5a 40%, #0a0410 100%); }
+  .s02 .t3 .tile-art { background: radial-gradient(ellipse at 30% 40%, #f4b0d0 0%, #a86a8a 40%, #2a1428 90%); }
+  .s02 .t4 .tile-art { background: radial-gradient(circle at 50% 60%, #d090b8 0%, #6a3a6a 50%, #100614 100%); }
+  .s02 .t5 .tile-art { background: linear-gradient(135deg, #e0a8c8 0%, #9a4a78 40%, #1a0814 100%); }
+  .s02 .t6 .tile-art { background: radial-gradient(circle at 40% 40%, #c890b0 0%, #7a3a78 50%, #150620 100%); }
+  .s02 .t7 .tile-art { background: radial-gradient(ellipse at 50% 80%, #f4b8d4 0%, #a05a8a 40%, #20102c 90%); }
+  .s02 .t8 .tile-art { background: linear-gradient(180deg, #a47090 0%, #5a2855 60%, #0a0418 100%); }
+
+  /* 03 EARTH & SILENCE — forest/teal/sage */
+  .s03 .t1 .tile-art { background: radial-gradient(circle at 50% 60%, #6a8a7a 0%, #2a4a3a 50%, #081210 100%); }
+  .s03 .t2 .tile-art { background: radial-gradient(ellipse at 40% 70%, #8aa68a 0%, #3a6a4a 40%, #0a1410 90%); }
+  .s03 .t3 .tile-art { background: linear-gradient(180deg, #7a9aa8 0%, #2a4a5a 50%, #06101a 100%); }
+  .s03 .t4 .tile-art { background: radial-gradient(circle at 50% 40%, #9ab098 0%, #4a6a58 40%, #0a1410 90%); }
+  .s03 .t5 .tile-art { background: radial-gradient(ellipse at 60% 50%, #5a8a7a 0%, #2a4a3a 50%, #08120e 100%); }
+  .s03 .t6 .tile-art { background: linear-gradient(135deg, #8aa88a 0%, #3a5a4a 50%, #0a1812 100%); }
+  .s03 .t7 .tile-art { background: radial-gradient(circle at 50% 50%, #6a9aa0 0%, #2a5a5a 40%, #061418 90%); }
+  .s03 .t8 .tile-art { background: radial-gradient(ellipse at 30% 80%, #7aa898 0%, #3a6a58 40%, #0a1612 90%); }
+
+  /* 04 MIDNIGHT — deep navy with light points */
+  .s04 .t1 .tile-art { background: radial-gradient(circle at 50% 50%, #4a6090 0%, #1a2840 50%, #050610 100%); }
+  .s04 .t1 .tile-art::before { content: ''; position: absolute; top: 30%; left: 50%; width: 12px; height: 12px; background: #e8d4a8; border-radius: 50%; box-shadow: 0 0 20px rgba(232,212,168,0.6); }
+  .s04 .t2 .tile-art { background: radial-gradient(ellipse at 70% 30%, #3a5a8a 0%, #0a1428 50%, #02040a 100%); }
+  .s04 .t3 .tile-art { background: linear-gradient(180deg, #1a2848 0%, #0a1020 70%, #020410 100%); }
+  .s04 .t3 .tile-art::after { content: ''; position: absolute; bottom: 20%; left: 30%; right: 30%; height: 1px; background: linear-gradient(90deg, transparent, #c9a06a, transparent); opacity: 0.6; }
+  .s04 .t4 .tile-art { background: radial-gradient(circle at 30% 40%, #5a4a7a 0%, #181028 50%, #04020a 100%); }
+  .s04 .t5 .tile-art { background: radial-gradient(ellipse at 50% 70%, #4a6a90 0%, #1a2440 50%, #04060e 100%); }
+  .s04 .t6 .tile-art { background: linear-gradient(135deg, #2a3a5a 0%, #0a1428 60%, #04060e 100%); }
+  .s04 .t7 .tile-art { background: radial-gradient(circle at 60% 60%, #3a5478 0%, #14203c 50%, #06080e 100%); }
+  .s04 .t8 .tile-art { background: radial-gradient(ellipse at 40% 30%, #5868a0 0%, #18243c 50%, #04060e 100%); }
+
+  /* 05 DREAMSCAPE — vivid blue/teal/whimsical */
+  .s05 .t1 .tile-art { background: radial-gradient(circle at 50% 60%, #4a90b8 0%, #1a4868 40%, #050e18 100%); }
+  .s05 .t2 .tile-art { background: linear-gradient(135deg, #6ab8d4 0%, #3a7898 30%, #0a1828 80%); }
+  .s05 .t3 .tile-art { background: radial-gradient(ellipse at 50% 50%, #d4708a 0%, #8a4060 40%, #1a0a18 90%); }
+  .s05 .t4 .tile-art { background: radial-gradient(circle at 30% 60%, #f4a878 0%, #b46848 50%, #2a0e08 100%); }
+  .s05 .t5 .tile-art { background: linear-gradient(180deg, #70b8d4 0%, #305878 40%, #060e1a 100%); }
+  .s05 .t6 .tile-art { background: radial-gradient(circle at 60% 40%, #c896c8 0%, #6a3878 50%, #14081c 100%); }
+  .s05 .t7 .tile-art { background: radial-gradient(ellipse at 50% 70%, #8ad4c0 0%, #3a8a78 40%, #0a201c 90%); }
+  .s05 .t8 .tile-art { background: linear-gradient(135deg, #b890d4 0%, #503878 50%, #0a0618 100%); }
+
+  /* 06 COLLECTOR ARCHIVE — mystical golden glow on dark forest */
+  .s06 .t1 .tile-art { background: radial-gradient(ellipse at 50% 60%, #c9a06a 0%, #5a3a18 30%, #100806 100%); }
+  .s06 .t2 .tile-art { background: radial-gradient(circle at 40% 50%, #8a6a3a 0%, #2a1808 50%, #060402 100%); }
+  .s06 .t3 .tile-art { background: linear-gradient(180deg, #6a5028 0%, #1a1208 60%, #040302 100%); }
+  .s06 .t4 .tile-art { background: radial-gradient(circle at 50% 40%, #a47840 0%, #3a2410 50%, #080604 100%); }
+  .s06 .t5 .tile-art { background: radial-gradient(ellipse at 60% 50%, #c8965a 0%, #4a2a14 40%, #0a0604 100%); }
+  .s06 .t6 .tile-art { background: linear-gradient(135deg, #946838 0%, #2a1808 60%, #060402 100%); }
+  .s06 .t7 .tile-art { background: radial-gradient(circle at 50% 70%, #b88858 0%, #382414 40%, #080604 90%); }
+  .s06 .t8 .tile-art { background: radial-gradient(ellipse at 30% 40%, #ae8050 0%, #2e1c0c 50%, #060402 100%); }
+
+  /* COLLECTION BACKGROUND TINTS for the cells */
+  .s01 { background: linear-gradient(135deg, rgba(217,122,61,0.04), rgba(0,0,0,0)); }
+  .s02 { background: linear-gradient(135deg, rgba(180,90,140,0.05), rgba(0,0,0,0)); }
+  .s03 { background: linear-gradient(135deg, rgba(60,100,80,0.04), rgba(0,0,0,0)); }
+  .s04 { background: linear-gradient(135deg, rgba(40,60,120,0.05), rgba(0,0,0,0)); }
+  .s05 { background: linear-gradient(135deg, rgba(70,140,170,0.05), rgba(0,0,0,0)); }
+  .s06 { background: linear-gradient(135deg, rgba(140,100,60,0.05), rgba(0,0,0,0)); }
+
+  /* ============ HOSPITALITY / EXPERIENCE / JOURNAL BAND ============ */
+  .triband {
+    display: grid;
+    grid-template-columns: 1.1fr 1.3fr 1.1fr;
+    background: var(--void);
+    border-top: 1px solid #1a1a26;
+  }
+
+  /* Hospitality (parchment block) */
+  .hosp-block {
+    background: var(--bone);
+    color: var(--ink);
+    padding: 48px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hosp-block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 0% 0%, rgba(201,160,106,0.08), transparent 40%),
+      radial-gradient(ellipse at 100% 100%, rgba(201,160,106,0.06), transparent 40%);
+  }
+  .hosp-inner { position: relative; z-index: 2; }
+  .hosp-eyebrow {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .hosp-title {
+    font-family: var(--serif);
+    font-size: clamp(24px, 2.4vw, 34px);
+    font-weight: 400;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 36px;
+    line-height: 1.1;
+  }
+  .pkg-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .pkg-cell {
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s var(--easeOut);
+  }
+  .pkg-cell:hover { transform: translateY(-3px); }
+  .pkg-icon {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto 10px;
+    color: #4a3a28;
+  }
+  .pkg-cell-name {
+    font-family: var(--sans);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #2a2018;
+    margin-bottom: 2px;
+    font-weight: 500;
+  }
+  .pkg-cell-sub {
+    font-family: var(--sans);
+    font-size: 8.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #6a5a48;
+  }
+  .pkg-images {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .pkg-photo {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.4s var(--easeOut);
+  }
+  .pkg-photo:hover { transform: scale(1.05); }
+  .pkg-photo-inner {
+    width: 100%; height: 100%;
+    position: relative;
+  }
+  /* Faux interior photos */
+  .pp1 { background:
+    linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.5)),
+    radial-gradient(ellipse at 30% 40%, rgba(217,170,90,0.5), transparent 40%),
+    linear-gradient(135deg, #3a2818 0%, #1a1008 50%, #0a0604 100%);
+  }
+  .pp2 { background:
+    linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.4)),
+    radial-gradient(ellipse at 50% 30%, rgba(220,180,100,0.4), transparent 50%),
+    linear-gradient(180deg, #4a3220 0%, #1a1208 80%);
+  }
+  .pp3 { background:
+    linear-gradient(180deg, rgba(40,30,20,0.3), rgba(0,0,0,0.5)),
+    radial-gradient(ellipse at 50% 40%, #a08868 0%, #4a3a28 50%, #1a1208 90%);
+  }
+  .pp4 { background:
+    linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.6)),
+    radial-gradient(ellipse at 30% 50%, rgba(217,170,90,0.3), transparent 50%),
+    linear-gradient(135deg, #2a2418 0%, #14100a 60%, #060402 100%);
+  }
+  .pp5 { background:
+    linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.5)),
+    radial-gradient(ellipse at 70% 40%, rgba(220,170,90,0.35), transparent 50%),
+    linear-gradient(135deg, #3a2c1c 0%, #1a1208 60%, #080604 100%);
+  }
+  .pkg-detail-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .pkg-detail {
+    text-align: center;
+  }
+  .pkg-count {
+    font-family: var(--sans);
+    font-size: 10px;
+    color: #2a2018;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    display: block;
+  }
+  .pkg-mood {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 12px;
+    color: #6a5a48;
+    margin-top: 2px;
+    display: block;
+  }
+  .hosp-cta {
+    display: block;
+    width: max-content;
+    margin: 0 auto;
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink);
+    border: 1px solid #4a3a28;
+    background: transparent;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: all 0.3s var(--easeOut);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hosp-cta-wrap { text-align: center; }
+  .hosp-cta:hover { background: var(--ink); color: var(--bone); }
+
+  /* Experience Block */
+  .exp-block {
+    background: var(--void);
+    padding: 48px 44px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .exp-eyebrow {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .exp-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 2.6vw, 38px);
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--bone);
+    margin-bottom: 28px;
+  }
+  .exp-features {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+  .exp-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .exp-feature-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,160,106,0.4);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+  }
+  .exp-feature-text {}
+  .exp-feature-text strong {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--bone);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    display: block;
+    margin-bottom: 3px;
+  }
+  .exp-feature-text span {
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--bone-mute);
+    line-height: 1.5;
+  }
+  .exp-scene {
+    flex: 1;
+    margin-top: auto;
+    min-height: 160px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+  .exp-scene-art {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.5) 100%),
+      radial-gradient(ellipse at 50% 30%, rgba(220,170,90,0.4) 0%, transparent 40%),
+      radial-gradient(ellipse at 30% 70%, rgba(180,130,80,0.3) 0%, transparent 50%),
+      linear-gradient(180deg, #2a2418 0%, #0a0806 100%);
+  }
+  .exp-pagination {
+    position: absolute;
+    bottom: 16px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 3;
+  }
+  .exp-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .exp-dot.active { background: var(--gold); width: 16px; border-radius: 3px; }
+  .exp-nav {
+    position: absolute;
+    bottom: 14px; right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 3;
+  }
+  .exp-nav button {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1px solid rgba(244,237,224,0.3);
+    background: transparent;
+    color: var(--bone);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    font-size: 12px;
+  }
+  .exp-nav button:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* Journal Block */
+  .journal-block {
+    background: #f1ead8;
+    color: var(--ink);
+    padding: 48px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .journal-eyebrow {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #6a5a3a;
+    margin-bottom: 14px;
+  }
+  .journal-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 2.6vw, 36px);
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.05;
+    margin-bottom: 24px;
+  }
+  .journal-link {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .journal-link:hover { color: var(--gold-deep); }
+  .journal-card {
+    background: var(--bone);
+    padding: 22px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: transform 0.4s var(--easeOut);
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 16px;
+    align-items: center;
+  }
+  .journal-card:hover { transform: translateY(-3px); }
+  .journal-card-img {
+    aspect-ratio: 1/1;
+    background:
+      radial-gradient(ellipse at 40% 50%, rgba(220,170,100,0.4), transparent 50%),
+      linear-gradient(135deg, #2a2418 0%, #0a0806 100%);
+  }
+  .journal-card-title {
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--ink);
+    line-height: 1.25;
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+  .journal-card-read {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #6a5a3a;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ============ PRINT SHOP SECTION (NEW) ============ */
+  .shop-section {
+    background: var(--ink);
+    padding: 100px 60px;
+    border-top: 1px solid #1a1a26;
+  }
+  .shop-inner { max-width: 1400px; margin: 0 auto; }
+  .shop-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 48px;
+    gap: 40px;
+  }
+  .shop-eyebrow {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .shop-title {
+    font-family: var(--serif);
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 300;
+    line-height: 1;
+    color: var(--bone);
+  }
+  .shop-title em { font-style: italic; color: var(--gold); }
+  .shop-intro {
+    max-width: 360px;
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--bone-dim);
+  }
+
+  .shop-filters {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .filter-pill {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--bone-dim);
+    background: transparent;
+    border: 1px solid #2a2a36;
+    padding: 9px 16px;
+    cursor: pointer;
+    transition: all 0.3s var(--easeOut);
+    border-radius: 100px;
+  }
+  .filter-pill:hover { border-color: var(--bone-mute); color: var(--bone); }
+  .filter-pill.active { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+
+  .shop-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px 8px;
+  }
+  .product {
+    cursor: pointer;
+    background: transparent;
+    transition: opacity 0.4s var(--easeOut);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .product.hide { display: none; }
+  .product-image {
+    position: relative;
+    overflow: hidden;
+    background: var(--ink-2);
+  }
+  .product-image::before { content: ''; display: block; padding-top: 110%; }
+  .product-art {
+    position: absolute; inset: 0;
+    transition: transform 0.6s var(--easeOut);
+  }
+  .product:hover .product-art { transform: scale(1.04); }
+  .product-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.85) 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 18px;
+  }
+  .product:hover .product-overlay { opacity: 1; }
+  .product-qv {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--gold);
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-align: center;
+  }
+  .product-qv:hover { background: var(--gold-bright); }
+  .product-caption {
+    padding: 0 4px;
+  }
+  .product-caption-tag {
+    font-family: var(--sans);
+    font-size: 8.5px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--bone-mute);
+    margin-bottom: 4px;
+  }
+  .product-caption-name {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 17px;
+    color: var(--bone);
+    margin-bottom: 4px;
+    line-height: 1.15;
+  }
+  .product-caption-price {
+    font-family: var(--sans);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+  }
+
+  .product-badge {
+    position: absolute;
+    top: 12px; left: 12px;
+    background: var(--ink);
+    color: var(--gold);
+    font-family: var(--sans);
+    font-size: 8.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    z-index: 3;
+    border: 1px solid var(--gold-deep);
+  }
+
+  /* ============ COLLECTOR ARCHIVE (PREMIUM DARK) ============ */
+  .archive-section {
+    background: linear-gradient(180deg, #050509 0%, #08060a 100%);
+    padding: 140px 60px;
+    border-top: 1px solid #1a1a26;
+    position: relative;
+    overflow: hidden;
+  }
+  .archive-section::before {
+    content: '';
+    position: absolute;
+    top: 20%; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(201,160,106,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .archive-inner { max-width: 1400px; margin: 0 auto; position: relative; }
+  .archive-head {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 80px;
+    margin-bottom: 60px;
+  }
+  .archive-title {
+    font-family: var(--serif);
+    font-size: clamp(48px, 5vw, 84px);
+    font-weight: 300;
+    line-height: 0.95;
+    color: var(--bone);
+    letter-spacing: -0.01em;
+  }
+  .archive-title em {
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+  }
+  .archive-body {
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.85;
+    color: var(--bone-mute);
+    max-width: 400px;
+    align-self: flex-end;
+    padding-bottom: 6px;
+  }
+  .archive-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(3, 180px);
+    gap: 6px;
+    margin-bottom: 60px;
+  }
+  .arch {
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+  }
+  .arch-art {
+    position: absolute; inset: 0;
+    transition: transform 0.7s var(--easeOut);
+  }
+  .arch:hover .arch-art { transform: scale(1.05); }
+  .arch:nth-child(1) { grid-column: span 5; grid-row: span 2; }
+  .arch:nth-child(2) { grid-column: span 3; grid-row: span 1; }
+  .arch:nth-child(3) { grid-column: span 4; grid-row: span 1; }
+  .arch:nth-child(4) { grid-column: span 3; grid-row: span 2; }
+  .arch:nth-child(5) { grid-column: span 4; grid-row: span 1; }
+  .arch:nth-child(6) { grid-column: span 4; grid-row: span 1; }
+  .arch:nth-child(7) { grid-column: span 4; grid-row: span 1; }
+  .arch:nth-child(8) { grid-column: span 4; grid-row: span 1; }
+
+  .arch-1 .arch-art { background: radial-gradient(ellipse at 50% 50%, #c9a06a 0%, #5a3a18 30%, #0a0806 100%); }
+  .arch-2 .arch-art { background: radial-gradient(circle at 40% 60%, #a87850 0%, #2a1808 50%, #060402 100%); }
+  .arch-3 .arch-art { background: linear-gradient(135deg, #8a6238 0%, #1a1208 60%, #050402 100%); }
+  .arch-4 .arch-art { background: radial-gradient(ellipse at 60% 40%, #b88858 0%, #3a2410 50%, #060402 100%); }
+  .arch-5 .arch-art { background: radial-gradient(circle at 30% 50%, #946838 0%, #2a1808 50%, #04020a 100%); }
+  .arch-6 .arch-art { background: linear-gradient(135deg, #c9a06a 0%, #5a3a18 50%, #0a0806 100%); }
+  .arch-7 .arch-art { background: radial-gradient(ellipse at 50% 70%, #a47840 0%, #2a1808 50%, #060402 100%); }
+  .arch-8 .arch-art { background: radial-gradient(circle at 50% 50%, #8a6038 0%, #2a1808 50%, #060402 100%); }
+
+  .arch-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 20px 24px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .arch:hover .arch-label { opacity: 1; }
+  .arch-num {
+    font-family: var(--sans);
+    font-size: 8.5px;
+    letter-spacing: 0.32em;
+    color: var(--gold);
+    margin-bottom: 4px;
+    display: block;
+  }
+  .arch-title-text {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--bone);
+  }
+  .archive-services {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    padding-top: 48px;
+    border-top: 1px solid #1a1a22;
+  }
+  .arch-svc-num {
+    font-family: var(--serif);
+    font-size: 14px;
+    color: var(--gold);
+    margin-bottom: 12px;
+    display: block;
+  }
+  .arch-svc-name {
+    font-family: var(--serif);
+    font-size: 17px;
+    color: var(--bone);
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+  .arch-svc-body {
+    font-family: var(--sans);
+    font-size: 11.5px;
+    line-height: 1.65;
+    color: var(--bone-mute);
+  }
+
+  /* ============ CTA / CONTACT BAND ============ */
+  .cta-band {
+    background: var(--bone);
+    color: var(--ink);
+    padding: 100px 60px;
+    border-top: 1px solid #1a1a26;
+  }
+  .cta-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .cta-left {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  .cta-eyebrow {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #6a5a3a;
+  }
+  .cta-title {
+    font-family: var(--serif);
+    font-size: clamp(40px, 4.5vw, 64px);
+    font-weight: 300;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .cta-title em { font-style: italic; color: var(--gold-deep); }
+  .cta-body {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.8;
+    color: #4a4030;
+    max-width: 460px;
+  }
+  .cta-form {
+    background: white;
+    padding: 36px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+  }
+  .cta-form-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 24px;
+    font-weight: 400;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .form-input, .form-select {
+    font-family: var(--sans);
+    font-size: 12px;
+    padding: 14px 14px;
+    background: #f8f4ec;
+    border: none;
+    color: var(--ink);
+    outline: none;
+    width: 100%;
+    transition: background 0.2s;
+  }
+  .form-input:focus, .form-select:focus { background: #ede4d2; }
+  .form-input::placeholder { color: #a89880; }
+  .form-textarea {
+    font-family: var(--sans);
+    font-size: 12px;
+    padding: 14px;
+    background: #f8f4ec;
+    border: none;
+    color: var(--ink);
+    outline: none;
+    width: 100%;
+    min-height: 90px;
+    resize: vertical;
+    margin-bottom: 20px;
+    font-family: var(--sans);
+  }
+  .form-textarea::placeholder { color: #a89880; }
+  .form-submit {
+    width: 100%;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--bone);
+    background: var(--ink);
+    border: none;
+    padding: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .form-submit:hover { background: var(--gold-deep); }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--void);
+    color: var(--bone-mute);
+    padding: 36px 60px;
+    border-top: 1px solid #1a1a26;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .foot-word {
+    font-family: var(--serif);
+    font-size: 18px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+  }
+  .foot-meta {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--bone-mute);
+  }
+  .foot-tag {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--bone-dim);
+  }
+  .foot-meta a {
+    color: var(--bone-mute);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .foot-meta a:hover { color: var(--gold); }
+  .foot-social {
+    display: flex;
+    gap: 14px;
+  }
+  .foot-social a {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1px solid #2a2a36;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bone-mute);
+    transition: all 0.3s;
+  }
+  .foot-social a:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ============ QUICK VIEW MODAL ============ */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,5,9,0.85);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s var(--easeOut);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+  .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+  .modal {
+    background: var(--ink);
+    border: 1px solid #2a2a36;
+    max-width: 1000px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    transform: translateY(20px);
+    transition: transform 0.4s var(--easeOut);
+  }
+  .modal-backdrop.open .modal { transform: translateY(0); }
+  .modal-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    width: 36px; height: 36px;
+    background: rgba(244,237,224,0.1);
+    border: 1px solid rgba(244,237,224,0.2);
+    border-radius: 50%;
+    color: var(--bone);
+    cursor: pointer;
+    z-index: 5;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .modal-close:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+  .modal-art {
+    position: relative;
+    aspect-ratio: 4/5;
+    min-height: 400px;
+  }
+  .modal-art-inner { position: absolute; inset: 0; }
+  .modal-body {
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .modal-tag {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .modal-name {
+    font-family: var(--serif);
+    font-size: 36px;
+    color: var(--bone);
+    line-height: 1;
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+  .modal-meta {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--bone-mute);
+    margin-bottom: 28px;
+  }
+  .modal-desc {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--bone-dim);
+    margin-bottom: 32px;
+  }
+  .modal-section {
+    margin-bottom: 28px;
+  }
+  .modal-section-label {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--bone-mute);
+    margin-bottom: 12px;
+  }
+  .size-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  .size-opt {
+    font-family: var(--sans);
+    font-size: 10px;
+    padding: 12px 8px;
+    background: transparent;
+    border: 1px solid #2a2a36;
+    color: var(--bone-dim);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+  }
+  .size-opt:hover { border-color: var(--bone-mute); color: var(--bone); }
+  .size-opt.active { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+  .size-opt strong { display: block; font-weight: 600; font-size: 11px; margin-bottom: 2px; }
+  .size-opt small { display: block; font-size: 9px; opacity: 0.7; }
+  .material-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+  }
+  .mat-opt {
+    font-family: var(--sans);
+    font-size: 10px;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid #2a2a36;
+    color: var(--bone-dim);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .mat-opt.active { background: rgba(201,160,106,0.15); color: var(--gold); border-color: var(--gold-deep); }
+  .modal-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 18px;
+    padding-top: 18px;
+    border-top: 1px solid #1a1a26;
+  }
+  .modal-price-label {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--bone-mute);
+  }
+  .modal-price {
+    font-family: var(--serif);
+    font-size: 30px;
+    color: var(--gold);
+    font-weight: 400;
+  }
+  .modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .btn-primary {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--gold);
+    border: none;
+    padding: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .btn-primary:hover { background: var(--gold-bright); }
+  .btn-secondary {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--bone);
+    background: transparent;
+    border: 1px solid #2a2a36;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ============ CART DRAWER ============ */
+  .cart-drawer {
+    position: fixed;
+    top: 0; right: 0;
+    height: 100vh;
+    width: 420px;
+    max-width: 100vw;
+    background: var(--ink);
+    border-left: 1px solid #1a1a26;
+    z-index: 250;
+    transform: translateX(100%);
+    transition: transform 0.5s var(--easeOut);
+    display: flex;
+    flex-direction: column;
+  }
+  .cart-drawer.open { transform: translateX(0); }
+  .cart-header {
+    padding: 24px 28px;
+    border-bottom: 1px solid #1a1a26;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .cart-header-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    color: var(--bone);
+    font-weight: 400;
+  }
+  .cart-close {
+    width: 32px; height: 32px;
+    background: transparent;
+    border: 1px solid #2a2a36;
+    color: var(--bone);
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.3s;
+  }
+  .cart-close:hover { border-color: var(--gold); color: var(--gold); }
+  .cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .cart-empty {
+    text-align: center;
+    color: var(--bone-mute);
+    font-family: var(--serif);
+    font-style: italic;
+    padding: 60px 20px;
+    font-size: 16px;
+  }
+  .cart-item {
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    gap: 14px;
+    align-items: center;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #1a1a26;
+  }
+  .cart-item-img {
+    width: 60px; height: 75px;
+  }
+  .cart-item-name {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--bone);
+    margin-bottom: 4px;
+  }
+  .cart-item-spec {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    color: var(--bone-mute);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .cart-item-price {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--gold);
+  }
+  .cart-remove {
+    width: 24px; height: 24px;
+    background: transparent;
+    border: 1px solid #2a2a36;
+    color: var(--bone-mute);
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.3s;
+    font-size: 14px;
+    line-height: 1;
+  }
+  .cart-remove:hover { border-color: var(--ember); color: var(--ember); }
+  .cart-footer {
+    padding: 24px 28px;
+    border-top: 1px solid #1a1a26;
+  }
+  .cart-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 20px;
+  }
+  .cart-total-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--bone-mute);
+  }
+  .cart-total-value {
+    font-family: var(--serif);
+    font-size: 26px;
+    color: var(--gold);
+    font-weight: 400;
+  }
+  .cart-checkout {
+    width: 100%;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--gold);
+    border: none;
+    padding: 18px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .cart-checkout:hover { background: var(--gold-bright); }
+  .cart-checkout:disabled { background: #2a2a36; color: var(--bone-mute); cursor: not-allowed; }
+
+  /* ============ TOAST ============ */
+  .toast {
+    position: fixed;
+    bottom: 32px; left: 50%;
+    transform: translateX(-50%) translateY(40px);
+    background: var(--gold);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    z-index: 300;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s var(--easeOut);
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ============ REVEAL ANIMATIONS ============ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s var(--easeOut), transform 0.8s var(--easeOut);
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 1200px) {
+    .hero-collections { grid-template-columns: 1fr; }
+    .suites-grid { border-left: none; border-top: 1px solid #1a1a26; }
+    .triband { grid-template-columns: 1fr; }
+    .shop-grid { grid-template-columns: repeat(3, 1fr); }
+    .archive-grid { grid-template-rows: repeat(4, 160px); }
+    .arch:nth-child(1) { grid-column: span 12; grid-row: span 1; }
+    .arch:nth-child(n) { grid-column: span 6; grid-row: span 1; }
+    .cta-inner { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  @media (max-width: 900px) {
+    .sidenav { width: 44px; }
+    main { margin-left: 44px; }
+    .side-links { gap: 28px; }
+    .side-foot { font-size: 7.5px; }
+    .top-bar { padding: 18px 20px; }
+    .wordmark { font-size: 16px; }
+    .top-bar-center { display: none; }
+    .hero-panel { padding: 40px 28px; min-height: 80vh; }
+    .framed-window { width: 90px; height: 130px; top: 50px; right: 20px; }
+    .chair { left: 80px; width: 140px; }
+    .suite-cell { padding: 28px 24px; grid-template-columns: 1fr; }
+    .mosaic { min-height: 180px; }
+    .suites-grid { grid-template-columns: 1fr; }
+    .suite-cell:nth-child(2n) { border-right: none; }
+    .suite-cell { border-right: none !important; border-bottom: 1px solid #1a1a26 !important; }
+    .hosp-block, .exp-block, .journal-block { padding: 36px 24px; }
+    .pkg-row { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .pkg-images { grid-template-columns: repeat(2, 1fr); }
+    .pkg-detail-row { grid-template-columns: repeat(2, 1fr); }
+    .shop-section { padding: 60px 24px; }
+    .shop-grid { grid-template-columns: repeat(2, 1fr); }
+    .shop-head { flex-direction: column; align-items: flex-start; }
+    .archive-section { padding: 80px 24px; }
+    .archive-head { grid-template-columns: 1fr; gap: 24px; }
+    .archive-grid { grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(6, 140px); }
+    .arch:nth-child(n) { grid-column: span 3; grid-row: span 1; }
+    .arch:nth-child(1) { grid-column: span 6; grid-row: span 1; }
+    .archive-services { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .cta-band { padding: 60px 24px; }
+    .modal { grid-template-columns: 1fr; max-height: 95vh; }
+    .modal-art { min-height: 280px; aspect-ratio: 1/1; }
+    .modal-body { padding: 32px 24px; }
+    .cart-drawer { width: 100%; }
+    .cart-toggle { right: 16px; bottom: 16px; padding: 10px 16px; }
+    footer { flex-direction: column; gap: 14px; text-align: center; padding: 30px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDE NAV -->
+<aside class="sidenav">
+  <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="side-links">
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#journal">Journal</a></li>
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#collector">Collector</a></li>
+    <li><a href="#packages">Packages</a></li>
+    <li><a href="#collections" class="active">Collections</a></li>
+  </ul>
+  <span class="side-foot">Curated with Intention</span>
+</aside>
+
+<button class="cart-toggle" onclick="toggleCart()">
+  <span>Cart</span>
+  <span class="cart-count" id="cart-count">0</span>
+</button>
+
+<main>
+
+  <!-- ============ TOP BLOCK (HERO + 6 SUITES) ============ -->
+  <section id="collections">
+    <div class="top-bar">
+      <span class="wordmark">KHIDKI</span>
+      <span class="top-bar-center">The Collection Suites</span>
+      <a href="#collector" class="view-collector">
+        <span>View Collector Collection</span>
+        <span class="arr"></span>
+      </a>
+    </div>
+
+    <div class="hero-collections">
+      <!-- HERO PANEL -->
+      <div class="hero-panel">
+        <div class="hero-scene">
+          <div class="framed-window">
+            <div class="moon-glow"></div>
+          </div>
+          <div class="room-floor"></div>
+          <div class="floor-lamp">
+            <div class="lamp-light"></div>
+            <div class="lamp-shade"></div>
+            <div class="lamp-pole"></div>
+          </div>
+          <div class="chair"></div>
+        </div>
+        <div class="hero-content">
+          <h1 class="hero-title">Art that<br>Becomes<br><em>Atmosphere.</em></h1>
+          <p class="hero-sub">Curated collections for hospitality<br>spaces, homes, and hearts.</p>
+          <button class="hero-cta" onclick="scrollToSection('shop')">
+            <span class="play-circle"></span>
+            <span class="hero-cta-label">Explore Collections</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- SUITES GRID -->
+      <div class="suites-grid">
+
+        <!-- 01 SIGNATURE -->
+        <div class="suite-cell s01" onclick="openSuite('signature')">
+          <div>
+            <div class="suite-num">01</div>
+            <h3 class="suite-name">The Signature<br>Collection</h3>
+            <div class="suite-count">20 Artworks</div>
+            <p class="suite-desc">Bold, evocative and unforgettable. Perfect for premium hospitality spaces.</p>
+            <div class="suite-palette">
+              <span class="sw" style="background:#4a5a32"></span>
+              <span class="sw" style="background:#8a6a3c"></span>
+              <span class="sw" style="background:#d97a3d"></span>
+              <span class="sw" style="background:#c9a06a"></span>
+              <span class="sw" style="background:#a04020"></span>
+            </div>
+            <button class="suite-explore">Explore Suite <span class="a"></span></button>
+          </div>
+          <div class="mosaic">
+            <div class="tile t1"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Vaatayan</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t2"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Aangan</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t3"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Trupti</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t4"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Safar</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t5"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Phone Call</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t6"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Kintsugi</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t7"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Saudagar</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t8"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Ek Fool</span><span class="tile-label-price">From ₹4,800</span></div></div>
+          </div>
+        </div>
+
+        <!-- 02 STORYSCAPE -->
+        <div class="suite-cell s02" onclick="openSuite('storyscape')">
+          <div>
+            <div class="suite-num">02</div>
+            <h3 class="suite-name">The Storyscape<br>Collection</h3>
+            <div class="suite-count">20 Artworks</div>
+            <p class="suite-desc">Narrative-driven artworks that transport the viewer into cinematic worlds.</p>
+            <div class="suite-palette">
+              <span class="sw" style="background:#3d2555"></span>
+              <span class="sw" style="background:#b04a8a"></span>
+              <span class="sw" style="background:#e0a8c8"></span>
+              <span class="sw" style="background:#d97a4a"></span>
+              <span class="sw" style="background:#c9a06a"></span>
+            </div>
+            <button class="suite-explore">Explore Suite <span class="a"></span></button>
+          </div>
+          <div class="mosaic">
+            <div class="tile t1"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Cotton Candy</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t2"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Bijlee</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t3"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Visfot</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t4"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Shooting Stars</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t5"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Embroidery</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t6"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Chalchitra</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t7"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Nazar</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t8"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Aurora</span><span class="tile-label-price">From ₹4,800</span></div></div>
+          </div>
+        </div>
+
+        <!-- 03 EARTH & SILENCE -->
+        <div class="suite-cell s03" onclick="openSuite('earth')">
+          <div>
+            <div class="suite-num">03</div>
+            <h3 class="suite-name">Earth &amp; Silence<br>Collection</h3>
+            <div class="suite-count">12 Artworks</div>
+            <p class="suite-desc">Inspired by nature, stillness and slow living. Calm, balanced and organic.</p>
+            <div class="suite-palette">
+              <span class="sw" style="background:#2c4030"></span>
+              <span class="sw" style="background:#4a6a58"></span>
+              <span class="sw" style="background:#6a8a7a"></span>
+              <span class="sw" style="background:#9ab098"></span>
+              <span class="sw" style="background:#c8c0a8"></span>
+            </div>
+            <button class="suite-explore">Explore Suite <span class="a"></span></button>
+          </div>
+          <div class="mosaic">
+            <div class="tile t1"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Sangam</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t2"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Frozen Fever</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t3"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Indradhanush</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t4"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Manch</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t5"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Paper Boat</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t6"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Yaari</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t7"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Social Battery</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t8"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Chai Patti</span><span class="tile-label-price">From ₹4,800</span></div></div>
+          </div>
+        </div>
+
+        <!-- 04 MIDNIGHT -->
+        <div class="suite-cell s04" onclick="openSuite('midnight')">
+          <div>
+            <div class="suite-num">04</div>
+            <h3 class="suite-name">The Midnight<br>Collection</h3>
+            <div class="suite-count">9 Artworks</div>
+            <p class="suite-desc">Dark, contemporary and psychological. For the modern collector.</p>
+            <div class="suite-palette">
+              <span class="sw" style="background:#0a0e1c"></span>
+              <span class="sw" style="background:#1a2840"></span>
+              <span class="sw" style="background:#3a4a70"></span>
+              <span class="sw" style="background:#6a7898"></span>
+              <span class="sw" style="background:#a8a098"></span>
+            </div>
+            <button class="suite-explore">Explore Suite <span class="a"></span></button>
+          </div>
+          <div class="mosaic">
+            <div class="tile t1"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Neon</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t2"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Paudha</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t3"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Moon &amp; Wisdom</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t4"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Refugee</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t5"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Munch</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t6"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Midamore</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t7"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Tasveer</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t8"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Anxiety</span><span class="tile-label-price">From ₹4,800</span></div></div>
+          </div>
+        </div>
+
+        <!-- 05 DREAMSCAPE -->
+        <div class="suite-cell s05" onclick="openSuite('dreamscape')">
+          <div>
+            <div class="suite-num">05</div>
+            <h3 class="suite-name">The Dreamscape<br>Collection</h3>
+            <div class="suite-count">12 Artworks</div>
+            <p class="suite-desc">Whimsical, hopeful and imaginative. Perfect for spaces that inspire wonder.</p>
+            <div class="suite-palette">
+              <span class="sw" style="background:#d4708a"></span>
+              <span class="sw" style="background:#c890b0"></span>
+              <span class="sw" style="background:#7ab8d4"></span>
+              <span class="sw" style="background:#8ad4c0"></span>
+              <span class="sw" style="background:#f4c878"></span>
+            </div>
+            <button class="suite-explore">Explore Suite <span class="a"></span></button>
+          </div>
+          <div class="mosaic">
+            <div class="tile t1"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Sard</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t2"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Dream Catcher</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t3"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Festival</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t4"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Ittar</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t5"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Sawaari</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t6"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Brainfog</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t7"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Bandi</span><span class="tile-label-price">From ₹4,800</span></div></div>
+            <div class="tile t8"><div class="tile-art"></div><div class="tile-label"><span class="tile-label-title">Eyeliner</span><span class="tile-label-price">From ₹4,800</span></div></div>
+          </div>
+        </div>
+
+        <!-- 06 COLLECTOR ARCHIVE -->
+        <div class="suite-cell s06" onclick="scrollToSection('collector')">
+          <div>
+            <div class="suite-num">06</div>
+            <h3 class="suite-name">The Collector<br>Archive</h3>
+            <div class="suite-count">12 Masterworks</div>
+            <p class="suite-desc">A special curation of our finest works. The highest level of detailing and conceptual depth.</p>
+            <div class="suite-palette">
+              <span class="sw" style="background:#a04020"></span>
+              <span class="sw" style="background:#3a5a3a"></span>
+              <span class="sw" style="background:#c9a06a"></span>
+              <span class="sw" style="background:#4a5a78"></span>
+              <span class="sw" style="background:#9a3a6a"></span>
+            </div>
+            <button class="suite-explore">View Archive <span class="a"></span></button>
+          </div>
+          <div class="mosaic">
+            <div class="tile t1"><div class="tile-art"></div></div>
+            <div class="tile t2"><div class="tile-art"></div></div>
+            <div class="tile t3"><div class="tile-art"></div></div>
+            <div class="tile t4"><div class="tile-art"></div></div>
+            <div class="tile t5"><div class="tile-art"></div></div>
+            <div class="tile t6"><div class="tile-art"></div></div>
+            <div class="tile t7"><div class="tile-art"></div></div>
+            <div class="tile t8"><div class="tile-art"></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TRI-BAND (HOSPITALITY + EXPERIENCE + JOURNAL) ============ -->
+  <section class="triband" id="packages">
+    <!-- Hospitality Packages -->
+    <div class="hosp-block">
+      <div class="hosp-inner">
+        <p class="hosp-eyebrow">Hospitality Packages</p>
+        <h2 class="hosp-title">Curated for Every Space</h2>
+
+        <div class="pkg-row">
+          <div class="pkg-cell" onclick="filterShop('all')">
+            <svg class="pkg-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+              <path d="M8 22h16M10 22V14a6 6 0 0112 0v8M10 14h12M14 22v4M18 22v4M22 14l2 2M22 14l-2-2"/>
+            </svg>
+            <div class="pkg-cell-name">Cafe</div>
+            <div class="pkg-cell-sub">Package</div>
+          </div>
+          <div class="pkg-cell">
+            <svg class="pkg-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+              <path d="M11 6v14a3 3 0 003 3v0a3 3 0 003-3V6M11 6v6M14 6v6M17 6v6M22 6l-1 8a2 2 0 002 2v7"/>
+            </svg>
+            <div class="pkg-cell-name">Restaurant</div>
+            <div class="pkg-cell-sub">Package</div>
+          </div>
+          <div class="pkg-cell">
+            <svg class="pkg-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+              <path d="M4 24h24M6 24V12l10-6 10 6v12M12 24v-6h8v6M11 14h2M19 14h2"/>
+            </svg>
+            <div class="pkg-cell-name">Boutique Hotel</div>
+            <div class="pkg-cell-sub">Package</div>
+          </div>
+          <div class="pkg-cell">
+            <svg class="pkg-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+              <path d="M16 6v3M16 6c-3 0-5 2-5 5s2 5 5 5 5-2 5-5-2-5-5-5zM16 16v10M10 26h12M8 22h16M10 18l-3 4M22 18l3 4"/>
+            </svg>
+            <div class="pkg-cell-name">Resort</div>
+            <div class="pkg-cell-sub">Package</div>
+          </div>
+          <div class="pkg-cell">
+            <svg class="pkg-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="5" y="8" width="22" height="14" rx="1"/>
+              <path d="M9 22v3M23 22v3M5 18h22M11 11l3 3M21 11l-3 3"/>
+            </svg>
+            <div class="pkg-cell-name">Coworking</div>
+            <div class="pkg-cell-sub">Package</div>
+          </div>
+        </div>
+
+        <div class="pkg-images">
+          <div class="pkg-photo"><div class="pkg-photo-inner pp1"></div></div>
+          <div class="pkg-photo"><div class="pkg-photo-inner pp2"></div></div>
+          <div class="pkg-photo"><div class="pkg-photo-inner pp3"></div></div>
+          <div class="pkg-photo"><div class="pkg-photo-inner pp4"></div></div>
+          <div class="pkg-photo"><div class="pkg-photo-inner pp5"></div></div>
+        </div>
+
+        <div class="pkg-detail-row">
+          <div class="pkg-detail"><span class="pkg-count">4 – 6 Artworks</span><span class="pkg-mood">Intimate &amp; Engaging</span></div>
+          <div class="pkg-detail"><span class="pkg-count">6 – 10 Artworks</span><span class="pkg-mood">Warm &amp; Inviting</span></div>
+          <div class="pkg-detail"><span class="pkg-count">10 – 16 Artworks</span><span class="pkg-mood">Elegant &amp; Immersive</span></div>
+          <div class="pkg-detail"><span class="pkg-count">10 – 16 Artworks</span><span class="pkg-mood">Relaxing &amp; Nature-inspired</span></div>
+          <div class="pkg-detail"><span class="pkg-count">6 – 12 Artworks</span><span class="pkg-mood">Motivating &amp; Creative</span></div>
+        </div>
+
+        <div class="hosp-cta-wrap">
+          <button class="hosp-cta" onclick="scrollToSection('contact')">View All Packages <span class="arr"></span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Experience / More Than Art -->
+    <div class="exp-block">
+      <p class="exp-eyebrow">The Khidki Experience</p>
+      <h2 class="exp-title">More Than Art.<br>A Feeling.</h2>
+
+      <div class="exp-features">
+        <div class="exp-feature">
+          <div class="exp-feature-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3">
+              <path d="M2 7l3 3 7-7"/>
+            </svg>
+          </div>
+          <div class="exp-feature-text">
+            <strong>Custom Curation</strong>
+            <span>Made for your space</span>
+          </div>
+        </div>
+        <div class="exp-feature">
+          <div class="exp-feature-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3">
+              <circle cx="7" cy="7" r="5"/>
+              <path d="M2 7h10M7 2c1.5 2 1.5 8 0 10M7 2c-1.5 2-1.5 8 0 10"/>
+            </svg>
+          </div>
+          <div class="exp-feature-text">
+            <strong>Worldwide Shipping</strong>
+            <span>Secure &amp; Insured</span>
+          </div>
+        </div>
+        <div class="exp-feature">
+          <div class="exp-feature-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3">
+              <path d="M3 3h8v8H3zM5 6h4M5 8h4"/>
+            </svg>
+          </div>
+          <div class="exp-feature-text">
+            <strong>Hospitality Licensing</strong>
+            <span>Flexible &amp; Exclusive</span>
+          </div>
+        </div>
+        <div class="exp-feature">
+          <div class="exp-feature-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3">
+              <path d="M7 2v10M2 7h10"/>
+            </svg>
+          </div>
+          <div class="exp-feature-text">
+            <strong>Art Consultation</strong>
+            <span>Personalized Guidance</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-scene">
+        <div class="exp-scene-art"></div>
+        <div class="exp-pagination">
+          <span class="exp-dot active"></span>
+          <span class="exp-dot"></span>
+          <span class="exp-dot"></span>
+          <span class="exp-dot"></span>
+        </div>
+        <div class="exp-nav">
+          <button>‹</button>
+          <button>›</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Journal -->
+    <div class="journal-block" id="journal">
+      <p class="journal-eyebrow">From Our Journal</p>
+      <h2 class="journal-title">Stories, Spaces<br>&amp; Inspiration</h2>
+      <a class="journal-link" href="#">Explore Journal <span class="arr"></span></a>
+
+      <div class="journal-card">
+        <div class="journal-card-img"></div>
+        <div>
+          <h4 class="journal-card-title">How Art Transforms Hospitality Spaces</h4>
+          <span class="journal-card-read">Read More <span class="arr"></span></span>
+        </div>
+      </div>
+      <div class="journal-card">
+        <div class="journal-card-img" style="background: radial-gradient(ellipse at 60% 40%, rgba(180,140,200,0.4), transparent 50%), linear-gradient(135deg, #2a1830 0%, #08060a 100%);"></div>
+        <div>
+          <h4 class="journal-card-title">The Language of Colour in Boutique Hotels</h4>
+          <span class="journal-card-read">Read More <span class="arr"></span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRINT SHOP SECTION ============ -->
+  <section class="shop-section" id="shop">
+    <div class="shop-inner">
+      <div class="shop-head reveal">
+        <div>
+          <p class="shop-eyebrow">The Print Shop</p>
+          <h2 class="shop-title">Buy Single <em>Prints.</em></h2>
+        </div>
+        <p class="shop-intro">Museum-quality giclée prints on archival fine art paper or stretched canvas. Available in five sizes, with worldwide shipping and a thirty-day return promise.</p>
+      </div>
+
+      <div class="shop-filters reveal">
+        <button class="filter-pill active" data-filter="all" onclick="filterShop('all')">All Works</button>
+        <button class="filter-pill" data-filter="signature" onclick="filterShop('signature')">Signature</button>
+        <button class="filter-pill" data-filter="storyscape" onclick="filterShop('storyscape')">Storyscape</button>
+        <button class="filter-pill" data-filter="earth" onclick="filterShop('earth')">Earth &amp; Silence</button>
+        <button class="filter-pill" data-filter="midnight" onclick="filterShop('midnight')">Midnight</button>
+        <button class="filter-pill" data-filter="dreamscape" onclick="filterShop('dreamscape')">Dreamscape</button>
+        <button class="filter-pill" data-filter="bestseller" onclick="filterShop('bestseller')">Bestsellers</button>
+      </div>
+
+      <div class="shop-grid reveal" id="shop-grid">
+        <!-- products generated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COLLECTOR ARCHIVE ============ -->
+  <section class="archive-section" id="collector">
+    <div class="archive-inner">
+      <div class="archive-head reveal">
+        <h2 class="archive-title">The Collector<br><em>Archive.</em></h2>
+        <p class="archive-body">Twelve masterworks held outside the regular collections — works of greater complexity, scale, and ambition. Each piece in the Archive comes with a certificate of provenance, framing consultation, and white-glove installation. Inquire for private viewing.</p>
+      </div>
+
+      <div class="archive-grid reveal">
+        <div class="arch arch-1" onclick="openProduct('Sangam', 'collector')"><div class="arch-art"></div><div class="arch-label"><span class="arch-num">M / 01</span><span class="arch-title-text">Sangam</span></div></div>
+        <div class="arch arch-2" onclick="openProduct('Frozen Fever', 'collector')"><div class="arch-art"></div><div class="arch-label"><span class="arch-num">M / 02</span><span class="arch-title-text">Frozen Fever</span></div></div>
+        <div class="arch arch-3" onclick="openProduct('Indradhanush', 'collector')"><div class="arch-art"></div><div class="arch-label"><span class="arch-num">M / 03</span><span class="arch-title-text">Indradhanush</span></div></div>
+        <div class="arch arch-4" onclick="openProduct('Dream Catcher', 'collector')"><div class="arch-art"></div><div class="arch-label"><span class="arch-num">M / 04</span><span class="arch-title-text">Dream Catcher</span></div></div>
+        <div class="arch arch-5" onclick="openProduct('Manch', 'collector')"><div class="arch-art"></div><div class="arch-label"><span class="arch-num">M / 05</span><span class="arch-title-text">Manch</span></div></div>
+        <div class="arch arch-6" onclick="openProduct('Brainfog', 'collector')"><div class="arch-art"></div><div class="arch-label"><span class="arch-num">M / 06</span><span class="arch-title-text">Brainfog</span></div></div>
+        <div class="arch arch-7" onclick="openProduct('Sard', 'collector')"><div class="arch-art"></div><div class="arch-label"><span class="arch-num">M / 07</span><span class="arch-title-text">Sard</span></div></div>
+        <div class="arch arch-8" onclick="openProduct('Ittar', 'collector')"><div class="arch-art"></div><div class="arch-label"><span class="arch-num">M / 08</span><span class="arch-title-text">Ittar</span></div></div>
+      </div>
+
+      <div class="archive-services reveal">
+        <div>
+          <span class="arch-svc-num">— I</span>
+          <h4 class="arch-svc-name">Private Viewing</h4>
+          <p class="arch-svc-body">By appointment in Bengaluru and Mumbai. Walk through the Archive in person, with the artist or our curator.</p>
+        </div>
+        <div>
+          <span class="arch-svc-num">— II</span>
+          <h4 class="arch-svc-name">Custom Hospitality</h4>
+          <p class="arch-svc-body">Bespoke curation for hotels, resorts, and members' clubs. We respond to your property's character, not a template.</p>
+        </div>
+        <div>
+          <span class="arch-svc-num">— III</span>
+          <h4 class="arch-svc-name">Licensing</h4>
+          <p class="arch-svc-body">Exclusive and non-exclusive options for commercial display, print, and media use across regions.</p>
+        </div>
+        <div>
+          <span class="arch-svc-num">— IV</span>
+          <h4 class="arch-svc-name">Commissions</h4>
+          <p class="arch-svc-body">Original work, made for one place. Tell us what the room is — we'll begin from there.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA / CONTACT ============ -->
+  <section class="cta-band" id="contact">
+    <div class="cta-inner">
+      <div class="cta-left reveal">
+        <span class="cta-eyebrow">Begin a Conversation</span>
+        <h2 class="cta-title">Let's create<br><em>meaningful spaces</em><br>together.</h2>
+        <p class="cta-body">Every space holds a different story. Tell us about yours — the property, the guest, the feeling you're after. We'll respond within forty-eight hours with a curated proposal and a private viewing invitation.</p>
+        <div>
+          <a href="mailto:art@khidki.studio" style="font-family: var(--serif); font-style: italic; font-size: 20px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); padding-bottom: 4px;">art@khidki.studio</a>
+        </div>
+      </div>
+      <div class="cta-form reveal">
+        <h3 class="cta-form-title">Tell us about your space.</h3>
+        <div class="form-row">
+          <input class="form-input" type="text" placeholder="Name">
+          <input class="form-input" type="email" placeholder="Email">
+        </div>
+        <div class="form-row">
+          <select class="form-select">
+            <option>Space Type</option>
+            <option>Boutique Hotel</option>
+            <option>Cafe</option>
+            <option>Restaurant</option>
+            <option>Resort</option>
+            <option>Coworking Space</option>
+            <option>Homestay</option>
+            <option>Private Collection</option>
+            <option>Other</option>
+          </select>
+          <select class="form-select">
+            <option>Budget Range</option>
+            <option>₹50,000 – ₹2L</option>
+            <option>₹2L – ₹5L</option>
+            <option>₹5L – ₹15L</option>
+            <option>₹15L+</option>
+          </select>
+        </div>
+        <textarea class="form-textarea" placeholder="A few lines about the room, the mood, the moment you're trying to create."></textarea>
+        <button class="form-submit" onclick="submitForm(event)">Send Enquiry</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <span class="foot-word">KHIDKI</span>
+    <span class="foot-meta">© 2026 Khidki Studio &nbsp;·&nbsp; All Rights Reserved</span>
+    <span class="foot-tag">Let's create meaningful spaces together.</span>
+    <span class="foot-meta"><a href="mailto:art@khidki.studio">art@khidki.studio</a> &nbsp;·&nbsp; <a href="#">www.khidki.studio</a></span>
+    <div class="foot-social">
+      <a href="#" aria-label="Instagram"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="2" width="10" height="10" rx="3"/><circle cx="7" cy="7" r="2.2"/><circle cx="10" cy="4" r="0.5" fill="currentColor"/></svg></a>
+      <a href="#" aria-label="Pinterest"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v6M5.5 7l3-1.5"/></svg></a>
+    </div>
+  </footer>
+
+</main>
+
+<!-- ============ QUICK VIEW MODAL ============ -->
+<div class="modal-backdrop" id="modal" onclick="closeModalBackdrop(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-art"><div class="modal-art-inner" id="modal-art"></div></div>
+    <div class="modal-body">
+      <p class="modal-tag" id="modal-tag">The Signature Collection</p>
+      <h2 class="modal-name" id="modal-name">Vaatayan</h2>
+      <p class="modal-meta" id="modal-meta">Edition of 50  ·  Numbered &amp; Signed</p>
+      <p class="modal-desc" id="modal-desc">A meditation on dusk, threshold, and the slow return of warmth to a room. From The Signature Collection's foundational arc — the moment a space becomes itself again.</p>
+
+      <div class="modal-section">
+        <p class="modal-section-label">Choose Size</p>
+        <div class="size-options" id="size-options">
+          <button class="size-opt" data-price="4800"><strong>A4</strong><small>21 × 30 cm</small></button>
+          <button class="size-opt active" data-price="7200"><strong>A3</strong><small>30 × 42 cm</small></button>
+          <button class="size-opt" data-price="12800"><strong>A2</strong><small>42 × 60 cm</small></button>
+          <button class="size-opt" data-price="22400"><strong>A1</strong><small>60 × 84 cm</small></button>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <p class="modal-section-label">Material</p>
+        <div class="material-options" id="material-options">
+          <button class="mat-opt active" data-mod="1">Fine Art Paper</button>
+          <button class="mat-opt" data-mod="1.4">Stretched Canvas</button>
+          <button class="mat-opt" data-mod="2">Framed</button>
+        </div>
+      </div>
+
+      <div class="modal-price-row">
+        <span class="modal-price-label">Total</span>
+        <span class="modal-price" id="modal-price">₹7,200</span>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeModal()">Continue Browsing</button>
+        <button class="btn-primary" onclick="addToCartFromModal()">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CART DRAWER ============ -->
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <h3 class="cart-header-title">Your Cart</h3>
+    <button class="cart-close" onclick="toggleCart()">×</button>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <div class="cart-empty">Your cart is quiet for now.</div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span class="cart-total-label">Subtotal</span>
+      <span class="cart-total-value" id="cart-total">₹0</span>
+    </div>
+    <button class="cart-checkout" id="cart-checkout" disabled>Proceed to Checkout</button>
+  </div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast">Added to cart</div>
+
+<script>
+  // ==== STATE ====
+  const COLLECTIONS = {
+    signature:  { label: 'The Signature Collection', tileClass: 's01' },
+    storyscape: { label: 'The Storyscape Collection', tileClass: 's02' },
+    earth:      { label: 'Earth & Silence Collection', tileClass: 's03' },
+    midnight:   { label: 'The Midnight Collection', tileClass: 's04' },
+    dreamscape: { label: 'The Dreamscape Collection', tileClass: 's05' },
+    collector:  { label: 'The Collector Archive', tileClass: 's06' }
+  };
+
+  const PRODUCTS = [
+    { name: 'Vaatayan', collection: 'signature', tile: 1, bestseller: true,
+      desc: 'A meditation on dusk, threshold, and the slow return of warmth to a room.' },
+    { name: 'Cotton Candy', collection: 'storyscape', tile: 1, bestseller: true,
+      desc: 'Sugar clouds at altitude — pink, surreal, suspended in narrative time.' },
+    { name: 'Sangam', collection: 'earth', tile: 1, bestseller: true,
+      desc: 'Where the river meets itself. A study in green-quiet and the language of merging.' },
+    { name: 'Neon', collection: 'midnight', tile: 1,
+      desc: 'A figure crowned in artificial light. The city becomes a kind of god, briefly.' },
+    { name: 'Dream Catcher', collection: 'dreamscape', tile: 2, bestseller: true,
+      desc: 'A drift across the soft frontier between waking and the other place.' },
+    { name: 'Trupti', collection: 'signature', tile: 3,
+      desc: 'Satisfaction held in golden hour light — the breath before sleep, after a long day.' },
+    { name: 'Bijlee', collection: 'storyscape', tile: 2,
+      desc: 'Lightning written across a magenta sky. Drama suspended; the cinema of weather.' },
+    { name: 'Frozen Fever', collection: 'earth', tile: 2,
+      desc: 'Winter as feeling — the strange heat that lives inside a cold landscape.' },
+    { name: 'Moon & Wisdom', collection: 'midnight', tile: 3,
+      desc: 'A philosopher\u2019s hour. The moon as second teacher; the body in repose.' },
+    { name: 'Sard', collection: 'dreamscape', tile: 1,
+      desc: 'A walk through someone else\u2019s dream, with permission. Pastel, generous, kind.' },
+    { name: 'Phone Call', collection: 'signature', tile: 5, bestseller: true,
+      desc: 'The conversation that lasts longer than the storm. Warm, golden, suspended.' },
+    { name: 'Aurora', collection: 'storyscape', tile: 8,
+      desc: 'A green ribbon of weather over a private moment. Cinema, in stillness.' },
+    { name: 'Indradhanush', collection: 'earth', tile: 3, bestseller: true,
+      desc: 'Rainbow as architecture — the arch we walk under when grief breaks.' },
+    { name: 'Munch', collection: 'midnight', tile: 5,
+      desc: 'A figure in the long corridor of the inner-late-night. Echoes of psychology.' },
+    { name: 'Ittar', collection: 'dreamscape', tile: 4,
+      desc: 'A small bottle of memory. The room reorganizes itself around a single scent.' },
+    { name: 'Saudagar', collection: 'signature', tile: 7,
+      desc: 'The traveler who sells light. Amber-soaked figure stepping out of myth.' }
+  ];
+
+  let cart = [];
+  let currentModalProduct = null;
+  let currentSize = 7200;
+  let currentMatMod = 1;
+
+  // ==== BUILD SHOP GRID ====
+  function buildShopGrid() {
+    const grid = document.getElementById('shop-grid');
+    grid.innerHTML = PRODUCTS.map((p, i) => {
+      const collMeta = COLLECTIONS[p.collection];
+      return `
+        <div class="product" data-collection="${p.collection}" data-bestseller="${p.bestseller || false}" onclick="openProduct('${p.name}', '${p.collection}', ${p.tile})">
+          <div class="product-image">
+            ${p.bestseller ? '<span class="product-badge">Bestseller</span>' : ''}
+            <div class="product-art" style="background: ${getTileGradient(p.collection, p.tile)}"></div>
+            <div class="product-overlay">
+              <button class="product-qv" onclick="event.stopPropagation(); openProduct('${p.name}', '${p.collection}', ${p.tile})">Quick View</button>
+            </div>
+          </div>
+          <div class="product-caption">
+            <div class="product-caption-tag">${collMeta.label.replace('The ','').replace(' Collection','')}</div>
+            <div class="product-caption-name">${p.name}</div>
+            <div class="product-caption-price">From ₹4,800</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function getTileGradient(coll, tile) {
+    // Reproduces the suite-tile CSS gradients in JS for direct application
+    const grads = {
+      signature: {
+        1: 'radial-gradient(circle at 50% 70%, #d97a3d 0%, #8a4a20 40%, #2a1810 100%)',
+        2: 'radial-gradient(ellipse at 50% 80%, #f4c878 0%, #c98a4a 30%, #4a2a14 80%)',
+        3: 'radial-gradient(circle at 30% 30%, #f4d896 0%, #d99a5a 30%, #5a3018 80%)',
+        4: 'linear-gradient(180deg, #d97a3d 0%, #8a3a20 40%, #2a1410 100%)',
+        5: 'radial-gradient(ellipse at 70% 60%, #e0a06a 0%, #8a4a2a 40%, #1a0e08 90%)',
+        6: 'radial-gradient(circle at 50% 50%, #f4c068 0%, #b46a30 30%, #3a1810 80%)',
+        7: 'linear-gradient(135deg, #c96a3a 0%, #8a4020 50%, #1a0a08 100%)',
+        8: 'radial-gradient(circle at 50% 70%, #e09060 0%, #a04a28 40%, #2a1410 90%)'
+      },
+      storyscape: {
+        1: 'radial-gradient(circle at 50% 30%, #e4a0d8 0%, #8a4a8a 50%, #1a0a1c 100%)',
+        2: 'linear-gradient(180deg, #c87aa8 0%, #5a2a5a 40%, #0a0410 100%)',
+        3: 'radial-gradient(ellipse at 30% 40%, #f4b0d0 0%, #a86a8a 40%, #2a1428 90%)',
+        4: 'radial-gradient(circle at 50% 60%, #d090b8 0%, #6a3a6a 50%, #100614 100%)',
+        5: 'linear-gradient(135deg, #e0a8c8 0%, #9a4a78 40%, #1a0814 100%)',
+        6: 'radial-gradient(circle at 40% 40%, #c890b0 0%, #7a3a78 50%, #150620 100%)',
+        7: 'radial-gradient(ellipse at 50% 80%, #f4b8d4 0%, #a05a8a 40%, #20102c 90%)',
+        8: 'linear-gradient(180deg, #a47090 0%, #5a2855 60%, #0a0418 100%)'
+      },
+      earth: {
+        1: 'radial-gradient(circle at 50% 60%, #6a8a7a 0%, #2a4a3a 50%, #081210 100%)',
+        2: 'radial-gradient(ellipse at 40% 70%, #8aa68a 0%, #3a6a4a 40%, #0a1410 90%)',
+        3: 'linear-gradient(180deg, #7a9aa8 0%, #2a4a5a 50%, #06101a 100%)',
+        4: 'radial-gradient(circle at 50% 40%, #9ab098 0%, #4a6a58 40%, #0a1410 90%)',
+        5: 'radial-gradient(ellipse at 60% 50%, #5a8a7a 0%, #2a4a3a 50%, #08120e 100%)',
+        6: 'linear-gradient(135deg, #8aa88a 0%, #3a5a4a 50%, #0a1812 100%)',
+        7: 'radial-gradient(circle at 50% 50%, #6a9aa0 0%, #2a5a5a 40%, #061418 90%)',
+        8: 'radial-gradient(ellipse at 30% 80%, #7aa898 0%, #3a6a58 40%, #0a1612 90%)'
+      },
+      midnight: {
+        1: 'radial-gradient(circle at 50% 50%, #4a6090 0%, #1a2840 50%, #050610 100%)',
+        2: 'radial-gradient(ellipse at 70% 30%, #3a5a8a 0%, #0a1428 50%, #02040a 100%)',
+        3: 'linear-gradient(180deg, #1a2848 0%, #0a1020 70%, #020410 100%)',
+        4: 'radial-gradient(circle at 30% 40%, #5a4a7a 0%, #181028 50%, #04020a 100%)',
+        5: 'radial-gradient(ellipse at 50% 70%, #4a6a90 0%, #1a2440 50%, #04060e 100%)',
+        6: 'linear-gradient(135deg, #2a3a5a 0%, #0a1428 60%, #04060e 100%)',
+        7: 'radial-gradient(circle at 60% 60%, #3a5478 0%, #14203c 50%, #06080e 100%)',
+        8: 'radial-gradient(ellipse at 40% 30%, #5868a0 0%, #18243c 50%, #04060e 100%)'
+      },
+      dreamscape: {
+        1: 'radial-gradient(circle at 50% 60%, #4a90b8 0%, #1a4868 40%, #050e18 100%)',
+        2: 'linear-gradient(135deg, #6ab8d4 0%, #3a7898 30%, #0a1828 80%)',
+        3: 'radial-gradient(ellipse at 50% 50%, #d4708a 0%, #8a4060 40%, #1a0a18 90%)',
+        4: 'radial-gradient(circle at 30% 60%, #f4a878 0%, #b46848 50%, #2a0e08 100%)',
+        5: 'linear-gradient(180deg, #70b8d4 0%, #305878 40%, #060e1a 100%)',
+        6: 'radial-gradient(circle at 60% 40%, #c896c8 0%, #6a3878 50%, #14081c 100%)',
+        7: 'radial-gradient(ellipse at 50% 70%, #8ad4c0 0%, #3a8a78 40%, #0a201c 90%)',
+        8: 'linear-gradient(135deg, #b890d4 0%, #503878 50%, #0a0618 100%)'
+      },
+      collector: {
+        1: 'radial-gradient(ellipse at 50% 60%, #c9a06a 0%, #5a3a18 30%, #100806 100%)',
+        2: 'radial-gradient(circle at 40% 50%, #8a6a3a 0%, #2a1808 50%, #060402 100%)',
+        3: 'linear-gradient(180deg, #6a5028 0%, #1a1208 60%, #040302 100%)',
+        4: 'radial-gradient(circle at 50% 40%, #a47840 0%, #3a2410 50%, #080604 100%)',
+        5: 'radial-gradient(ellipse at 60% 50%, #c8965a 0%, #4a2a14 40%, #0a0604 100%)',
+        6: 'linear-gradient(135deg, #946838 0%, #2a1808 60%, #060402 100%)',
+        7: 'radial-gradient(circle at 50% 70%, #b88858 0%, #382414 40%, #080604 90%)',
+        8: 'radial-gradient(ellipse at 30% 40%, #ae8050 0%, #2e1c0c 50%, #060402 100%)'
+      }
+    };
+    return (grads[coll] && grads[coll][tile]) || grads.signature[1];
+  }
+
+  // ==== FILTER ====
+  function filterShop(filter) {
+    document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+    const activePill = document.querySelector(`.filter-pill[data-filter="${filter}"]`);
+    if (activePill) activePill.classList.add('active');
+
+    document.querySelectorAll('.product').forEach(p => {
+      let show = false;
+      if (filter === 'all') show = true;
+      else if (filter === 'bestseller') show = p.dataset.bestseller === 'true';
+      else show = p.dataset.collection === filter;
+      p.classList.toggle('hide', !show);
+    });
+    document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ==== MODAL ====
+  function openProduct(name, collection, tile) {
+    tile = tile || 1;
+    const product = PRODUCTS.find(p => p.name === name) || { name, collection, tile, desc: 'A signature work from the Khidki collection — available as a numbered, archival fine art print.' };
+    currentModalProduct = { ...product, collection, tile };
+
+    document.getElementById('modal-tag').textContent = COLLECTIONS[collection].label;
+    document.getElementById('modal-name').textContent = name;
+    document.getElementById('modal-desc').textContent = product.desc;
+    document.getElementById('modal-art').style.background = getTileGradient(collection, tile);
+
+    if (collection === 'collector') {
+      document.getElementById('modal-meta').textContent = 'Limited Edition of 25  ·  Museum Quality';
+    } else {
+      document.getElementById('modal-meta').textContent = 'Open Edition  ·  Numbered & Signed';
+    }
+
+    // Reset selections
+    document.querySelectorAll('.size-opt').forEach((s, i) => s.classList.toggle('active', i === 1));
+    document.querySelectorAll('.mat-opt').forEach((s, i) => s.classList.toggle('active', i === 0));
+    currentSize = 7200;
+    currentMatMod = 1;
+    updateModalPrice();
+
+    document.getElementById('modal').classList.add('open');
+    document.body.classList.add('locked');
+  }
+
+  function openSuite(suiteKey) {
+    // For now, opens the first product of that suite
+    const first = PRODUCTS.find(p => p.collection === suiteKey);
+    if (first) openProduct(first.name, suiteKey, first.tile);
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    document.body.classList.remove('locked');
+  }
+  function closeModalBackdrop(e) {
+    if (e.target.id === 'modal') closeModal();
+  }
+
+  function updateModalPrice() {
+    const total = Math.round(currentSize * currentMatMod);
+    document.getElementById('modal-price').textContent = '₹' + total.toLocaleString('en-IN');
+  }
+
+  document.addEventListener('click', e => {
+    const sizeBtn = e.target.closest('.size-opt');
+    const matBtn = e.target.closest('.mat-opt');
+    if (sizeBtn) {
+      document.querySelectorAll('.size-opt').forEach(b => b.classList.remove('active'));
+      sizeBtn.classList.add('active');
+      currentSize = parseInt(sizeBtn.dataset.price);
+      updateModalPrice();
+    }
+    if (matBtn) {
+      document.querySelectorAll('.mat-opt').forEach(b => b.classList.remove('active'));
+      matBtn.classList.add('active');
+      currentMatMod = parseFloat(matBtn.dataset.mod);
+      updateModalPrice();
+    }
+  });
+
+  // ==== CART ====
+  function addToCartFromModal() {
+    if (!currentModalProduct) return;
+    const sizeEl = document.querySelector('.size-opt.active');
+    const matEl = document.querySelector('.mat-opt.active');
+    const total = Math.round(currentSize * currentMatMod);
+    cart.push({
+      id: Date.now() + Math.random(),
+      name: currentModalProduct.name,
+      collection: currentModalProduct.collection,
+      tile: currentModalProduct.tile,
+      size: sizeEl.querySelector('strong').textContent,
+      material: matEl.textContent,
+      price: total
+    });
+    saveCart();
+    renderCart();
+    closeModal();
+    showToast('Added to cart');
+  }
+
+  function removeFromCart(id) {
+    cart = cart.filter(c => c.id !== id);
+    saveCart();
+    renderCart();
+  }
+
+  function saveCart() {
+    try { localStorage.setItem('khidki_cart', JSON.stringify(cart)); } catch(e) {}
+  }
+  function loadCart() {
+    try {
+      const s = localStorage.getItem('khidki_cart');
+      if (s) cart = JSON.parse(s);
+    } catch(e) {}
+  }
+
+  function renderCart() {
+    const itemsEl = document.getElementById('cart-items');
+    const totalEl = document.getElementById('cart-total');
+    const countEl = document.getElementById('cart-count');
+    const checkoutBtn = document.getElementById('cart-checkout');
+
+    countEl.textContent = cart.length;
+
+    if (cart.length === 0) {
+      itemsEl.innerHTML = '<div class="cart-empty">Your cart is quiet for now.</div>';
+      totalEl.textContent = '₹0';
+      checkoutBtn.disabled = true;
+      return;
+    }
+
+    itemsEl.innerHTML = cart.map(item => `
+      <div class="cart-item">
+        <div class="cart-item-img" style="background: ${getTileGradient(item.collection, item.tile)}"></div>
+        <div>
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-spec">${item.size}  ·  ${item.material}</div>
+          <div class="cart-item-price">₹${item.price.toLocaleString('en-IN')}</div>
+        </div>
+        <button class="cart-remove" onclick="removeFromCart(${item.id})">×</button>
+      </div>
+    `).join('');
+
+    const total = cart.reduce((s, i) => s + i.price, 0);
+    totalEl.textContent = '₹' + total.toLocaleString('en-IN');
+    checkoutBtn.disabled = false;
+  }
+
+  function toggleCart() {
+    document.getElementById('cart-drawer').classList.toggle('open');
+  }
+
+  // ==== TOAST ====
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  // ==== SCROLL ====
+  function scrollToSection(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function submitForm(e) {
+    e.preventDefault();
+    showToast('Enquiry sent — we\u2019ll respond within 48 hours.');
+  }
+
+  // ==== SCROLL REVEAL ====
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        observer.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ==== SIDE NAV ACTIVE STATE ====
+  const sections = ['collections', 'packages', 'shop', 'collector', 'journal', 'contact'];
+  const sideLinks = document.querySelectorAll('.side-links li a');
+  function updateActiveNav() {
+    let active = sections[0];
+    sections.forEach(sec => {
+      const el = document.getElementById(sec);
+      if (el && el.getBoundingClientRect().top < window.innerHeight * 0.4) {
+        active = sec;
+      }
+    });
+    sideLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + active);
+    });
+  }
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+
+  // ==== INIT ====
+  buildShopGrid();
+  loadCart();
+  renderCart();
+  updateActiveNav();
+
+  // Close modal on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closeModal();
+      if (document.getElementById('cart-drawer').classList.contains('open')) toggleCart();
+    }
+  });
+</script>
+</body>
+</html>
