@@ -58,7 +58,7 @@
                 linear-gradient(135deg, #06100f, #10100d 58%, #050706);
             border-bottom: 1px solid var(--line-dark);
             display: grid;
-            grid-template-rows: auto 1fr;
+            grid-template-rows: 1fr;
             overflow: hidden;
             position: relative;
         }
@@ -83,16 +83,6 @@
             pointer-events: none;
         }
 
-        .shop-nav {
-            align-items: flex-start;
-            display: grid;
-            gap: 34px;
-            grid-template-columns: 270px 1fr 170px;
-            min-height: 88px;
-            padding: 28px clamp(28px, 3.6vw, 64px) 18px;
-            position: relative;
-            z-index: 5;
-        }
         .nav-toggle {
             background: transparent;
             border: 0;
@@ -106,97 +96,25 @@
         .nav-toggle span {
             background: var(--gold);
             display: block;
-            height: 1px;
+            height: 2px;
             width: 20px;
         }
-        .brand-mark {
-            color: var(--gold);
-            display: inline-flex;
-            flex-direction: column;
-            gap: 2px;
-            text-decoration: none;
-        }
-        .brand-mark strong {
-            font-family: var(--serif);
-            font-size: 43px;
-            font-weight: 400;
-            letter-spacing: 0.26em;
-            line-height: 0.9;
-        }
-        .brand-mark span {
-            color: var(--bone-dim);
-            font-size: 14px;
-            letter-spacing: 0.06em;
-        }
-        .shop-nav-links {
+        .store-menu-toggle {
             align-items: center;
-            display: flex;
-            gap: clamp(20px, 3vw, 46px);
-            justify-content: center;
-            list-style: none;
-            padding-top: 16px;
-        }
-        .shop-nav-links a {
-            color: var(--bone-dim);
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 0.11em;
-            padding-bottom: 13px;
-            position: relative;
-            text-decoration: none;
-            text-transform: uppercase;
-            transition: color 0.2s;
-        }
-        .shop-nav-links a:hover,
-        .shop-nav-links a.active {
-            color: var(--gold);
-        }
-        .shop-nav-links a.active::after {
-            background: var(--gold);
-            bottom: 0;
-            content: '';
-            height: 2px;
-            left: 0;
-            position: absolute;
-            width: 100%;
-        }
-        .shop-icons {
-            align-items: center;
-            display: flex;
-            gap: 24px;
-            justify-content: flex-end;
-            padding-top: 12px;
-        }
-        .icon-button {
-            background: transparent;
-            border: 0;
-            color: var(--gold);
-            cursor: pointer;
-            height: 30px;
-            padding: 0;
-            position: relative;
-            width: 30px;
-        }
-        .icon-button svg {
-            display: block;
-            height: 26px;
-            stroke: currentColor;
-            width: 26px;
-        }
-        .cart-count {
-            align-items: center;
-            background: var(--gold);
+            background: rgba(5, 7, 6, 0.72);
+            border: 1px solid rgba(201, 160, 106, 0.34);
             border-radius: 50%;
-            color: var(--ink);
-            display: inline-flex;
-            font-size: 9px;
-            font-weight: 600;
-            height: 18px;
+            box-shadow: 0 14px 38px rgba(0, 0, 0, 0.32);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            height: 46px;
             justify-content: center;
-            position: absolute;
-            right: -3px;
-            top: -6px;
-            width: 18px;
+            left: clamp(18px, 3vw, 42px);
+            position: fixed;
+            top: 24px;
+            width: 46px;
+            z-index: 2001;
         }
 
         .hero-content-row {
@@ -1033,17 +951,6 @@
         }
 
         @media (max-width: 1220px) {
-            .shop-nav {
-                grid-template-columns: auto 1fr auto;
-            }
-            .nav-toggle {
-                align-items: center;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-            }
-            .brand-mark strong { font-size: 34px; }
-            .shop-nav-links { display: none; }
             .hero-content-row {
                 grid-template-columns: 1fr;
             }
@@ -1077,18 +984,6 @@
         }
 
         @media (max-width: 760px) {
-            .shop-nav {
-                align-items: center;
-                grid-template-columns: auto 1fr auto;
-                padding: 18px 18px 12px;
-            }
-            .brand-mark strong {
-                font-size: 26px;
-            }
-            .brand-mark span,
-            .shop-icons .icon-button:nth-child(-n+2) {
-                display: none;
-            }
             .hero-title {
                 font-size: 48px;
             }
@@ -1197,39 +1092,12 @@
         </div>
     </aside>
 
+    <button class="nav-toggle store-menu-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+    </button>
+
     <main class="store-main" id="top">
         <section class="shop-hero">
-            <header class="shop-nav">
-                <a class="brand-mark" href="index.html">
-                    <strong>KHIDKI</strong>
-                    <span>Art • Story • Atmosphere</span>
-                </a>
-                <ul class="shop-nav-links">
-                    <li><a class="active" href="#prints">Prints</a></li>
-                    <li><a href="collectors-room.html">Collections</a></li>
-                    <li><a href="#prints">New Arrivals</a></li>
-                    <li><a href="#prints">Bestsellers</a></li>
-                    <li><a href="space-shop.html">Gift Cards</a></li>
-                    <li><a href="face-behind-khidki.html">About Us</a></li>
-                    <li><a href="windows-within-khidki.html">Journal</a></li>
-                </ul>
-                <div class="shop-icons">
-                    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
-                        <span></span><span></span><span></span>
-                    </button>
-                    <button class="icon-button" type="button" aria-label="Search">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.5-4.5"></path></svg>
-                    </button>
-                    <button class="icon-button" type="button" aria-label="Account">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
-                    </button>
-                    <button class="icon-button" type="button" aria-label="Cart">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M6 8h12l-1 12H7L6 8z"></path><path d="M9 8a3 3 0 0 1 6 0"></path></svg>
-                        <span class="cart-count" id="cartCount">0</span>
-                    </button>
-                </div>
-            </header>
-
             <div class="hero-content-row">
                 <div class="hero-copy reveal">
                     <p class="hero-eyebrow">Fine Art Prints</p>
@@ -1248,7 +1116,7 @@
                     <div class="vase"></div>
                     <div class="candle"></div>
                     <div class="framed-print">
-                        <img src="INVENTORY/MOON AND THE WINDOW (1).png" alt="">
+                        <img src="INVENTORY/SANGAM.png" alt="">
                     </div>
                     <div class="paper-note">Art<br>is the<br>memory<br>of a<br>feeling.</div>
                     <div class="hero-qualities">
@@ -1369,7 +1237,7 @@
                 {
                     title: 'The Midnight Collection',
                     count: 'After-Dark Narratives',
-                    image: 'INVENTORY/MOON AND THE WINDOW (1).png',
+                    image: 'INVENTORY/SARD.png',
                     href: 'collection-detail.html?collection=midnight'
                 },
                 {
@@ -1568,7 +1436,7 @@
                 const work = works[index];
                 if (!work) return;
                 cartCount += 1;
-                cartCountEl.textContent = cartCount;
+                if (cartCountEl) cartCountEl.textContent = cartCount;
                 showToast(`${work.title} added to cart`);
             }
 

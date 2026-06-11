@@ -105,24 +105,6 @@
         }
         .artist-cta:hover { color: var(--accent-gold); border-bottom-color: var(--accent-gold); }
 
-        .skill-tag { cursor: pointer; }
-        .skill-tag.active {
-            background: rgba(212,175,55,0.18) !important;
-            border-color: var(--accent-gold) !important;
-            color: var(--accent-gold);
-        }
-        .gallery-item { transition: opacity 0.4s ease, transform 0.4s ease !important; }
-        .gallery-item.filtered-out { opacity: 0.12 !important; transform: scale(0.96) !important; }
-        .gallery-filter-label {
-            font-size: 12px;
-            color: var(--accent-gold);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .gallery-filter-label.visible { opacity: 1; }
     </style>
 </head>
 <body class="is-home">
@@ -201,12 +183,12 @@
 
     <!-- Navigation -->
     <nav class="nav" id="nav">
-        <a href="index.html" class="nav-logo">Khidki</a>
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
             <span></span>
             <span></span>
             <span></span>
         </button>
+        <a href="index.html" class="nav-logo">Khidki</a>
     </nav>
 
     <!-- Sidebar Overlay -->
@@ -298,40 +280,6 @@
         </div>
     </section>
 
-    <!-- Artworks Section -->
-    <section id="artworks" class="parallax-section">
-        <div class="section-content">
-            <div class="section-header">
-                <h2>Artworks</h2>
-                <p>Different moods. Different mediums.
-                    The same quiet intention, to turn feelings into something you can see.</p>
-            </div>
-            <div class="artworks-grid">
-                <a href="painting.html?id=1" class="artwork-card">
-                    <img loading="lazy" decoding="async" src="INVENTORY/KSHITIJ.png" alt="Kshitij">
-                    <div class="info">
-                        <h3>Kshitij</h3>
-                        <p class="medium">Acrylic on Canvas, 24×36"</p>
-                    </div>
-                </a>
-                <a href="painting.html?id=2" class="artwork-card">
-                    <img loading="lazy" decoding="async" src="INVENTORY/TALAASH.png" alt="Talaash">
-                    <div class="info">
-                        <h3>Talaash</h3>
-                        <p class="medium">Mixed Media</p>
-                    </div>
-                </a>
-                <a href="painting.html?id=5" class="artwork-card">
-                    <img loading="lazy" decoding="async" src="INVENTORY/KAARIGARI (2).png" alt="Kaarigari">
-                    <div class="info">
-                        <h3>Kaarigari</h3>
-                        <p class="medium">Watercolor on Paper, 18×24"</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
     <!-- Artist Section -->
     <section id="artist" class="parallax-section">
         <div class="section-content">
@@ -362,11 +310,11 @@
                     </div>
 
                     <div class="skills-list">
-                        <span class="skill-tag" data-filter="oil">🎨 Oil Painting</span>
-                        <span class="skill-tag" data-filter="watercolor">💧 Watercolor</span>
-                        <span class="skill-tag" data-filter="sketch">✏️ Sketching</span>
-                        <span class="skill-tag" data-filter="mixed">🖼️ Mixed Media</span>
-                        <span class="skill-tag" data-filter="botanical">🌸 Botanical Art</span>
+                        <span class="skill-tag">🎨 Oil Painting</span>
+                        <span class="skill-tag">💧 Watercolor</span>
+                        <span class="skill-tag">✏️ Sketching</span>
+                        <span class="skill-tag">🖼️ Mixed Media</span>
+                        <span class="skill-tag">🌸 Botanical Art</span>
                     </div>
 
                     <div>
@@ -378,79 +326,43 @@
         </div>
     </section>
 
-    <!-- Gallery Section -->
-    <section id="gallery" class="parallax-section">
-        <div class="section-content">
-            <div class="section-header">
-                <h2>Gallery</h2>
-                <p>A visual journey through completed works and exhibitions.</p>
-            </div>
-            <div class="gallery-filter-label" id="galleryFilterLabel"></div>
-            <div class="gallery-grid">
-                <a href="painting.html?id=1" class="gallery-item" data-medium="oil">
-                    <img loading="lazy" decoding="async" src="INVENTORY/KSHITIJ.png" alt="Kshitij">
-                    <div class="overlay">
-                        <h4>Kshitij</h4>
-                        <span>Artwork 1</span>
-                    </div>
-                </a>
-                <a href="painting.html?id=2" class="gallery-item" data-medium="mixed">
-                    <img loading="lazy" decoding="async" src="INVENTORY/TALAASH.png" alt="Talaash">
-                    <div class="overlay">
-                        <h4>Talaash</h4>
-                        <span>Artwork 2</span>
-                    </div>
-                </a>
-                <a href="painting.html?id=3" class="gallery-item" data-medium="mixed,sketch">
-                    <img loading="lazy" decoding="async" src="INVENTORY/GHUNGROO.png" alt="Ghungroo">
-                    <div class="overlay">
-                        <h4>Ghungroo</h4>
-                        <span>Artwork 3</span>
-                    </div>
-                </a>
-                <a href="painting.html?id=4" class="gallery-item" data-medium="oil,mixed">
-                    <img loading="lazy" decoding="async" src="INVENTORY/PORTAL.png" alt="Portal">
-                    <div class="overlay">
-                        <h4>Portal</h4>
-                        <span>Artwork 4</span>
-                    </div>
-                </a>
-                <a href="painting.html?id=5" class="gallery-item" data-medium="watercolor">
-                    <img loading="lazy" decoding="async" src="INVENTORY/KAARIGARI (2).png" alt="Kaarigari">
-                    <div class="overlay">
-                        <h4>Kaarigari</h4>
-                        <span>Artwork 5</span>
-                    </div>
-                </a>
-                <a href="painting.html?id=6" class="gallery-item" data-medium="oil">
-                    <img loading="lazy" decoding="async" src="INVENTORY/MANNAT (1).png" alt="Mannat">
-                    <div class="overlay">
-                        <h4>Mannat</h4>
-                        <span>Artwork 6</span>
-                    </div>
-                </a>
-                <a href="painting.html?id=7" class="gallery-item" data-medium="sketch,mixed">
-                    <img loading="lazy" decoding="async" src="INVENTORY/PARCHCHAI.png" alt="Parchchai">
-                    <div class="overlay">
-                        <h4>Parchchai</h4>
-                        <span>Artwork 7</span>
-                    </div>
-                </a>
-                <a href="painting.html?id=8" class="gallery-item" data-medium="watercolor,botanical">
-                    <img loading="lazy" decoding="async" src="INVENTORY/BACHPAN.png" alt="Bachpan">
-                    <div class="overlay">
-                        <h4>Bachpan</h4>
-                        <span>Artwork 8</span>
-                    </div>
-                </a>
-                <a href="painting.html?id=9" class="gallery-item" data-medium="watercolor">
-                    <img loading="lazy" decoding="async" src="INVENTORY/JHARNA.png" alt="Jharna">
-                    <div class="overlay">
-                        <h4>Jharna</h4>
-                        <span>Artwork 9</span>
-                    </div>
+    <!-- Store Gateway Section -->
+    <section id="store-gateway" class="parallax-section">
+        <div class="section-content store-gateway-content">
+            <div class="store-gateway-copy">
+                <span class="store-kicker">The store is open</span>
+                <h2>Take home a window.</h2>
+                <p>Skip the gallery wall for a moment. This little doorway leads to the print edit: selected Khidki works made to travel from the screen into your space.</p>
+                <a href="khidki-store.html" class="store-cta">
+                    Enter Khidki Store
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 12h14"></path>
+                        <path d="M13 6l6 6-6 6"></path>
+                    </svg>
                 </a>
             </div>
+
+            <a href="khidki-store.html" class="store-door-link" aria-label="Open Khidki Store">
+                <span class="store-door-glow"></span>
+                <span class="store-door-shell">
+                    <span class="store-door-topline">Khidki Store</span>
+                    <span class="store-door-art">
+                        <img loading="lazy" decoding="async" src="INVENTORY/SANGAM.png" alt="Sangam print preview">
+                    </span>
+                    <span class="store-door-note">
+                        <span>Featured print</span>
+                        <strong>Sangam</strong>
+                        <em>Available in 3 sizes</em>
+                    </span>
+                    <span class="store-door-cta">
+                        Browse the print edit
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M5 12h14"></path>
+                            <path d="M13 6l6 6-6 6"></path>
+                        </svg>
+                    </span>
+                </span>
+            </a>
         </div>
     </section>
 
@@ -587,29 +499,6 @@
             el.classList.add('bounce');
         });
 
-        // ── Gallery filter ─────────────────────────────────────────────────
-        const filterLabel = document.getElementById('galleryFilterLabel');
-        const filterNames = { oil: 'Oil & Acrylic', watercolor: 'Watercolor', sketch: 'Sketching', mixed: 'Mixed Media', botanical: 'Botanical Art' };
-
-        document.querySelectorAll('.skill-tag[data-filter]').forEach(tag => {
-            tag.addEventListener('click', () => {
-                const f = tag.dataset.filter;
-                const wasActive = tag.classList.contains('active');
-                document.querySelectorAll('.skill-tag').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.gallery-item').forEach(i => i.classList.remove('filtered-out'));
-                filterLabel.classList.remove('visible');
-                if (!wasActive) {
-                    tag.classList.add('active');
-                    filterLabel.textContent = 'Showing: ' + filterNames[f];
-                    filterLabel.classList.add('visible');
-                    document.querySelectorAll('.gallery-item').forEach(item => {
-                        const mediums = (item.dataset.medium || '').split(',');
-                        if (!mediums.includes(f)) item.classList.add('filtered-out');
-                    });
-                    document.querySelector('#gallery').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
     })();
     </script>
     <script src="js/main.js"></script>

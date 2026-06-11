@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     animateCursor();
 
-    document.querySelectorAll('a, button, input, textarea, select, .artwork-card, .gallery-item, .skill-tag, .social-link').forEach(el => {
+    document.querySelectorAll('a, button, input, textarea, select, .skill-tag, .social-link, .store-door-link, .store-cta').forEach(el => {
         el.addEventListener('mouseenter', () => cursor && cursor.classList.add('hovering'));
         el.addEventListener('mouseleave', () => cursor && cursor.classList.remove('hovering'));
     });
@@ -313,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        const sections = ['hero', 'artworks', 'artist', 'gallery', 'contact'];
+        const sections = ['hero', 'artist', 'store-gateway', 'contact'];
         let current = '';
         sections.forEach(id => {
             const section = document.getElementById(id);
@@ -341,16 +341,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    document.querySelectorAll('.section-header, .artwork-card, .artist-image, .artist-info, .gallery-item, .contact-info, .contact-form').forEach(el => {
+    document.querySelectorAll('.section-header, .artist-image, .artist-info, .store-gateway-copy, .store-door-link, .contact-info, .contact-form').forEach(el => {
         observer.observe(el);
-    });
-
-    document.querySelectorAll('.artwork-card').forEach((card, i) => {
-        card.style.transitionDelay = `${i * 0.1}s`;
-    });
-
-    document.querySelectorAll('.gallery-item').forEach((item, i) => {
-        item.style.transitionDelay = `${i * 0.1}s`;
     });
 
     // Form submission
