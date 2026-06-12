@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Collections | Khidki</title>
-    <meta name="description" content="Explore Khidki's five art collections, then browse the featured paintings from each atmosphere system.">
+    <meta name="description" content="Explore Khidki's six art collections, then browse the featured paintings from each atmosphere system.">
     <link rel="icon" href="sjdp.jpeg" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -397,7 +397,7 @@
         .collection-card-grid {
             display: grid;
             gap: 10px;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             position: relative;
             z-index: 2;
         }
@@ -1331,7 +1331,7 @@
 
         @media (max-width: 1220px) {
             .hero-collections { grid-template-columns: 1fr; }
-            .collection-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .collection-card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
             .collection-card { min-height: 390px; }
             .collection-benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .muse-card { grid-column: span 2; }
@@ -1379,6 +1379,7 @@
                 align-items: flex-start;
                 gap: 20px;
             }
+            .collection-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .artwork-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .formats-head {
                 flex-direction: column;
@@ -1473,9 +1474,9 @@
             <div class="collection-landing">
                 <div class="collection-hero reveal">
                     <p class="eyebrow">Our Collections</p>
-                    <h1 class="collection-hero-title">Five Worlds.<br>Infinite<br>Atmospheres.</h1>
+                    <h1 class="collection-hero-title">Six Worlds.<br>Infinite<br>Atmospheres.</h1>
                     <div class="collection-hero-rule" aria-hidden="true"></div>
-                    <p class="collection-hero-copy">Each Khidki collection is a universe of emotions, stories and colors - crafted to transform spaces into experiences people carry with them.</p>
+                    <p class="collection-hero-copy">Each Khidki collection opens a different emotional window - from sunlit stories and dream worlds to raw black-and-white studies where the first mark still breathes.</p>
                 </div>
 
                 <div class="collection-card-grid reveal" id="collectionsGrid" aria-label="Khidki collection suites"></div>
@@ -1528,7 +1529,7 @@
                         <p class="eyebrow">Featured Works</p>
                         <h2 class="section-title">Browse by <em>Collection.</em></h2>
                     </div>
-                    <p class="section-intro">The work grid renders directly from the inventory folder. Filter by collection, then open a piece for its catalogue context and inquiry path.</p>
+                    <p class="section-intro">Browse the Khidki inventory by collection, then open a piece for its atmosphere, story language, and inquiry path.</p>
                 </div>
                 <div class="filters reveal" id="collectionFilters"></div>
                 <div class="artwork-grid reveal" id="artworkGrid"></div>

@@ -38,6 +38,12 @@ window.KHIDKI_COLLECTION_PAGE = {
         atmosphere: "Escapism & Discovery",
         corePalette: "Turquoise, Pink, Gold",
         idealMarket: "Experiential Hospitality"
+      },
+      {
+        collection: "Raw Strokes",
+        atmosphere: "Instinct & Imperfection",
+        corePalette: "Charcoal, Paper White, Ink Black",
+        idealMarket: "Studios, Creative Corners"
       }
     ],
     formats: [
@@ -206,6 +212,37 @@ window.KHIDKI_COLLECTION_PAGE = {
       narratives: ["Wonder", "Discovery", "Imagination", "Adventure", "Possibility"],
       availableAs: ["Original Artwork", "Fine Art Prints", "Hospitality Packages", "Atmosphere Systems", "Collector Editions"],
       artworkIds: ["sangam", "frozen-fever", "sard", "indradhanush", "dream-catcher", "ittar", "social-battery", "sawaari", "manch", "brainfog", "bandi"]
+    },
+    {
+      id: "raw-strokes",
+      number: "06",
+      title: "Raw Strokes",
+      shortTitle: "Raw Strokes",
+      subtitle: "Unfiltered Lines. Honest Marks. The Beauty Before Polish.",
+      countLabel: "16 Black And White Studies",
+      mood: "Raw / Intimate / Unfiltered / Restless / Honest",
+      atmosphere: "Instinct & Imperfection",
+      corePalette: "Charcoal, Paper White, Ink Black",
+      idealMarket: "Studios, Creative Corners",
+      coverImage: "INVENTORY/BNW/BOJH.png",
+      heroImage: "INVENTORY/BNW/VENOM (1).png",
+      cardText: "Unfiltered studies where instinct, pressure, and feeling remain visible.",
+      description: "A black-and-white collection of sketches, studies, and spontaneous marks that preserve the first pulse of an idea.",
+      body: [
+        "Raw Strokes holds the work before it becomes polished.",
+        "These black-and-white studies celebrate the first mark, the unfinished edge, the pressure of a line, and the emotion that arrives before explanation.",
+        "Faces, objects, fragments, shadows and private symbols appear with a directness that feels almost overheard.",
+        "Built around charcoal, ink black, paper white and graphite grey, the collection creates spaces that feel intimate, expressive and alive with process.",
+        "It is designed for corners where thought is allowed to stay visible."
+      ],
+      featuredWorks: ["Bojh", "Chaand Chor", "Chai Wali", "Crumble", "Earphones", "Girls Are Blue", "Hair Ties", "Heart Of Steel", "Kash", "Khooni Dulhan", "Koyla", "Paisa", "Sapne", "Sword Fighter", "Titli", "Venom"],
+      paletteNames: ["Ink Black", "Charcoal", "Graphite", "Paper White", "Soft Grey", "Blush Shadow"],
+      palette: ["#090909", "#242424", "#565656", "#f2eee6", "#9a9a9a", "#c9a0a8"],
+      tones: ["Raw", "Intimate", "Unfiltered", "Restless", "Honest"],
+      idealSpaces: ["Artist Studios", "Creative Corners", "Reading Nooks", "Independent Cafes", "Personal Workspaces", "Gallery Walls"],
+      narratives: ["Instinct", "Imperfection", "Pressure", "Memory", "Gesture", "Process"],
+      availableAs: ["Original Artwork", "Fine Art Prints", "Studio Sets", "Collector Editions"],
+      artworkIds: ["bojh", "chaand-chor", "chai-wali", "crumble", "earphones", "girls-are-blue", "hair-ties", "heart-of-steel", "kash", "khooni-dulhan", "koyla", "paisa", "sapne", "sword-fighter", "titli", "venom"]
     }
   ],
   artworks: {
@@ -537,6 +574,118 @@ window.KHIDKI_COLLECTION_PAGE = {
       status: "Available for Collection Inquiry",
       image: "INVENTORY/BANDI.png",
       description: "A rainlit, theatrical work about motion, escape, and the drama of being carried by a moment."
+    },
+    "bojh": {
+      title: "Bojh",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/BOJH.png",
+      description: "A Raw Strokes study about heaviness, pressure, and the marks that gather when feeling becomes weight."
+    },
+    "chaand-chor": {
+      title: "Chaand Chor",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/CHAAND CHOR.png",
+      description: "A moonlit mischief rendered in spare lines, shadow, and the charm of an unfinished thought."
+    },
+    "chai-wali": {
+      title: "Chai Wali",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/CHAI WALI.png",
+      description: "A quiet everyday figure held in gesture, warmth, and the intimate ritual of pause."
+    },
+    "crumble": {
+      title: "Crumble",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/CRUMBLE.png",
+      description: "A study of fracture and softness, where the line lets collapse remain tender."
+    },
+    "earphones": {
+      title: "Earphones",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/EARPHONES (1).png",
+      description: "A Raw Strokes piece about private sound, interior distance, and the small shield of listening."
+    },
+    "girls-are-blue": {
+      title: "Girls Are Blue",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/GIRLS ARE BLUE.png",
+      description: "An intimate study of mood, selfhood, and the quiet colors that remain even in black and white."
+    },
+    "hair-ties": {
+      title: "Hair Ties",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/HAIR TIES.png",
+      description: "A small object made expressive through repetition, memory, and the trace of everyday hands."
+    },
+    "heart-of-steel": {
+      title: "Heart Of Steel",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/HEART OF STEEL.png",
+      description: "A study of guarded softness, where resilience and vulnerability sit inside the same outline."
+    },
+    "kash": {
+      title: "Kash",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/KASH.png",
+      description: "A Raw Strokes work about longing, almosts, and the unfinished sentence of wanting."
+    },
+    "khooni-dulhan": {
+      title: "Khooni Dulhan",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/KHOONI DULHAN.png",
+      description: "A dramatic monochrome study where ritual, tension, and folklore sharpen into one image."
+    },
+    "koyla": {
+      title: "Koyla",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/KOYLA.png",
+      description: "A charcoal-hearted piece about residue, heat, and the darkness that still carries warmth."
+    },
+    "paisa": {
+      title: "Paisa",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/PAISA.png",
+      description: "A study of value, want, and the sharp little theatre money creates around ordinary lives."
+    },
+    "sapne": {
+      title: "Sapne",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/SAPNE (1).png",
+      description: "Dreams caught in quick marks, where the image stays close to the first feeling."
+    },
+    "sword-fighter": {
+      title: "Sword Fighter",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/SWORD FIGHTER.png",
+      description: "A restless study of stance, courage, and the instant before motion becomes action."
+    },
+    "titli": {
+      title: "Titli",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/TITLI.png",
+      description: "A delicate Raw Strokes piece about transformation, fragility, and movement held in line."
+    },
+    "venom": {
+      title: "Venom",
+      medium: "Black and White Study / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/BNW/VENOM (1).png",
+      description: "A sharp, instinctive study where danger, beauty, and expression arrive without softening."
     }
   }
 };
