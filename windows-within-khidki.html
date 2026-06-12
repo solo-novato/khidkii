@@ -124,6 +124,184 @@
             font-style: italic;
         }
 
+        /* Junglee Jugnoo book-cover gallery */
+        #junglee .artwork-showcase {
+            gap: 48px 42px;
+            perspective: 1800px;
+        }
+
+        #junglee .showcase-card {
+            --book-depth: 18px;
+            --book-spine: #222927;
+            --book-paper: #efe7d8;
+            position: relative;
+            overflow: visible;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            padding: 0 20px 0 30px;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            transition: transform 0.45s ease, filter 0.45s ease;
+        }
+
+        #junglee .showcase-card::before,
+        #junglee .showcase-card::after {
+            content: '';
+            position: absolute;
+            pointer-events: none;
+            transition: transform 0.65s cubic-bezier(.2,.75,.2,1), opacity 0.45s ease, box-shadow 0.45s ease;
+        }
+
+        #junglee .showcase-card::before {
+            inset: 6px 21px 58px 31px;
+            border-radius: 5px 8px 8px 5px;
+            background:
+                linear-gradient(90deg, rgba(0,0,0,0.12), transparent 10%, transparent 88%, rgba(82, 62, 38, 0.12)),
+                repeating-linear-gradient(0deg, rgba(87, 68, 45, 0.08) 0, rgba(87, 68, 45, 0.08) 1px, transparent 1px, transparent 6px),
+                linear-gradient(135deg, #fbf6eb, #e8ddca 48%, #d4c2a3);
+            box-shadow:
+                inset 16px 0 18px rgba(58, 44, 28, 0.1),
+                inset -8px 0 12px rgba(255,255,255,0.34),
+                14px 18px 34px rgba(0,0,0,0.24);
+            transform: translate3d(var(--book-depth), 12px, -28px) rotateY(2deg);
+            z-index: 1;
+        }
+
+        #junglee .showcase-card::after {
+            top: 7px;
+            left: 12px;
+            bottom: 64px;
+            width: 34px;
+            border-radius: 12px 0 0 12px;
+            background:
+                linear-gradient(90deg, rgba(0,0,0,0.52), rgba(35, 42, 40, 0.98) 28%, rgba(82, 89, 80, 0.78) 52%, rgba(25, 31, 30, 0.98)),
+                repeating-linear-gradient(180deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 7px);
+            box-shadow:
+                inset 8px 0 12px rgba(255,255,255,0.08),
+                inset -10px 0 18px rgba(0,0,0,0.55),
+                -8px 16px 30px rgba(0,0,0,0.3);
+            transform: skewY(-1.6deg) translateZ(-22px);
+            z-index: 0;
+        }
+
+        #junglee .showcase-card:hover,
+        #junglee .showcase-card:focus-visible,
+        #junglee .showcase-card.is-open {
+            border-color: transparent;
+            transform: translateY(-8px) rotateX(1deg) rotateY(-2deg);
+            box-shadow: none;
+            filter: drop-shadow(0 32px 32px rgba(0,0,0,0.3));
+        }
+
+        #junglee .showcase-card:focus-visible {
+            outline: 2px solid rgba(212, 175, 55, 0.78);
+            outline-offset: 10px;
+        }
+
+        #junglee .showcase-card.is-open::before {
+            transform: translate3d(var(--book-depth), 10px, -24px) rotateY(0deg);
+            box-shadow:
+                inset 18px 0 20px rgba(58, 44, 28, 0.12),
+                inset -8px 0 12px rgba(255,255,255,0.36),
+                18px 22px 38px rgba(0,0,0,0.28);
+        }
+
+        #junglee .showcase-card img {
+            position: relative;
+            z-index: 3;
+            display: block;
+            aspect-ratio: 4/5.32;
+            border-radius: 5px 7px 7px 4px;
+            border: 1px solid rgba(255,255,255,0.16);
+            box-shadow:
+                -8px 0 0 var(--book-spine),
+                -12px 0 0 rgba(0,0,0,0.28),
+                inset 15px 0 20px rgba(0,0,0,0.16),
+                inset 1px 0 2px rgba(255,255,255,0.16),
+                0 24px 36px -24px rgba(0,0,0,0.82);
+            object-fit: cover;
+            object-position: center;
+            transform: translateZ(28px) rotateY(0deg);
+            transform-origin: left center;
+            filter: saturate(0.98) contrast(1.03);
+            transition:
+                transform 0.75s cubic-bezier(.2,.75,.2,1),
+                filter 0.45s ease,
+                box-shadow 0.55s ease;
+            will-change: transform;
+        }
+
+        #junglee .showcase-card img::selection {
+            background: transparent;
+        }
+
+        #junglee .showcase-card:hover img,
+        #junglee .showcase-card:focus-visible img {
+            transform: translateZ(34px) rotateY(-14deg);
+            filter: saturate(1.01) contrast(1.04) brightness(1.02);
+        }
+
+        #junglee .showcase-card.is-open img {
+            transform: translateZ(34px) rotateY(-62deg);
+            box-shadow:
+                -8px 0 0 var(--book-spine),
+                -14px 0 0 rgba(0,0,0,0.28),
+                inset 17px 0 22px rgba(0,0,0,0.2),
+                inset 1px 0 3px rgba(255,255,255,0.18),
+                22px 28px 42px -24px rgba(0,0,0,0.82);
+        }
+
+        #junglee .showcase-card .card-info {
+            position: relative;
+            z-index: 4;
+            width: calc(100% - 8px);
+            margin: 6px auto 0;
+            padding: 12px 10px 0;
+            text-align: center;
+            transform: translateZ(20px);
+        }
+
+        #junglee .showcase-card .card-info::before {
+            content: attr(data-book-title);
+            position: absolute;
+            left: 28px;
+            right: 14px;
+            bottom: calc(100% + 80px);
+            z-index: -1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 70px;
+            padding: 16px;
+            border-top: 1px solid rgba(80, 62, 42, 0.16);
+            border-bottom: 1px solid rgba(80, 62, 42, 0.1);
+            color: rgba(42, 35, 26, 0.52);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-style: italic;
+            line-height: 1.2;
+            opacity: 0;
+            transform: translate3d(18px, 0, -26px);
+            transition: opacity 0.4s ease 0.12s;
+            pointer-events: none;
+        }
+
+        #junglee .showcase-card.is-open .card-info::before {
+            opacity: 1;
+        }
+
+        #junglee .showcase-card h3 {
+            font-size: 19px;
+            margin-bottom: 4px;
+        }
+
+        #junglee .showcase-card .card-medium {
+            color: rgba(212, 175, 55, 0.66);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+        }
+
         /* Color-coded tab accent borders */
         .tab-btn[data-tab="moods"] {
             --tab-accent: var(--accent-violet);
@@ -153,6 +331,37 @@
             .artwork-showcase { grid-template-columns: 1fr 1fr; gap: 12px; }
             .showcase-card .card-info { padding: 14px; }
             .showcase-card h3 { font-size: 18px; }
+            #junglee .artwork-showcase { gap: 32px 18px; }
+            #junglee .showcase-card { padding: 0 7px 0 19px; }
+            #junglee .showcase-card::before {
+                left: 5px;
+                bottom: 56px;
+                width: 22px;
+            }
+            #junglee .showcase-card::after {
+                left: 17px;
+                right: 7px;
+                bottom: 51px;
+                height: 12px;
+            }
+            #junglee .showcase-card img { box-shadow: -6px 0 0 #2c3331, -8px 0 0 rgba(0,0,0,0.24), inset 10px 0 15px rgba(0,0,0,0.16), 0 22px 30px -22px rgba(0,0,0,0.82); }
+            #junglee .showcase-card:hover img,
+            #junglee .showcase-card:focus-visible img {
+                transform: translateZ(30px) rotateY(-9deg);
+            }
+            #junglee .showcase-card.is-open img {
+                transform: translateZ(30px) rotateY(-48deg);
+            }
+            #junglee .showcase-card .card-info::before {
+                left: 18px;
+                right: 8px;
+                bottom: calc(100% + 54px);
+                min-height: 50px;
+                padding: 10px;
+                font-size: 14px;
+            }
+            #junglee .showcase-card h3 { font-size: 16px; }
+            #junglee .showcase-card .card-medium { font-size: 11px; }
         }
 
         /* ══════════════════════════════════════════════════
@@ -990,6 +1199,53 @@
 
     <script src="js/sidebar.js"></script>
     <script src="js/moodboard-data.js"></script>
+    <script>
+    (function () {
+        const books = document.querySelectorAll('#junglee .showcase-card');
+        if (!books.length) return;
+
+        books.forEach(book => {
+            const title = book.querySelector('h3')?.textContent?.trim() || 'artwork';
+            const info = book.querySelector('.card-info');
+
+            if (info) info.dataset.bookTitle = title;
+            book.setAttribute('aria-expanded', 'false');
+            book.setAttribute('aria-label', title + ' book preview. Select once to open, select again to view the artwork.');
+
+            book.addEventListener('click', event => {
+                if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+                if (!book.classList.contains('is-open')) {
+                    event.preventDefault();
+                    books.forEach(other => {
+                        if (other !== book) {
+                            other.classList.remove('is-open');
+                            other.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                    book.classList.add('is-open');
+                    book.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+
+        document.addEventListener('click', event => {
+            if (event.target.closest('#junglee .showcase-card')) return;
+            books.forEach(book => {
+                book.classList.remove('is-open');
+                book.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key !== 'Escape') return;
+            books.forEach(book => {
+                book.classList.remove('is-open');
+                book.setAttribute('aria-expanded', 'false');
+            });
+        });
+    })();
+    </script>
     <script>
     (function () {
         const tabsEl = document.getElementById('mbvArtworkTabs');

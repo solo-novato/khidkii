@@ -398,6 +398,65 @@
             grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 20px;
         }
+        .work-browser {
+            display: grid;
+            gap: 26px;
+            grid-template-columns: 1fr;
+        }
+        .shade-filter-bar {
+            align-items: center;
+            border-bottom: 1px solid #222232;
+            border-top: 1px solid #222232;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: space-between;
+            padding: 14px 0;
+        }
+        .shade-filter {
+            align-items: center;
+            background: transparent;
+            border: 1px solid #252535;
+            color: var(--bone-dim);
+            cursor: pointer;
+            display: inline-flex;
+            gap: 10px;
+            min-height: 38px;
+            padding: 9px 13px;
+            text-align: left;
+            transition: border-color 0.25s var(--ease-out), background 0.25s var(--ease-out), color 0.25s var(--ease-out);
+        }
+        .shade-filter:hover,
+        .shade-filter.active {
+            background: #101019;
+            border-color: rgba(201, 160, 106, 0.58);
+            color: var(--bone);
+        }
+        .shade-filter strong {
+            color: var(--bone);
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+        .shade-filter span {
+            color: var(--bone-mute);
+            display: none;
+            font-size: 11px;
+            line-height: 1.35;
+        }
+        .shade-filter .shade-count {
+            color: var(--gold);
+            display: inline;
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .shade-filter[data-filter="green-gold"].active {
+            border-color: rgba(185, 174, 93, 0.7);
+        }
+        .shade-filter[data-filter="peach-amber"].active {
+            border-color: rgba(216, 156, 104, 0.7);
+        }
         .work-card {
             background: #0a0a12;
             border: 1px solid #1f1f2d;
@@ -412,6 +471,15 @@
         .work-card:hover {
             border-color: rgba(201, 160, 106, 0.62);
             transform: translateY(-4px);
+        }
+        .work-card[data-shade="green-gold"] {
+            border-top-color: rgba(185, 174, 93, 0.65);
+        }
+        .work-card[data-shade="peach-amber"] {
+            border-top-color: rgba(216, 156, 104, 0.65);
+        }
+        .work-card.hidden {
+            display: none;
         }
         .work-card img {
             aspect-ratio: 4 / 5;
@@ -763,21 +831,63 @@
                 ].join('');
             }
 
+            function renderWorkCard(artworkId, group) {
+                const artwork = artworks[artworkId];
+                if (!artwork) return '';
+                return `
+                    <a class="work-card" data-shade="${escapeHTML(group && group.id ? group.id : '')}" href="mailto:sjkhidkee@gmail.com?subject=${encodeURIComponent('Inquiry about: ' + artwork.title)}">
+                        <img src="${escapeHTML(artwork.image)}" alt="${escapeHTML(artwork.title)}" loading="lazy">
+                        <span class="work-card-body">
+                            <span class="work-collection">${escapeHTML(group && group.shade ? group.shade : collection.shortTitle)}</span>
+                            <span class="work-title">${escapeHTML(artwork.title)}</span>
+                            <span class="work-status">${escapeHTML(artwork.status)}</span>
+                        </span>
+                    </a>
+                `;
+            }
+
             function renderWorks() {
-                document.getElementById('workGrid').innerHTML = collection.artworkIds.map(artworkId => {
-                    const artwork = artworks[artworkId];
-                    if (!artwork) return '';
-                    return `
-                        <a class="work-card" href="mailto:sjkhidkee@gmail.com?subject=${encodeURIComponent('Inquiry about: ' + artwork.title)}">
-                            <img src="${escapeHTML(artwork.image)}" alt="${escapeHTML(artwork.title)}" loading="lazy">
-                            <span class="work-card-body">
-                                <span class="work-collection">${escapeHTML(collection.shortTitle)}</span>
-                                <span class="work-title">${escapeHTML(artwork.title)}</span>
-                                <span class="work-status">${escapeHTML(artwork.status)}</span>
-                            </span>
-                        </a>
+                const workGrid = document.getElementById('workGrid');
+                if (Array.isArray(collection.artworkGroups) && collection.artworkGroups.length) {
+                    const allCount = collection.artworkGroups.reduce((sum, group) => sum + (group.artworkIds || []).length, 0);
+                    workGrid.classList.remove('work-grid');
+                    workGrid.classList.add('work-browser');
+                    workGrid.innerHTML = `
+                        <div class="shade-filter-bar" aria-label="Filter ${escapeHTML(collection.shortTitle)} works by shade group">
+                            <button class="shade-filter active" type="button" data-filter="all">
+                                <strong>All Signature Works</strong>
+                                <span>See both shade families together.</span>
+                                <span class="shade-count">${allCount} Works</span>
+                            </button>
+                            ${collection.artworkGroups.map(group => `
+                                <button class="shade-filter" type="button" data-filter="${escapeHTML(group.id)}">
+                                    <strong>${escapeHTML(group.title)}</strong>
+                                    <span>${escapeHTML(group.description || group.shade || '')}</span>
+                                    <span class="shade-count">${(group.artworkIds || []).length} Works</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div class="work-grid">
+                            ${collection.artworkGroups.map(group => (group.artworkIds || []).map(artworkId => renderWorkCard(artworkId, group)).join('')).join('')}
+                        </div>
                     `;
-                }).join('');
+                    workGrid.querySelectorAll('.shade-filter').forEach(button => {
+                        button.addEventListener('click', function () {
+                            const selected = button.dataset.filter;
+                            workGrid.querySelectorAll('.shade-filter').forEach(filterButton => {
+                                filterButton.classList.toggle('active', filterButton === button);
+                            });
+                            workGrid.querySelectorAll('.work-card').forEach(card => {
+                                card.classList.toggle('hidden', selected !== 'all' && card.dataset.shade !== selected);
+                            });
+                        });
+                    });
+                    return;
+                }
+
+                workGrid.classList.remove('work-browser');
+                workGrid.classList.add('work-grid');
+                workGrid.innerHTML = collection.artworkIds.map(artworkId => renderWorkCard(artworkId)).join('');
             }
 
             function renderMoreLinks() {

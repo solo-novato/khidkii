@@ -89,7 +89,23 @@ window.KHIDKI_COLLECTION_PAGE = {
       idealSpaces: ["Boutique Hotels", "Homestays", "Reading Lounges", "Libraries", "Hospitality Reception Areas", "Slow Cafes"],
       narratives: ["Journey", "Devotion", "Wonder", "Belonging", "Return", "Connection"],
       availableAs: ["Original Artwork", "Fine Art Prints", "Hospitality Packages", "Atmosphere Systems", "Collector Editions"],
-      artworkIds: ["safar", "phone-call", "dhoop-chaav", "kintsugi", "ek-fool", "shraddha", "saanjh", "badal-pe-paon"]
+      artworkGroups: [
+        {
+          id: "green-gold",
+          title: "Green Gold Stories",
+          shade: "Green Gold",
+          description: "Leaf-filtered light, journeys, thresholds, and golden outdoor warmth.",
+          artworkIds: ["patjhad", "aalta", "dhoop-chaav", "dubki", "safar", "vatavaran", "aag-ka-dariya", "teleport", "phone-call", "suryamukhi", "kintsugi", "device-chor"]
+        },
+        {
+          id: "peach-amber",
+          title: "Peach Amber Stories",
+          shade: "Peach Amber",
+          description: "Sunset warmth, devotion, wonder, romance, and intimate interior glow.",
+          artworkIds: ["badal-pe-paon", "khayali-pulao", "shraddha", "jaadugar", "saanjh", "santulan", "literature-in-romance", "ek-fool"]
+        }
+      ],
+      artworkIds: ["patjhad", "aalta", "dhoop-chaav", "dubki", "safar", "vatavaran", "aag-ka-dariya", "teleport", "phone-call", "suryamukhi", "kintsugi", "device-chor", "badal-pe-paon", "khayali-pulao", "shraddha", "jaadugar", "saanjh", "santulan", "literature-in-romance", "ek-fool"]
     },
     {
       id: "storyscape",
@@ -118,7 +134,30 @@ window.KHIDKI_COLLECTION_PAGE = {
       idealSpaces: ["Concept Cafes", "Creative Studios", "Boutique Hospitality", "Cultural Venues", "Art-forward Restaurants"],
       narratives: ["Possibility", "Imagination", "Hope", "Discovery", "Transformation"],
       availableAs: ["Original Artwork", "Fine Art Prints", "Hospitality Packages", "Atmosphere Systems", "Collector Editions"],
-      artworkIds: ["cotton-candy", "bijlee", "visfot", "shooting-stars", "embroidery", "chalchitra", "nazar", "teleport"]
+      artworkGroups: [
+        {
+          id: "pink-lilac",
+          title: "Pink Lilac Skies",
+          shade: "Pink Lilac",
+          description: "Soft eruptions, lightning, cotton-candy clouds, and moonlit wishes.",
+          artworkIds: ["visfot", "bijlee", "cotton-candy", "shooting-stars"]
+        },
+        {
+          id: "violet-night",
+          title: "Violet Night Stories",
+          shade: "Violet Night",
+          description: "Rain-lit journeys, cinematic moons, portraits, auroras, and purple dream logic.",
+          artworkIds: ["fuljhadi", "night-out", "love-swadanusar", "embroidery", "chalchitra", "nazar", "aurora"]
+        },
+        {
+          id: "blue-celestial",
+          title: "Blue Celestial Stories",
+          shade: "Blue Celestial",
+          description: "Deep blue places of travel, performance, collecting, weather, and prayer.",
+          artworkIds: ["kahani-ghar", "trek-ki-atmakatha", "spotlight", "collector", "d-day", "chaand"]
+        }
+      ],
+      artworkIds: ["visfot", "bijlee", "cotton-candy", "shooting-stars", "fuljhadi", "night-out", "love-swadanusar", "embroidery", "chalchitra", "nazar", "aurora", "kahani-ghar", "trek-ki-atmakatha", "spotlight", "collector", "d-day", "chaand"]
     },
     {
       id: "earth",
@@ -149,7 +188,23 @@ window.KHIDKI_COLLECTION_PAGE = {
       idealSpaces: ["Wellness Retreats", "Libraries", "Coworking Spaces", "Residences", "Slow Hospitality"],
       narratives: ["Friendship", "Distance", "Growth", "Solitude", "Memory", "Movement"],
       availableAs: ["Original Artwork", "Fine Art Prints", "Hospitality Packages", "Atmosphere Systems", "Collector Editions"],
-      artworkIds: ["paper-boat", "yaari", "bandhani", "chai-patti", "no-baggage", "iceberg", "barso", "on-top", "deep", "udaan", "marks", "eyeliner"]
+      artworkGroups: [
+        {
+          id: "aqua-stillness",
+          title: "Aqua Stillness",
+          shade: "Aqua Stillness",
+          description: "Lotus water, forest air, ritual cloth, quiet rooms, and the green-blue pause before thought.",
+          artworkIds: ["paper-boat", "yaari", "bandhani", "chai-patti", "no-baggage", "barso"]
+        },
+        {
+          id: "deep-blue-silence",
+          title: "Deep Blue Silence",
+          shade: "Deep Blue",
+          description: "Mist, ocean depth, ice light, moonlit movement, body memory, and inward blue.",
+          artworkIds: ["on-top", "deep", "iceberg", "udaan", "marks", "eyeliner"]
+        }
+      ],
+      artworkIds: ["paper-boat", "yaari", "bandhani", "chai-patti", "no-baggage", "barso", "on-top", "deep", "iceberg", "udaan", "marks", "eyeliner"]
     },
     {
       id: "midnight",
@@ -246,6 +301,20 @@ window.KHIDKI_COLLECTION_PAGE = {
     }
   ],
   artworks: {
+    "patjhad": {
+      title: "Patjhad",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/PATJHAD.png",
+      description: "A leaf-filled Signature work about closeness, season-change, and the golden softness of being held by memory."
+    },
+    "aalta": {
+      title: "Aalta",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/AALTA.png",
+      description: "An intimate threshold of ritual, fabric, and warm domestic light within the Signature Collection."
+    },
     "safar": {
       title: "Safar",
       medium: "Original Painting / Fine Art Prints",
@@ -253,12 +322,47 @@ window.KHIDKI_COLLECTION_PAGE = {
       image: "INVENTORY/SAFAR.png",
       description: "A Signature Collection work about journeys taken slowly, familiar roads, and the warmth a space gathers over time."
     },
+    "dubki": {
+      title: "Dubki",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/DUBKI.png",
+      description: "A sunlit Signature piece about surrender, movement, and the bright courage of entering deep feeling."
+    },
+    "vatavaran": {
+      title: "Vatavaran",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/VATAVARAN.png",
+      description: "A quiet boat at sunset, carrying atmosphere, reflection, and the warmth of an evening that stays with you."
+    },
+    "aag-ka-dariya": {
+      title: "Aag Ka Dariya",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/AAG KA DARIYA.png",
+      description: "A Signature work of heat, risk, and passage: the emotional bridge between danger and devotion."
+    },
     "phone-call": {
       title: "Phone Call",
       medium: "Original Painting / Fine Art Prints",
       status: "Available for Collection Inquiry",
       image: "INVENTORY/PHONE CALL.png",
       description: "A warm human story of connection, conversation, and the small intimacies that make a room feel lived in."
+    },
+    "suryamukhi": {
+      title: "Suryamukhi",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/SUNFLOWER.png",
+      description: "A rain-washed field of sunflowers and resilience, glowing with Signature warmth even under a storming sky."
+    },
+    "device-chor": {
+      title: "Device Chor",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/DEVICE CHOR.png",
+      description: "A mischievous Signature story about light, escape, and the little thefts that make memory feel cinematic."
     },
     "dhoop-chaav": {
       title: "Dhoop Chaav",
@@ -301,6 +405,34 @@ window.KHIDKI_COLLECTION_PAGE = {
       status: "Available for Collection Inquiry",
       image: "INVENTORY/BADAL PE PAON.png",
       description: "A gentle work of wonder, return, and human softness within the Signature Collection's familiar warmth."
+    },
+    "khayali-pulao": {
+      title: "Khayali Pulao",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/KHAYALI PULAO.png",
+      description: "A cozy interior fantasy about imagination, night-light, and the small luxuries of being alone with a thought."
+    },
+    "jaadugar": {
+      title: "Jaadugar",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/JADUGAR.png",
+      description: "A sunset-toned Signature work where magic, performance, and wonder rise out of an ordinary shore."
+    },
+    "santulan": {
+      title: "Santulan",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/SANTULAN.png",
+      description: "A balancing act along a glowing track, carrying the Signature themes of journey, poise, and return."
+    },
+    "literature-in-romance": {
+      title: "Literature In Romance",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/LITERATURE IN ROMANCE.png",
+      description: "A dramatic, ember-toned Signature piece about romance, story, and the theatrical weather of feeling."
     },
     "cotton-candy": {
       title: "Cotton Candy",
@@ -350,6 +482,76 @@ window.KHIDKI_COLLECTION_PAGE = {
       status: "Available for Collection Inquiry",
       image: "INVENTORY/NAZAR.png",
       description: "A mystical Storyscape piece about perception, watchfulness, and the worlds beyond ordinary sight."
+    },
+    "fuljhadi": {
+      title: "Fuljhadi",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/FULJHADI.png",
+      description: "A rain-lit train compartment where a small spark becomes a private constellation."
+    },
+    "night-out": {
+      title: "Night Out",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/NIGHT OUT.png",
+      description: "A violet moon journey, soft as a secret shared on water after dark."
+    },
+    "love-swadanusar": {
+      title: "Love Swadanusar",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/MAGIC SWADANUSAR.png",
+      description: "A purple, wind-tossed Storyscape piece about love arriving in its own strange weather."
+    },
+    "aurora": {
+      title: "Aurora",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/SONG OF THE SKY.png",
+      description: "A midnight drive under northern lights, where wonder feels close enough to touch."
+    },
+    "kahani-ghar": {
+      title: "Kahani Ghar",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/TALKIES GHAR.png",
+      description: "A glowing seaside house where stories gather like neon on water."
+    },
+    "trek-ki-atmakatha": {
+      title: "Trek Ki Aatmakatha",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/TREK KI ATMAKATHA.png",
+      description: "A mountain passage held in blue light, made for the inner life of a journey."
+    },
+    "spotlight": {
+      title: "Spotlight",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/SPOTLIGHT.png",
+      description: "A cosmic performance piece where sound, color, and courage rise into the same sky."
+    },
+    "collector": {
+      title: "Collector",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/COLLECTOR (1).png",
+      description: "A blue-toned threshold piece about keeping fragments of wonder close."
+    },
+    "d-day": {
+      title: "D-Day",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/D-DAY.png",
+      description: "A storm-blue horizon where the day feels suspended between fear and possibility."
+    },
+    "chaand": {
+      title: "Chaand",
+      medium: "Original Painting / Fine Art Prints",
+      status: "Available for Collection Inquiry",
+      image: "INVENTORY/CHAAND.png",
+      description: "A quiet moonlit prayer, glowing with lanterns, dusk, and blue stillness."
     },
     "teleport": {
       title: "Teleport",
