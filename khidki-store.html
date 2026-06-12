@@ -508,22 +508,46 @@
             padding: 0 0 16px;
             text-transform: uppercase;
         }
-        .filter-row {
-            align-items: center;
+        .filter-group {
             border-bottom: 1px solid var(--line-paper);
+            display: block;
+            padding: 15px 0;
+        }
+        .filter-group label {
             color: #4d473e;
-            display: flex;
-            font-size: 12px;
-            font-weight: 700;
-            justify-content: space-between;
-            letter-spacing: 0.06em;
-            padding: 18px 0;
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
             text-transform: uppercase;
         }
-        .filter-row span:last-child {
-            color: #8f7d61;
-            font-size: 17px;
-            font-weight: 300;
+        .filter-control {
+            appearance: none;
+            background: rgba(255, 252, 244, 0.62);
+            border: 1px solid #d5c8b5;
+            color: var(--ink);
+            font: inherit;
+            font-size: 13px;
+            min-height: 38px;
+            outline: none;
+            padding: 9px 34px 9px 11px;
+            transition: border-color 0.2s, background 0.2s;
+            width: 100%;
+        }
+        select.filter-control {
+            background-image:
+                linear-gradient(45deg, transparent 50%, #8f7d61 50%),
+                linear-gradient(135deg, #8f7d61 50%, transparent 50%);
+            background-position:
+                calc(100% - 16px) 16px,
+                calc(100% - 11px) 16px;
+            background-repeat: no-repeat;
+            background-size: 5px 5px, 5px 5px;
+        }
+        .filter-control:focus {
+            background-color: rgba(255, 252, 244, 0.9);
+            border-color: #a88455;
         }
         .clear-filters {
             background: transparent;
@@ -567,10 +591,32 @@
             color: var(--ink);
             font-weight: 800;
         }
+        .sort-control select {
+            background: transparent;
+            border: 0;
+            border-bottom: 1px solid rgba(95, 82, 61, 0.35);
+            color: var(--ink);
+            cursor: pointer;
+            font: inherit;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            outline: none;
+            padding: 4px 18px 4px 0;
+            text-transform: uppercase;
+        }
         .store-grid {
             display: grid;
             gap: 14px;
             grid-template-columns: repeat(auto-fit, minmax(186px, 1fr));
+        }
+        .empty-results {
+            border: 1px dashed #cdbda5;
+            color: var(--ink-soft);
+            font-size: 14px;
+            grid-column: 1 / -1;
+            letter-spacing: 0.04em;
+            padding: 34px;
+            text-align: center;
         }
         .product-card {
             background: rgba(239, 231, 216, 0.76);
@@ -971,7 +1017,18 @@
                 grid-template-columns: 1fr;
             }
             .filter-panel {
-                display: none;
+                display: grid;
+                gap: 14px;
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                padding-bottom: 18px;
+            }
+            .filter-head,
+            .clear-filters {
+                grid-column: 1 / -1;
+            }
+            .filter-group {
+                border-bottom: 0;
+                padding: 0;
             }
             .value-strip {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1138,19 +1195,83 @@
             <div class="shop-layout">
                 <aside class="filter-panel">
                     <div class="filter-head"><span>Filters</span><span>≡</span></div>
-                    <div class="filter-row"><span>Collection</span><span>⌄</span></div>
-                    <div class="filter-row"><span>Size</span><span>⌄</span></div>
-                    <div class="filter-row"><span>Orientation</span><span>⌄</span></div>
-                    <div class="filter-row"><span>Color Tone</span><span>⌄</span></div>
-                    <div class="filter-row"><span>Mood</span><span>⌄</span></div>
-                    <div class="filter-row"><span>Price</span><span>⌄</span></div>
-                    <button class="clear-filters" type="button">Clear All</button>
+                    <div class="filter-group">
+                        <label for="filterSearch">Search</label>
+                        <input class="filter-control" id="filterSearch" type="search" placeholder="Artwork name">
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterCollection">Collection</label>
+                        <select class="filter-control" id="filterCollection">
+                            <option value="">All collections</option>
+                            <option value="The Dreamscape Collection">Dreamscape</option>
+                            <option value="Earth & Silence Collection">Earth & Silence</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterSize">Size</label>
+                        <select class="filter-control" id="filterSize">
+                            <option value="">All sizes</option>
+                            <option value="small">Small print</option>
+                            <option value="medium">Medium print</option>
+                            <option value="large">Large print</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterOrientation">Orientation</label>
+                        <select class="filter-control" id="filterOrientation">
+                            <option value="">All orientations</option>
+                            <option value="portrait">Portrait</option>
+                            <option value="landscape">Landscape</option>
+                            <option value="square">Square</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterTone">Color Tone</label>
+                        <select class="filter-control" id="filterTone">
+                            <option value="">All tones</option>
+                            <option value="cool">Cool</option>
+                            <option value="warm">Warm</option>
+                            <option value="green">Green</option>
+                            <option value="bright">Bright</option>
+                            <option value="muted">Muted</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterMood">Mood</label>
+                        <select class="filter-control" id="filterMood">
+                            <option value="">All moods</option>
+                            <option value="calm">Calm</option>
+                            <option value="wonder">Wonder</option>
+                            <option value="adventure">Adventure</option>
+                            <option value="energy">Energy</option>
+                            <option value="introspective">Introspective</option>
+                            <option value="gathering">Gathering</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterPrice">Price</label>
+                        <select class="filter-control" id="filterPrice">
+                            <option value="">All prices</option>
+                            <option value="under-1500">Under ₹1,500</option>
+                            <option value="1450">₹1,450</option>
+                        </select>
+                    </div>
+                    <button class="clear-filters" type="button" id="clearFilters">Clear All</button>
                 </aside>
 
                 <div class="products-area">
                     <div class="products-toolbar">
-                        <span class="print-count">Featured Print Edit</span>
-                        <span class="sort-control">Sort By: <strong>Featured</strong>⌄</span>
+                        <span class="print-count" id="printCount">Featured Print Edit</span>
+                        <label class="sort-control" for="sortSelect">
+                            Sort By:
+                            <select id="sortSelect">
+                                <option value="featured">Featured</option>
+                                <option value="newest">Newest</option>
+                                <option value="title-az">Title A-Z</option>
+                                <option value="title-za">Title Z-A</option>
+                                <option value="collection">Collection</option>
+                            </select>
+                        </label>
                     </div>
                     <div class="store-grid reveal" id="storeGrid"></div>
                 </div>
@@ -1371,8 +1492,79 @@
                 }
             ];
 
+            const workMetadata = {
+                'Sangam': {
+                    orientation: 'portrait',
+                    tones: ['green', 'cool'],
+                    moods: ['calm', 'wonder']
+                },
+                'Frozen Fever': {
+                    orientation: 'landscape',
+                    tones: ['cool', 'muted'],
+                    moods: ['calm', 'introspective']
+                },
+                'Sard': {
+                    orientation: 'portrait',
+                    tones: ['cool', 'muted'],
+                    moods: ['introspective', 'calm']
+                },
+                'Indradhanush': {
+                    orientation: 'landscape',
+                    tones: ['bright', 'cool'],
+                    moods: ['wonder', 'adventure']
+                },
+                'Dream Catcher': {
+                    orientation: 'landscape',
+                    tones: ['bright', 'warm'],
+                    moods: ['wonder', 'adventure']
+                },
+                'Festival': {
+                    orientation: 'portrait',
+                    tones: ['bright', 'warm'],
+                    moods: ['energy', 'wonder']
+                },
+                'Ittar': {
+                    orientation: 'landscape',
+                    tones: ['warm', 'bright'],
+                    moods: ['introspective', 'wonder']
+                },
+                'Social Battery': {
+                    orientation: 'portrait',
+                    tones: ['green', 'muted'],
+                    moods: ['calm', 'introspective']
+                },
+                'Sawaari': {
+                    orientation: 'landscape',
+                    tones: ['cool', 'green'],
+                    moods: ['adventure', 'calm']
+                },
+                'Manch': {
+                    orientation: 'landscape',
+                    tones: ['warm', 'muted'],
+                    moods: ['gathering', 'calm']
+                },
+                'Brainfog': {
+                    orientation: 'landscape',
+                    tones: ['cool', 'muted'],
+                    moods: ['introspective']
+                },
+                'Bandi': {
+                    orientation: 'square',
+                    tones: ['cool', 'muted'],
+                    moods: ['energy', 'introspective']
+                }
+            };
+
+            works.forEach(work => {
+                Object.assign(work, {
+                    priceValue: Number(work.price.replace(/[^\d]/g, '')),
+                    sizes: ['small', 'medium', 'large']
+                }, workMetadata[work.title] || {});
+            });
+
             let cartCount = 0;
             let currentIndex = 0;
+            const savedWorks = new Set();
 
             const grid = document.getElementById('storeGrid');
             const collectionList = document.getElementById('collectionLinks');
@@ -1381,6 +1573,23 @@
             const modalAdd = document.getElementById('modalAdd');
             const cartCountEl = document.getElementById('cartCount');
             const toast = document.getElementById('toast');
+            const printCount = document.getElementById('printCount');
+            const sortSelect = document.getElementById('sortSelect');
+            const clearFilters = document.getElementById('clearFilters');
+            const filters = {
+                search: document.getElementById('filterSearch'),
+                collection: document.getElementById('filterCollection'),
+                size: document.getElementById('filterSize'),
+                orientation: document.getElementById('filterOrientation'),
+                tone: document.getElementById('filterTone'),
+                mood: document.getElementById('filterMood'),
+                price: document.getElementById('filterPrice')
+            };
+            const sizeLabels = {
+                small: 'Small print available',
+                medium: 'Medium print available',
+                large: 'Large print available'
+            };
 
             function escapeHTML(value) {
                 return String(value).replace(/[&<>"']/g, function (char) {
@@ -1407,17 +1616,79 @@
                 `).join('');
             }
 
+            function getVisibleWorks() {
+                const searchTerm = filters.search.value.trim().toLowerCase();
+                const selectedCollection = filters.collection.value;
+                const selectedSize = filters.size.value;
+                const selectedOrientation = filters.orientation.value;
+                const selectedTone = filters.tone.value;
+                const selectedMood = filters.mood.value;
+                const selectedPrice = filters.price.value;
+
+                const filtered = works
+                    .map((work, index) => ({ work, index }))
+                    .filter(({ work }) => {
+                        const searchable = [
+                            work.title,
+                            work.family,
+                            work.description,
+                            work.orientation,
+                            ...(work.tones || []),
+                            ...(work.moods || [])
+                        ].join(' ').toLowerCase();
+
+                        if (searchTerm && !searchable.includes(searchTerm)) return false;
+                        if (selectedCollection && work.family !== selectedCollection) return false;
+                        if (selectedSize && !(work.sizes || []).includes(selectedSize)) return false;
+                        if (selectedOrientation && work.orientation !== selectedOrientation) return false;
+                        if (selectedTone && !(work.tones || []).includes(selectedTone)) return false;
+                        if (selectedMood && !(work.moods || []).includes(selectedMood)) return false;
+                        if (selectedPrice === 'under-1500' && work.priceValue >= 1500) return false;
+                        if (selectedPrice === '1450' && work.priceValue !== 1450) return false;
+                        return true;
+                    });
+
+                filtered.sort((a, b) => {
+                    switch (sortSelect.value) {
+                        case 'newest':
+                            return Number(b.work.number) - Number(a.work.number);
+                        case 'title-az':
+                            return a.work.title.localeCompare(b.work.title);
+                        case 'title-za':
+                            return b.work.title.localeCompare(a.work.title);
+                        case 'collection':
+                            return a.work.family.localeCompare(b.work.family) || Number(a.work.number) - Number(b.work.number);
+                        default:
+                            return Number(a.work.number) - Number(b.work.number);
+                    }
+                });
+
+                return filtered;
+            }
+
+            function updatePrintCount(count) {
+                printCount.textContent = `${count} ${count === 1 ? 'Print' : 'Prints'} Showing`;
+            }
+
             function renderGrid() {
-                grid.innerHTML = works.map((work, index) => `
+                const visibleWorks = getVisibleWorks();
+                updatePrintCount(visibleWorks.length);
+
+                if (visibleWorks.length === 0) {
+                    grid.innerHTML = '<div class="empty-results">No prints match these filters. Clear filters to see the full edit.</div>';
+                    return;
+                }
+
+                grid.innerHTML = visibleWorks.map(({ work, index }) => `
                     <article class="product-card">
-                        <button class="heart-button" type="button" data-heart="${index}" aria-label="Save ${escapeHTML(work.title)}">♡</button>
+                        <button class="heart-button${savedWorks.has(index) ? ' active' : ''}" type="button" data-heart="${index}" aria-label="Save ${escapeHTML(work.title)}">${savedWorks.has(index) ? '♥' : '♡'}</button>
                         <button class="product-image-button" type="button" data-open="${index}" aria-label="View ${escapeHTML(work.title)}">
                             <img src="${escapeHTML(work.image)}" alt="${escapeHTML(work.title)}" loading="lazy">
                         </button>
                         <div class="product-info">
                             <h3 class="product-title"><span>${escapeHTML(work.number)}.</span>${escapeHTML(work.title)}</h3>
                             <p class="product-family">${escapeHTML(work.family)}</p>
-                            <p class="product-size">${escapeHTML(work.availability)}</p>
+                            <p class="product-size">${escapeHTML(sizeLabels[filters.size.value] || work.availability)}</p>
                             <span class="product-price">${escapeHTML(work.price)}</span>
                             <button class="add-button" type="button" data-cart="${index}">Add to Cart</button>
                         </div>
@@ -1484,6 +1755,18 @@
             renderGrid();
             observeReveals();
 
+            Object.values(filters).forEach(control => {
+                control.addEventListener(control.type === 'search' ? 'input' : 'change', renderGrid);
+            });
+            sortSelect.addEventListener('change', renderGrid);
+            clearFilters.addEventListener('click', function () {
+                Object.values(filters).forEach(control => {
+                    control.value = '';
+                });
+                sortSelect.value = 'featured';
+                renderGrid();
+            });
+
             grid.addEventListener('click', function (event) {
                 const openButton = event.target.closest('[data-open]');
                 const cartButton = event.target.closest('[data-cart]');
@@ -1492,8 +1775,16 @@
                 if (openButton) openWork(Number(openButton.dataset.open));
                 if (cartButton) addToCart(Number(cartButton.dataset.cart));
                 if (heartButton) {
-                    heartButton.classList.toggle('active');
-                    heartButton.textContent = heartButton.classList.contains('active') ? '♥' : '♡';
+                    const index = Number(heartButton.dataset.heart);
+                    if (savedWorks.has(index)) {
+                        savedWorks.delete(index);
+                        heartButton.classList.remove('active');
+                        heartButton.textContent = '♡';
+                    } else {
+                        savedWorks.add(index);
+                        heartButton.classList.add('active');
+                        heartButton.textContent = '♥';
+                    }
                 }
             });
 

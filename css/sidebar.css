@@ -292,11 +292,13 @@
 
 /* Ensure nav-toggle is always visible and triggers sidebar */
 .nav-toggle {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 21px;
+    gap: 6px;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -306,7 +308,7 @@
 
 .nav-toggle span {
     display: block;
-    width: 100%;
+    width: 30px;
     height: 3px;
     background-color: #d4af37;
     border-radius: 3px;
