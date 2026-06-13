@@ -313,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        const sections = ['hero', 'artist', 'store-gateway', 'contact'];
+        const sections = ['hero', 'windows-gateway', 'artist', 'store-gateway', 'contact'];
         let current = '';
         sections.forEach(id => {
             const section = document.getElementById(id);
@@ -341,8 +341,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    document.querySelectorAll('.section-header, .artist-image, .artist-info, .store-gateway-copy, .store-door-link, .contact-info, .contact-form').forEach(el => {
+    document.querySelectorAll('.section-header, .windows-gateway-copy, .windows-gateway-link, .artist-image, .artist-info, .store-gateway-copy, .store-door-link, .contact-info, .contact-form').forEach(el => {
         observer.observe(el);
+    });
+
+    // Animated window gateway navigation
+    document.querySelectorAll('.windows-gateway-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
+            if (link.classList.contains('is-opening')) return;
+
+            e.preventDefault();
+            link.classList.add('is-opening');
+            link.setAttribute('aria-busy', 'true');
+
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const video = link.querySelector('.windows-gateway-video');
+            const delay = prefersReducedMotion ? 80 : 2300;
+
+            if (!prefersReducedMotion && video) {
+                video.currentTime = 0;
+                video.play().catch(() => {});
+            }
+
+            window.setTimeout(() => {
+                window.location.assign(link.href);
+            }, delay);
+        });
     });
 
     // Form submission
